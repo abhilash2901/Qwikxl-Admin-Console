@@ -1,0 +1,361 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Response;
+use App\User;
+use App\Role;
+use App\Departments;
+use DB;
+use Session;
+use Hash;
+
+class StoreController extends Controller {
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function createstore() {
+        $data = DB::table('stores')->orderBy('id', 'desc')->first();
+        $countries = DB::table('countries')->get();
+        $users = DB::table('users')->orderBy('id', 'desc')->first();
+        $roles = DB::table('roles')->where('type', '=', '1')->get();
+        // $list = DB::table('users')->where('type', '=', '1')->get();
+        $list = DB::table('users')
+                ->join('role_user', 'users.id', '=', 'role_user.user_id')
+                ->join('roles', 'roles.id', '=', 'role_user.role_id')
+                ->select('users.*', 'roles.display_name', 'roles.id as role_id ')
+                ->where('users.type', '1')
+                ->get();
+        return view('store.addstore', ['id' => $data, 'users' => $users, 'roles' => $roles, 'list' => $list, 'countries' => $countries]);
+    }
+
+    public function editstore() {
+        $ss = Session::get('store_id');
+        $dept = DB::table('departments')->where('store_id', '=', $ss)->where('type', '=', '0')->get();
+		$countries = DB::table('countries')->get();
+        $data = DB::table('stores')->orderBy('id', 'desc')->first();
+        $users = DB::table('users')->orderBy('id', 'desc')->first();
+        $roles = DB::table('roles')->where('type', '=', '1')->get();
+        // $list = DB::table('users')->where('type', '=', '1')->get();
+        $list = DB::table('users')
+                ->join('role_user', 'users.id', '=', 'role_user.user_id')
+                ->join('roles', 'roles.id', '=', 'role_user.role_id')
+                ->select('users.*', 'roles.display_name', 'roles.id as role_id ')
+                ->where('users.type', '1')
+                ->get();
+        return view('store.editstore', ['id' => $data,'countries' => $countries, 'dept' => $dept, 'users' => $users, 'roles' => $roles, 'list' => $list]);
+    }
+
+    public function liststoreusers(Request $request) {
+        $input = $request->all();
+        $list = DB::table('users')
+                ->join('role_user', 'users.id', '=', 'role_user.user_id')
+                ->join('roles', 'roles.id', '=', 'role_user.role_id')
+                ->select('users.*', 'roles.display_name', 'roles.id as role_id ')
+                ->where('users.store_id', $input['id'])
+                ->get();
+        print_r(json_encode($list));
+    }
+
+    public function storedetails(Request $request) {
+        $input = $request->all();
+        $id = $input['id'];
+         $stores = DB::table('stores')
+             ->join('countries','stores.country','=','countries.id')
+             ->join('states','states.country_id','=','countries.id')
+             ->join('cities','cities.state_id','=','states.id')
+             ->select('stores.*','countries.id as cname','states.id as sname','cities.name as ctname')
+             ->where('stores.id', '=',$input['id'])
+             ->get();
+        print_r(json_encode($stores));
+    }
+
+    public function createuserstore(Request $request) {
+        $input = $request->all();
+
+        $count = $this->exist_user($input['email']);
+        if ($count == 0) {
+            $item = array([
+                    "unique_id" => $input['unique_id'],
+                    "firstname" => $input['firstname'],
+                    "lastname" => $input['lastname'],
+                    "type" => $input['type'],
+                    "email" => $input['email'],
+                    "store_id" => $input['store_id']
+            ]);
+
+            // move here
+            $user = DB::table('users')->insert($item);
+            $user_id = DB::table('users')->orderBy('id', 'desc')->first();
+            $item2 = array([
+                    "user_id" => $user_id->id,
+                    "role_id" => $input['role_id']
+            ]);
+
+            $user = DB::table('role_user')->insert($item2);
+
+            print_r(json_encode(array('status' => 'success', 'msg' => 'User Created Succesfully')));
+        } else {
+
+            print_r(json_encode(array('status' => 'failed', 'msg' => 'User Already Exist')));
+        }
+    }
+
+    public function exist_user($email) {
+
+        $email = DB::table('users')->where('email', '=', $email)->get();
+
+
+        return count($email);
+    }
+
+    public function liststore() {
+
+        $result = DB::table('stores')->orderBy('id', 'DESC')->get();
+
+
+        print_r(json_encode($result));
+    }
+
+    public function selectstores(Request $request) {
+        $input = $request->all();
+        //$result = DB::table('stores')->orderBy('id', 'DESC')->get();
+        \Session::put('store_id', $input['id']);
+
+        print_r(json_encode(array('status' => 'success', 'msg' => 'Store Created Succesfully', 'id' => $input['id'])));
+    }
+
+    public function create(Request $request) {
+        /* $this->validate($request, [
+
+          'mail' => 'required|email|unique:users,email',
+
+          'name' => 'required',
+          'corporateidentifier'=>'required',
+          'address'=>'required',
+          'city'=>'required',
+          'zip'=>'required|integer',
+          'website'=>"required|url"
+          ]); */
+
+        $input = $request->all();
+
+        $item = array([
+                "unique_id" => $input['unique_id'],
+                "name" => $input['name'],
+                "corporateidentifier" => $input['corporateidentifier'],
+                "address" => $input['address'],
+                "address2" => $input['address2'],
+                "city" => $input['city'],
+                "state" => $input['state'],
+                "country" => $input['country'],
+                "zip" => $input['zip'],
+                "phone" => $input['phone'],
+                "mail" => $input['mail'],
+                "website" => $input['website']
+        ]);
+
+
+        // move here
+        DB::table('stores')->insert($item);
+
+        $store_id = DB::table('stores')->orderBy('id', 'desc')->first();
+        \Session::put('store_id', $store_id->id);
+        $items = array([
+                "name" => "general",
+                "store_id" => $store_id->id,
+                "type" => "1"
+        ]);
+        DB::table('departments')->insert($items);
+        print_r(json_encode(array('status' => 'success', 'msg' => 'Store Created Succesfully', 'id' => $store_id->id)));
+    }
+
+    public function storeedit(Request $request) {
+
+         $id="";
+        $input = $request->all();
+        $data = DB::table('stores')->orderBy('id', 'desc')->first();
+		if($data){
+			$id = $data->id;
+		}
+		
+        $item = array([
+                "unique_id" => $input['unique_id']+$id,
+                "name" => $input['name'],
+                "corporateidentifier" => $input['corporateidentifier'],
+                "address" => $input['address'],
+                "address2" => $input['address2'],
+                "city" => $input['city'],
+                "state" => $input['state'],
+                "country" => $input['country'],
+                "zip" => $input['zip'],
+                "phone" => $input['phone'],
+                "mail" => $input['mail'],
+                "website" => $input['website']
+        ]);
+
+        // move here
+        // DB::table('stores')->insert($item );
+        $id = $input['id'];
+        DB::update('update stores set name = ? ,corporateidentifier = ? ,address = ? ,address2 = ? ,city = ?,state = ? ,zip = ?,phone = ?,mail = ?,website = ? where id = ?', [$input['name'], $input['corporateidentifier'], $input['address'], $input['address2'], $input['city'], $input['state'], $input['zip'], $input['phone'], $input['mail'], $input['website'], $id]);
+
+        print_r(json_encode(array('status' => 'success', 'msg' => 'Store Created Succesfully')));
+    }
+
+    public function deleteusers(Request $request) {
+        $input = $request->all();
+        $id = $input['id'];
+
+        User::destroy($id);
+
+
+        print_r(json_encode(array('status' => 'success', 'msg' => 'User Delete Succesfully')));
+    }
+
+    public function getuserdetails(Request $request) {
+        $input = $request->all();
+        $id = $input['id'];
+
+        $list = DB::table('users')
+                ->join('role_user', 'users.id', '=', 'role_user.user_id')
+                ->join('roles', 'roles.id', '=', 'role_user.role_id')
+                ->select('users.*', 'roles.display_name', 'roles.id as role_id ')
+                ->where('users.type', '1')
+                ->where('users.id', $id)
+                ->get();
+
+
+        print_r(json_encode($list));
+    }
+
+    public function edituser(Request $request) {
+        $input = $request->all();
+
+        $id = $input['id'];
+        $user = User::find($id);
+        $user->update($input);
+        DB::update('update role_user set role_id = ? where user_id = ?', [$input['role_id'], $id]);
+
+
+        print_r(json_encode(array('status' => 'success', 'msg' => 'Updated Succesfully')));
+    }
+
+    public function adddept(Request $request) {
+        $input = $request->all();
+
+        foreach ($request->input('name') as $key => $value) {
+            $sqlInsert = array(
+                array('name' => $value, 'store_id' => $input['store_id'])
+            );
+            DB::table('departments')->insert($sqlInsert);
+        }
+
+
+        print_r(json_encode(array('status' => 'success', 'msg' => 'Updated Succesfully')));
+    }
+
+    public function editdept(Request $request) {
+        $input = $request->all();
+        $i = 0;
+        foreach ($request->input('name') as $key => $value) {
+            $sqlInsert = array(
+                array('name' => $value, 'store_id' => $input['store_id'])
+            );
+            $s = $i + 1;
+
+            if (count($request->input('id')) > $i) {
+                if ($request->input('id')[$i]) {
+                    $id = $request->input('id')[$i];
+
+                    DB::update('update departments set  name = ? where id =?', [$value, $id]);
+                }
+            } else {
+                $sqlInsert = array(
+                    array('name' => $value, 'store_id' => $input['store_id'])
+                );
+                DB::table('departments')->insert($sqlInsert);
+            }
+
+
+            $i++;
+        }
+
+
+        print_r(json_encode(array('status' => 'success', 'msg' => 'Updated Succesfully')));
+    }
+
+    public function findstore() {
+
+        return view('store.findstore');
+    }
+
+    public function autocomplete(Request $request) {
+
+        $term = $request->input('term');
+        ;
+
+        $results = array();
+
+        $queries = DB::table('stores')
+                        ->where('name', 'LIKE', '%' . $term . '%')
+                        //->orWhere('lastname', 'LIKE', '%'.$term.'%')
+                        ->take(5)->get();
+
+        foreach ($queries as $query) {
+            $results[] = [ 'id' => $query->id, 'value' => $query->name];
+        }
+        return \Response::json($results);
+    }
+
+    public function findstores() {
+
+        return view('store.findstore');
+    }
+
+    public function autocompletes(Request $request) {
+
+        $term = $request->input('term');
+        ;
+
+        $results = array();
+
+        $queries = DB::table('stores')
+                        ->where('unique_id', 'LIKE', '%' . $term . '%')
+                        //->orWhere('lastname', 'LIKE', '%'.$term.'%')
+                        ->take(5)->get();
+
+        foreach ($queries as $query) {
+            $results[] = [ 'id' => $query->id, 'value' => $query->unique_id];
+        }
+        return \Response::json($results);
+    }
+
+//sooraj
+    public function insertcity(Request $request) {
+        $name = $request->input('id');
+        $state = $request->input('id1');
+
+        DB::table('cities')->insert(
+                ['name' => $name, 'state_id' => $state]
+        );
+    }
+
+    public function state(Request $request) {
+        $state_id = $request->input('id');
+        $states = DB::table('states')->where('country_id', '=', $state_id)->get();
+        // return view('store.addstore', ['states' => $states]);
+        return Response::json($states);
+    }
+
+    public function city(Request $request) {
+        $state_id = $request->input('id');
+        $cities = DB::table('cities')->where('state_id', '=', $state_id)->get();
+        return Response::json($cities);
+    }
+
+}

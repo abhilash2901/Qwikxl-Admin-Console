@@ -54,11 +54,11 @@
     </div-->
                             <div class="form-group"><label class="col-sm-2 control-label">Store name</label>
 
-                                <div class="col-sm-8"><input type="text"  name ="name" class="form-control" required></div>
+                                <div class="col-sm-8"><input type="text"  name ="name" class="form-control"data-parsley-trigger="keyup"  data-parsley-minlength="3" required></div>
                             </div>
                             <div class="form-group"><label class="col-sm-2 control-label">Store Number</label>
 
-                                <div class="col-sm-8"><input type="text" class="form-control" name="corporateidentifier" required> <span
+                                <div class="col-sm-8"><input type="text" class="form-control" name="corporateidentifier" data-parsley-type="digits" data-parsley-trigger="keyup" data-parsley-minlength="3" required> <span
                                         class="help-block m-b-none">Corporate Store identifier #</span>
                                 </div>
                             </div>
@@ -80,7 +80,7 @@
                                     <div class="">
                                         <div class="col-md-8 form-group">       
                                             <div class="input-group">
-                                                <select  name="country" class="form-control m-b country"  style="width:275px;" tabindex="4" required>
+                                                <select  name="country" class="form-control m-b country"  style="width:275px;" tabindex="4" >
                                                     <option value="">Select Country</option>
                                                     @foreach ($countries as $key => $users)
                                                     <option value="{{ $users -> id}}">{{ $users -> name}}</option>
@@ -97,7 +97,7 @@
                                     <div class="">
                                         <div class="col-md-8 form-group">       
                                             <div class="input-group">
-                                                <select  name="state" class="form-control m-b state" style="width:275px;" tabindex="4" required>
+                                                <select  name="state" class="form-control m-b state" style="width:275px;" tabindex="4" >
                                                     <option value="">Select State</option>
 
                                                 </select>
@@ -118,8 +118,8 @@
 
 
 
-                                                <div class="field_wrapper" align="right">                        
-                                                    <a href="javascript:void(0);" class="add_button" title="Add City">
+                                                <div class="field_wrapper" align="right" style="position: relative">                        
+                                                    <a href="javascript:void(0);" class="add_button" title="Add City" style="position: absolute; top: 7px; right: -15px;">
                                                         <span class="fa fa-plus-circle fie" aria-hidden="true"></span></a>
 
                                                     <!--                                                  <fieldset class="answer">
@@ -166,7 +166,7 @@
 <!--                             <input type='button' class="btn btn-primary" value='save' id='save'>-->
 
                             <div class="form-group"><label class="col-sm-2 control-label">Zip</label>
-                                <div class="col-md-4"><input name="zip"  type="text" placeholder="30350"
+                                <div class="col-md-4"><input name="zip" data-parsley-trigger="keyup" data-parsley-minlength="3" data-parsley-type="digits" required type="text" placeholder="30350"
                                                              class="form-control" id="valid"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
@@ -174,8 +174,8 @@
                                 <label class="col-sm-2 control-label">Phone</label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" data-mask="(999) 999-9999" placeholder="" name="phone" id="valid" >
-                                    <span class="help-block">(999) 999-9999</span>
+                                    <input type="text" class="form-control" data-parsley-trigger="keyup" data-parsley-minlength="4" data-parsley-type="digits" required placeholder="" name="phone" id="valid" >
+                                    
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>

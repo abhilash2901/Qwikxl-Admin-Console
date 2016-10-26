@@ -120,11 +120,11 @@
   @foreach($categoriesnon as $subCate)
     <li class="<?php if(count($subCate->subCategory)==0 || $subCate->id ==$data->parent_id) echo'active';?>"><a  class="<?php if($subCate->id == $data->parent_id) echo "red";?>" onClick="getCategory(this)" data-id="{{ $subCate->id }}">{{ $subCate->categoryname }}</a>
 	 
-    <ul>
+    <ul style="display:block">
 	@foreach($subCate->subCategory as $firstNestedSub)
         <li class="<?php if(count($firstNestedSub->subCategory)==0 || $firstNestedSub->id ==$data->parent_id) echo'active';?>" ><a class="<?php if($firstNestedSub->id == $data->parent_id) echo "red";?>"  onClick="getCategory(this)" data-id="{{ $firstNestedSub->id }}"> {{ $firstNestedSub->categoryname }}</a>
 		 
-		 <ul>
+		  <ul style="display:block">
 		@foreach($firstNestedSub->subCategory as $secondNestedSub)
 		 <li  class="<?php if(count($secondNestedSub->subCategory)==0 || $secondNestedSub->id ==$data->parent_id) echo'active';?>"><a class="<?php if($secondNestedSub->id == $data->parent_id) echo "red";?>" onClick="getCategory(this)" data-id="{{ $secondNestedSub->id }}"> {{ $secondNestedSub->categoryname }}</a>
 		 <ul>
@@ -239,7 +239,7 @@
                 <h4 class="modal-title" id="H3">Confirmation</h4>
             </div>
             <div class="modal-body">
-                a category cannot be its own parent
+                a category cannot be its own parent 
             </div>
             <div class="deletesucess" style="width:50%;margin-left:10px;text-align:center"></div>
             <div class="modal-footer">

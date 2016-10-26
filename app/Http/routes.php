@@ -101,6 +101,13 @@ Route::post('listingproducts', 'Products@listingproducts');
 Route::get('import',['uses'=>'Products@import'] );
 Route::post('dumpproduct', 'Products@dumpproduct');
 Route::post('changedpt', 'Categorys@changedpt');
+Route::post('deletestore', 'Stores@deletestore');
+Route::post('deletedpartmt', 'Stores@deletedpartmt');
+Route::post('roleupdate', ['uses'=>'RoleController@roleupdate','middleware' => ['permission:role-edit']]);
+Route::post('deleterole', ['uses'=>'RoleController@destroy','middleware' =>['permission:role-delete']]);
+Route::post('deleteduser', ['uses'=>'UserController@destroy','middleware' =>['permission:users-delete']]);
+Route::post('listingcategory', ['uses'=>'Categorys@listingcategory','middleware' =>['permission:list-category']]);
+Route::get('downloadExcel/{type}', 'Products@downloadExcel');
 //Route::resource('store', 'stores');
 //sooraj
 Route::post('changepassed', ['uses' => 'Stores@changepass', 'middleware' => ['permission:storechange-password']]);
@@ -108,5 +115,6 @@ Route::post('storeprofiles', ['as' => 'store.update', 'uses' => 'Stores@updates'
 Route::post('state', 'StoreController@state');
 Route::post('city', 'StoreController@city');
 Route::post('createcity','StoreController@insertcity');
+
 });
 

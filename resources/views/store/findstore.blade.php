@@ -78,7 +78,9 @@
                                     <dt>Phone</dt>
                                     <dd class="ng-cloak">@{{list.phone}}</dd>
                                 </dl>
+								<a class="btn btn-white"  data-toggle="modal" data-target="#Deletestore" onclick="Takestore(this)" data-id="@{{list.id}}" >Delete </a>
                             </div>
+							
                         </div>
 
                         <div class="hr-line-dashed"></div>
@@ -100,5 +102,26 @@
             </div>
         </div>
     </div>
+</div>
+<div class="modal fade" id="Deletestore" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="H3">Delete this record?</h4>
+      </div>
+      <div class="modal-body">
+	   The store related departments,user,category,product deleted.<br>
+	   This operation can't be undo.<br>
+       Are you sure to delete this record?
+      </div>
+	  <div class="deletesucess" style="width:55%;margin-left:10px;text-align:center"></div>
+      <div class="modal-footer">
+	  <input type="hidden" id="get_storesid">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" onClick="DeleteStore()">Delete</button>
+      </div>
+    </div>
+  </div>
 </div>
 @endsection

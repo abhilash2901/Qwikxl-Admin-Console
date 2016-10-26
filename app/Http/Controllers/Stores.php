@@ -64,7 +64,18 @@ class Stores extends Controller {
 
     public function editstoredata(Request $request) {
         $input = $request->all();
-
+       
+       if(isset($input['mcity']))
+       {
+        $cityinsert=array(["name"=>$input['mcity'],"state_id"=>$input['state']]);
+        
+        $id2=DB::table('cities')->insert($cityinsert);
+        $store_id = DB::table('cities')->orderBy('id', 'desc')->first();
+        $input['city']=$store_id->id;
+//        $last = Timelog::orderBy('id', 'desc')->first();
+        
+       
+       }
         $id = $input['id'];
         Store::where("id", $id)->update($input);
 
@@ -110,5 +121,37 @@ class Stores extends Controller {
         print_r(json_encode(array('status' => 'success', 'msg' => 'Profile Updated Succesfully')));
         //return redirect()->back()->with('message','Operation Successful !');
     }
+	public function deletestore(Request $request) {
+		$input = $request->all();
+        $ids = $input['id'];
+		
+		$product =DB::table('productinventories')->where('store_id', '=', $ids)->delete();
+		
+		$categories =DB::table('categories')->where('store_id', '=', $ids)->delete();
+		$departments =DB::table('departments')->where('store_id', '=', $ids)->delete();
+		$user =DB::table('users')->where('store_id', '=', $ids)->delete();
+		
+		
+		
+		    
+		Store::destroy($ids);
+		print_r(json_encode(array('status' => 'success', 'msg' => "Store Deleted Succesfully")));	
+		
+		 
+	}
+	public function getresults($table,$id) {
+		
+		$result = DB::table($table)->where('store_id', '=', $id);
+		
+		 return $result;
+	}
+	public function deletedpartmt(Request $request) {
+		$input = $request->all();
+        $id = $input['id'];
+		$product =DB::table('productinventories')->where('department_id', '=', $id)->delete();
+		$categories =DB::table('categories')->where('departments_id', '=', $id)->delete();
+		$departments =DB::table('departments')->where('id', '=', $id)->delete();
+		print_r(json_encode(array('status' => 'success', 'msg' => "Departments Deleted Succesfully")));
+	}
 
 }

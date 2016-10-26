@@ -49,17 +49,18 @@
                 <div class="form-group"><label class="col-lg-2 control-label">Type</label>
 
                 <div class="col-lg-8">  
-                    <input type="radio" value="0" name="type"  onchange="Getdpttype(this);" required> General 
+                    <input type="radio" value="0" name="type"  onchange="Getdpttype(this);" required checked="checked"> General 
                     <input type="radio" value="1" name="type"  onchange="Getdpttype(this);"> Departments
                     <span
                         class="help-block m-b-none"></span>
                 </div>
             </div>
-
+           <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div class="form-group dpts hide"><label class="col-lg-2 control-label">Departments</label>
 				
 					<div class="col-lg-8">  
 					   <select class="form-control m-b type " id="departments_id" name="departments_id" onchange="departmnts(this)">
+						 
 						  @foreach ($dept as $key => $user)
 						  <option value="{{$user->id}}">{{$user->name}}</option>
 						  @endforeach
@@ -105,7 +106,8 @@
 </div>		
 					
 					</div>
-            </div><div class="form-group nodpt hide"><label class="col-lg-2 control-label">Category</label>
+            </div><input type="hidden" id="category" name="category_id" required>
+			<div class="form-group nodpt hide"><label class="col-lg-2 control-label">Category</label>
 				
 					<div class="col-lg-8">  
 							<div class="tree ">
@@ -179,7 +181,7 @@
                 </div>
 
 
-                <input type="hidden" id="category" name="category_id" >
+                
 
                 <div class="form-group">
                     <div class="col-lg-offset-2 col-lg-8">

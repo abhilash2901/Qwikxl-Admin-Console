@@ -15,7 +15,10 @@ App.filter('startsWithLetter', function () {
 
  App.controller('store', function ($scope,$rootScope,$http,$timeout,WebService,$filter) {
 	 
-	 
+	 $scope.storeusersid=function(id){
+		 
+		 $scope.storeuserid=id;
+	    };
 	 $scope.liststoreuser= function(){
 		
 		 post_data  ='';
@@ -57,8 +60,22 @@ App.filter('startsWithLetter', function () {
 		 
 	      
 		};
+		$scope.listcategory= function(){
 		
-
+		 post_data  ='';
+		    link="/listingcategory";
+		
+	
+			var promise = WebService.send_data( link,post_data);
+			promise.then(function(response){  
+			    $scope.listcategory = response;
+				
+				
+			});	
 		 
+	      
+		};
+		
+ 		 
 	});
 

@@ -8355,3 +8355,34 @@ a{
 	color: #fff !important
 }
 
+.tree ul li a{
+    display: inline-block;
+    color: #676a6c;
+    padding-left: 25px !important;
+    padding-right: 25px !important;
+    border-radius: 3px;
+}
+.tree ul ul li.active > a{
+        
+}
+.red{
+    background: #aaa !important;
+    color: #fff !important;
+}
+.tree ul .red{
+    
+}
+.tree ul ul .red{
+    font-weight: normal !important;
+}
+.tree ul li.active a{
+   
+}
+.tree ul ul li.active a{
+    
+}
+
+.tree ul{
+ margin-top: 25px;
+ margin-bottom: 15px;
+}

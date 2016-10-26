@@ -44,7 +44,7 @@
         <div class="form-group"><label class="col-lg-2 control-label">Type</label>
 
                 <div class="col-lg-8">  
-                    <input type="radio" value="0" name="type"  onchange="Permissiontype(this)"> System 
+                    <input type="radio" value="0" name="type"  onchange="Permissiontype(this)" > System 
                     <input type="radio" value="1" name="type"  onchange="Permissiontype(this)"> Store
                     <span
                         class="help-block m-b-none"></span>

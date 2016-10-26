@@ -97,7 +97,7 @@
 						
 						<div class="form-group"><label class="col-lg-2 control-label" >Role</label>
                                <input type="hidden"	value="<?php echo $user->store_id;?>" id="edit_store_id">
-							   <input type="hidden"	value="<?php echo $users[0]->role_id;?>" id="role_id">	
+							   <input type="hidden"	value="<?php if(isset($users[0]->role_id)){echo $users[0]->role_id;}?>" id="role_id">	
                             <div class="col-lg-8">
 							
 							{!! Form::select('roles', $roles,$userRole, array('class' => 'form-control','id'=>'roles')) !!}
@@ -105,11 +105,11 @@
                 	
                             </div>
                         </div>
-						<div class="form-group stores <?php if ($user->type=='1') echo"show";else echo"hide";?>"><label class="col-lg-2 control-label">Store</label>
+						<div class="form-group stores "><label class="col-lg-2 control-label">Store</label>
 
                             <div class="col-lg-8">  
 							   <select class="form-control m-b type " name="store_id" id="store_id" >
-							   
+							  
 							   @foreach ($store as $stores)
 							     <option value="{{$stores->id}}">{{$stores->name}}</option>
 							     @endforeach  

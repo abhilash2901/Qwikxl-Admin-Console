@@ -1,10 +1,13 @@
  $(document).ready(function() {
 	   
 		var id= $(".departments_id").val();
+		
 		var ids= $(".departments_productid").val();
 		if(ids !=undefined){
 			id =ids;
 		}
+		
+		
 		if(id){
 			
 		var category= $("#categorys_id").val();
@@ -23,7 +26,7 @@
              type: 'POST',
              url: base_url + '/changedpt',
              dataType: 'json',
-             data: {'id':id,'category':''},
+             data: {'id':id},
              success: function(res) {
                  if(res){
 					  var active ='';var red ='';
@@ -40,10 +43,11 @@
 							  var red ="red";
 						  }
 						  if(cats_id==this.id){
-							  var onclick ='data-toggle="modal" data-target="#DeleteModalparent';
+							  var onclick ='data-toggle="modal" data-target="#DeleteModalparent"';
 						  }else{
 							   var onclick ="onClick='getCategory(this)'";
 						  }
+						  console.log(1);
                          newOption += '<li class="active"><a class='+red+' '+onclick+' data-id='+this.id+'>'+this.categoryname+'</a><ul style="display:block">';
                          $(this.subCategory).each(function() {
 							   if(this.subCategory.length==0){
@@ -53,7 +57,7 @@
 							       var red1 ="red";
 						       }
 							   if(cats_id==this.id){
-							      var onclick ='data-toggle="modal" data-target="#DeleteModalparent';
+							      var onclick ='data-toggle="modal" data-target="#DeleteModalparent"';
 						       }else{
 							      var onclick ="onClick='getCategory(this)'";
 						       }
@@ -66,7 +70,7 @@
 							           var red2 ="red";
 						           }
 								   if(cats_id==this.id){
-							          var onclick ='data-toggle="modal" data-target="#DeleteModalparent';
+							          var onclick ='data-toggle="modal" data-target="#DeleteModalparent"';
 						            }else{
 							          var onclick ="onClick='getCategory(this)'";
 						           }
@@ -87,6 +91,7 @@
 								   newOption +='</ul></li>';
 							   });
 								newOption +='</ul></li>';
+								
 						   });
 						   newOption +='</ul></li>';
 					 });
@@ -102,16 +107,7 @@
                 }
          });
 		}
-	    $('[type="file"]').ezdz({
-            text: 'Drop files here. (Drag and drop csv and excel stock files here.)',
-			reject: function(file, errors) {
-                if (errors.mimeType) {
-                    alert(file.name + ' must be an csv or xls.');
-                }
-
-                
-            }
-        });
+	   
 	    var url      = window.location.href;
         $('.sidebar-menu li a').each(function(){
         var li_url=$(this).attr('href');
@@ -133,6 +129,10 @@
              success: function(res) {
 
                  var newOption = '';
+				 
+				 if(res[0].name!='general'){
+					  newOption += '<option selected="selected">Select option</option>';
+				 }
                  if (res != '') {
                      $(res).each(function() {
 
@@ -144,11 +144,12 @@
                  }
                  $('#departments_id').html(newOption);
 				 var dpt =$("#dpt_id").val();
+				 if(dpt !=undefined){
 				 setTimeout(function() {
                      $("#departments_id").val(dpt);
                      
-                 }, 1500);
-			 
+                 }, 500);
+			     }
                  if (type == '1') {
 
                      $(".dpts").removeClass("hide");
@@ -171,7 +172,7 @@
          }
      });
 
-     $('.tree li.parent > a').click(function() {
+     /*$('.tree li.parent > a').click(function() {
          $(this).parent().toggleClass('active');
          $(this).parent().children('ul').slideToggle('fast');
      });
@@ -182,7 +183,7 @@
              $(this).toggleClass('active');
              $(this).children('ul').slideToggle('fast');
          });
-     });
+     });*/
      var types = $("input[name=type]:checked").val();
      if (types == 1) {
          $(".dpts").removeClass("hide");
@@ -199,7 +200,7 @@
          e.preventDefault();
          if (y < max_fields) { //max input box allowed
              y++; //text box increment
-             $(wrapper).append('<div class="form-group" ><label class="col-lg-2 control-label">Dept ' + y + '</label><div class="col-lg-8"><input type="text" placeholder="Department ' + y + '" class="form-control" name="name[]"></div> <span class="" onClick="remove(this)"><img src="' + base_url + '/img/remove-icon.png" ></span></div>'); //add input box
+             $(wrapper).append('<div class="form-group" ><label class="col-lg-2 control-label">Dept ' + y + '</label><div class="col-lg-8"><input type="text" placeholder="Department ' + y + '" class="form-control" name="name[]" required></div> <span class="" onClick="remove(this)"><img src="' + base_url + '/img/remove-icon.png" ></span></div>'); //add input box
          }
      });
      // $(".stores").hide();
@@ -428,6 +429,11 @@ function dept() {
 
              var newOption = '';
              if (res != '') {
+				 
+				 if(res[0].name!='general'){
+					  newOption += '<option selected="selected">Select option</option>';
+				 }
+				
                  $(res).each(function() {
 
                      newOption += '<option value=' + this.id + '>' + this.name + '</option>';
@@ -438,7 +444,9 @@ function dept() {
              }
              $('#departments_id').html(newOption);
 			 var dpt =$("#dpt_id").val();
+			 if(dpt!=undefined){
 			 $("#departments_id").val(dpt).trigger("change");
+			 }
              if (type == '1') {
                  $('#category').val(id);
                  $(".dpts").removeClass("hide");
@@ -609,7 +617,15 @@ $(elm).parent().toggleClass('active');
  }
 
  function AddProduct() {
+	  var id =$("#category").val();
+	 
+	 if (!id) {
+             alert("Please Select Category");
+             return false;
+            }
      if ($('#addproduct').parsley().validate()) {
+		 
+
          $('#addproduct').ajaxForm(function(options) {
              var items = JSON.parse(options);
              var s = items.msg;
@@ -626,7 +642,7 @@ $(elm).parent().toggleClass('active');
              $(".uploadsucess").html('<p class="alert alert-success">' + s + '</p>');
 
              setTimeout(function() {
-                 $(".uploadsucess").hide();
+                 $(".uploadsucess").hide();window.location.href=base_url+"/listproduct"; 
              }, 2000);
 
          });
@@ -817,7 +833,7 @@ $(elm).parent().toggleClass('active');
              type: 'POST',
              url: base_url + '/changedpt',
              dataType: 'json',
-             data: {'id':id,'category':category},
+             data: {'id':id},
              success: function(res) {
                  if(res){
 					  var active ='';
@@ -874,7 +890,7 @@ $(elm).parent().toggleClass('active');
              type: 'POST',
              url: base_url + '/changedpt',
              dataType: 'json',
-             data: {'id':id,'category':category},
+             data: {'id':id},
              success: function(res) {
                  if(res){
 					  var active ='';
@@ -918,3 +934,38 @@ $(elm).parent().toggleClass('active');
          });
 	}
 	
+ function GetDptid(elm) {
+     var id = $(elm).data("id");
+     $("#get_dptid").val(id);
+ }
+ 
+function Deletedpt() {
+    
+        var id=$("#get_dptid").val();
+     jQuery.ajax({
+         type: 'POST',
+         url: base_url + '/deletedpartmt',
+
+         dataType: 'json',
+         data:{'id':id},
+         success: function(res) {
+             $(".deletedpt").show();
+
+
+             if (res.status == 'success') {
+                 $(".deletedpt").html('<p class="alert alert-success">' + res.msg + '</p>');
+                 setTimeout(function() {
+                     $(".deletedpt").hide();
+                     $('#Deletedpt').modal('hide');
+                     location.reload(); 
+                       
+
+                 }, 2000);
+
+
+             } 
+
+         }
+     });
+
+ }

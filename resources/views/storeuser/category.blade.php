@@ -47,7 +47,7 @@
             <div class="form-group"><label class="col-lg-2 control-label">Type</label>
 
                 <div class="col-lg-8">  
-                    <input type="radio" value="0" name="type"  onchange="Getdpttype(this);" required> General 
+                    <input type="radio" value="0" name="type"  onchange="Getdpttype(this);" required checked="checked"> General 
                     <input type="radio" value="1" name="type"  onchange="Getdpttype(this);"> Departments
                     <span
                         class="help-block m-b-none"></span>
@@ -58,6 +58,7 @@
 				
 					<div class="col-lg-8">  
 					   <select class="form-control m-b type " id="departments_id" name="departments_id" onchange="departmnt(this)">
+						   <option >Select option</option>
 						  @foreach ($dept as $key => $user)
 						  <option value="{{$user->id}}">{{$user->name}}</option>
 						  @endforeach

@@ -118,7 +118,7 @@ $(document).ready(function ()
     var maxField = 2; //Input fields increment limitation
     var addButton = $('.add_button'); //Add button selector
     var wrapper = $('.field_wrapper'); //Input field wrapper
-    var fieldHTML = '<div><input type="text" name="city" class="form-control" style="width:275px;" placeholder="Enter the city" value=""/><a href="javascript:void(0);" class="fa fa-minus-circle remove_button" aria-hidden="true" title="Remove City"></a></div>'; //New input field html 
+    var fieldHTML = '<div><input type="text" name="mcity" class="form-control" style="width:275px;" placeholder="Enter the city" value=""/><a href="javascript:void(0);" class="fa fa-minus-circle remove_button" aria-hidden="true" title="Remove City"></a></div>'; //New input field html 
     var x = 1; //Initial field counter is 1
 
     $(addButton).click(function () { //Once add button is clicked

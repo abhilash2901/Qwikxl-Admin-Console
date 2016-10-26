@@ -20,7 +20,7 @@ $(document).ready(function() {
 
                 var newOption = '';
                 var newOption1 = '';
-
+                 newOption += '<option selected="selected">No Role</option>';
                 $(res['roles']).each(function() {
 
                     newOption += '<option value=' + this.id + '>' + this.display_name + '</option>';
@@ -29,7 +29,10 @@ $(document).ready(function() {
 				
                 $('#roles').html(newOption);
 				var role_id=$("#role_id").val();
-				$("#roles").val(role_id).trigger("change");
+				if(role_id){
+					$("#roles").val(role_id).trigger("change");
+				}
+				
                 if (types == 1) {
                     $(".stores").removeClass('hide');
                     $(res['stores']).each(function() {
@@ -52,7 +55,7 @@ $(document).ready(function() {
         type: 'POST',
         url: base_url + '/storedetails',
         data: {
-            'id': $("#store_ids").val()
+            'id': $("#store_ids").val(),'_token':$("#token").val()
         },
         dataType: 'json',
 
@@ -157,7 +160,7 @@ $(document).ready(function() {
                         $('#status').val(ui.item.status);
                         }*/
     });
-    $("#states").select2();
+    
     var max_fields = 10; //maximum input boxes allowed
     var wrapper = $(".input_fields_wrap"); //Fields wrapper
     var add_button = $(".add_field_button");
@@ -166,7 +169,7 @@ $(document).ready(function() {
         e.preventDefault();
         if (x < max_fields) { //max input box allowed
             x++; //text box increment
-            $(wrapper).append('<div class="form-group" ><label class="col-lg-2 control-label">Dept ' + x + '</label><div class="col-lg-8"><input type="text" placeholder="Department ' + x + '" class="form-control" name="name[]"></div> <span class="" onClick="remove(this)"><img src="' + base_url + '/img/remove-icon.png" ></span></div>'); //add input box
+            $(wrapper).append('<div class="form-group" ><label class="col-lg-2 control-label">Dept ' + x + '</label><div class="col-lg-8"><input type="text" placeholder="Department ' + x + '" class="form-control" name="name[]" required></div> <span class="" onClick="remove(this)"><img src="' + base_url + '/img/remove-icon.png" ></span></div>'); //add input box
         }
     });
     // $(".stores").hide();
@@ -187,7 +190,8 @@ function gettype(sel) {
 
             var newOption = '';
             var newOption1 = '';
-
+ 
+             newOption += '<option selected="selected">No Role</option>';
             $(res['roles']).each(function() {
 
                 newOption += '<option value=' + this.id + '>' + this.display_name + '</option>';
@@ -195,12 +199,14 @@ function gettype(sel) {
             $('#roles').html(newOption);
             if (type == 1) {
                 $(".stores").removeClass('hide');
+				
                 $(res['stores']).each(function() {
 
                     newOption1 += '<option value=' + this.id + '>' + this.name + '</option>';
                 });
                 $('#store_id').html(newOption1);
             } else {
+				
                 $(".stores").addClass('hide');
 
                 $('#getstore_id').val('0');
@@ -292,15 +298,7 @@ function editCreated() {
 function deleteuser(elm) {
 
     var id = $(elm).data("id");
-    var confirms = $.confirm({
-        text: "This is a confirmation dialog manually triggered! Please confirm:",
-        confirm: function(button) {
-            //alert("You just confirmed.");
-        },
-        cancel: function(button) {
-            //alert("You cancelled.");
-        }
-    });
+   
 
 
     var r = confirm("Are you sure want to delete the user details ");
@@ -338,13 +336,13 @@ function edituser(elm) {
             'id': id
         },
         success: function(res) {
-            var ids = res[0].uneaque_id;
+            var ids = res[0].unique_id;
             var role_id = res[0].role_id;
             var firstname = res[0].firstname;
             var lastname = res[0].lastname;
             var email = res[0].email;
             //alert(role_id);
-            $('#uneaque_id').val(ids);
+            $('#uneaques_ids').val(ids);
             $('#role_id').val(role_id);
             //$("#role_id").val(role_id);
             $("#role_id").val(role_id).trigger("change");
@@ -543,3 +541,164 @@ function remove(sel) {
 	    $("#system").removeClass('hide');
    }
 }
+function DeleteStore() {
+    
+      var id=$("#get_storesid").val();
+     jQuery.ajax({
+         type: 'POST',
+         url: base_url + '/deletestore',
+
+         dataType: 'json',
+         data:{'id':id},
+         success: function(res) {
+             $(".deletesucess").show();
+
+
+             if (res.status == 'success') {
+                 $(".deletesucess").html('<p class="alert alert-success">' + res.msg + '</p>');
+                 setTimeout(function() {
+                     $(".deletesucess").hide();
+                     $('#DeleteModal').modal('hide');
+                    window.location.href = base_url+"/findstore";
+                 }, 2000);
+
+
+             } else {
+                 $(".deletesucess").html('<p class="alert alert-danger">' + res.msg + '</p>');
+                 
+             }
+
+         }
+     });
+
+ }
+ function GetDptid(elm) {
+     var id = $(elm).data("id");
+     $("#get_dptid").val(id);
+ }
+function Deletedpt() {
+    
+        var id=$("#get_dptid").val();
+     jQuery.ajax({
+         type: 'POST',
+         url: base_url + '/deletedpartmt',
+
+         dataType: 'json',
+         data:{'id':id},
+         success: function(res) {
+             $(".deletedpt").show();
+
+
+             if (res.status == 'success') {
+                 $(".deletedpt").html('<p class="alert alert-success">' + res.msg + '</p>');
+                 setTimeout(function() {
+                     $(".deletedpt").hide();
+                     $('#Deletedpt').modal('hide');
+                     location.reload(); 
+                       
+
+                 }, 2000);
+
+
+             } 
+
+         }
+     });
+
+ }
+ function Takestore(elm) {
+     var id = $(elm).data("id");
+     $("#get_storesid").val(id);
+ }
+ function Takeid(elm) {
+     var id = $(elm).data("id");
+     $("#get_id").val(id);
+ }
+ function Roleupdate() {
+    if ($('#role_update').parsley().validate()) {
+        var form = $('#role_update').serializeArray();
+        jQuery.ajax({
+            type: 'POST',
+            url: base_url + '/roleupdate',
+
+            dataType: 'json',
+            data: form,
+            success: function(res) {
+                $(".role_update").show();
+               
+               
+                    $('html, body').animate({
+                        scrollTop: $(".role_update").offset().top - 100
+                    }, 'fast');
+                    $(".role_update").html('<p class="' + res.class + '">' + res.msg + '</p>');
+					setTimeout(function() {
+                     $(".role_update").hide();
+                    // location.reload();
+                 }, 2000);
+
+                
+
+            }
+        });
+    }
+}
+function Deleterole() {
+	
+        var id=$("#get_id").val();
+     jQuery.ajax({
+         type: 'POST',
+         url: base_url + '/deleterole',
+
+         dataType: 'json',
+         data:{'id':id,'_token':$("#token").val()},
+         success: function(res) {
+             $(".deleterole").show();
+
+
+             if (res.status == 'success') {
+                 $(".deleterole").html('<p class="alert alert-success">' + res.msg + '</p>');
+                 setTimeout(function() {
+                     $(".deleterole").hide();
+                     $('#Deletedpt').modal('hide');
+                     location.reload(); 
+                       
+
+                 }, 2000);
+
+
+             } 
+
+         }
+     });
+
+ }function Deleteduser() {
+    
+        var id=$("#get_id").val();
+     jQuery.ajax({
+         type: 'POST',
+         url: base_url + '/deleteduser',
+
+         dataType: 'json',
+         data:{'id':id},
+         success: function(res) {
+             $(".deleterole").show();
+
+
+             if (res.status == 'success') {
+                 $(".deleterole").html('<p class="alert alert-success">' + res.msg + '</p>');
+                 setTimeout(function() {
+                     $(".deleterole").hide();
+                     $('#Deletedpt').modal('hide');
+                     location.reload(); 
+                       
+
+                 }, 2000);
+
+
+             } 
+
+         }
+     });
+
+ }
+	

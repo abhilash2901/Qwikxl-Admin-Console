@@ -144,6 +144,18 @@ class StoreController extends Controller {
           ]); */
 
         $input = $request->all();
+       
+       if(isset($input['mcity']))
+       {
+        $cityinsert=array(["name"=>$input['mcity'],"state_id"=>$input['state']]);
+        
+        $id2=DB::table('cities')->insert($cityinsert);
+        $store_id = DB::table('cities')->orderBy('id', 'desc')->first();
+        $input['city']=$store_id->id;
+
+        
+       
+       }
 
         $item = array([
                 "unique_id" => $input['unique_id'],
@@ -178,6 +190,19 @@ class StoreController extends Controller {
     public function storeedit(Request $request) {
 
          $id="";
+		$input = $request->all();
+       
+      if(isset($input['mcity']))
+     {
+        $cityinsert=array(["name"=>$input['mcity'],"state_id"=>$input['state']]);
+        
+        $id2=DB::table('cities')->insert($cityinsert);
+        $store_id = DB::table('cities')->orderBy('id', 'desc')->first();
+        $input['city']=$store_id->id;
+//        $last = Timelog::orderBy('id', 'desc')->first();
+        
+       
+     }
         $input = $request->all();
         $data = DB::table('stores')->orderBy('id', 'desc')->first();
 		if($data){
@@ -320,7 +345,7 @@ class StoreController extends Controller {
     public function autocompletes(Request $request) {
 
         $term = $request->input('term');
-        ;
+       
 
         $results = array();
 

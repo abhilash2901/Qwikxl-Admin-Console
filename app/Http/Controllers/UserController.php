@@ -204,10 +204,12 @@ class UserController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
-        User::find($id)->delete();
-        return redirect()->route('users.index')
-                        ->with('success', 'User deleted successfully');
+    public function destroy(Request $request) {
+		$input = $request->all();
+		
+		DB::table("role_user")->where('user_id',$input['id'])->delete();
+        User::find($input['id'])->delete();
+        print_r(json_encode(array('status' => 'success', 'msg' => 'Dleted Succesfully')));
     }
 
     public function changepass(Request $request) {

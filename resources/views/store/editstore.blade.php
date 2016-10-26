@@ -68,11 +68,11 @@
     </div-->
                             <div class="form-group"><label class="col-sm-2 control-label">Store name</label>
 
-                                <div class="col-sm-8"><input type="text" id="sname"  name ="name" class="form-control" ></div>
+                                <div class="col-sm-8"><input type="text" id="sname"  name ="name" class="form-control" data-parsley-trigger="keyup"  data-parsley-minlength="3" required></div>
                             </div>
                             <div class="form-group"><label class="col-sm-2 control-label">Store Number</label>
 
-                                <div class="col-sm-8"><input type="text" class="form-control" name="corporateidentifier" id="snumber" required> <span
+                                <div class="col-sm-8"><input type="text" class="form-control" name="corporateidentifier" id="snumber" data-parsley-trigger="keyup" data-parsley-type="digits" data-parsley-minlength="3" required> <span
                                         class="help-block m-b-none">Corporate Store identifier #</span>
                                 </div>
                             </div>
@@ -131,8 +131,8 @@
 
 
 
-                                                <div class="field_wrapper" align="right">                        
-                                                    <a href="javascript:void(0);" class="add_button" title="Add City">
+                                                <div class="field_wrapper" align="right" style="position: relative">                        
+                                                    <a href="javascript:void(0);" class="add_button" title="Add City"  style="position: absolute; top: 7px; right: -15px;">
                                                         <span class="fa fa-plus-circle fie" aria-hidden="true"></span></a>
 
                                                     <!--                                                  <fieldset class="answer">
@@ -157,7 +157,7 @@
                             </div>
                             
                             <div class="form-group"><label class="col-sm-2 control-label">Zip</label>
-                                <div class="col-md-4"><input name="zip" id="zip" type="text" placeholder="30350"
+                                <div class="col-md-4"><input name="zip" id="zip" data-parsley-trigger="keyup" data-parsley-minlength="3"  data-parsley-type="digits" required type="text" placeholder="30350"
                                                              class="form-control"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
@@ -165,7 +165,7 @@
                                 <label class="col-sm-2 control-label">Phone</label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" data-mask="(999) 999-9999" placeholder="" name="phone" id="phone" >
+                                    <input type="text" class="form-control" data-parsley-trigger="keyup" data-parsley-minlength="4"  data-parsley-type="digits" required placeholder="" name="phone" id="phone" >
                                     <span class="help-block">(999) 999-9999</span>
                                 </div>
                             </div>
@@ -179,15 +179,17 @@
 
                                 <div class="col-sm-8"><input type="text" placeholder="www.redstore.com" class="form-control" name="website" id="website" ></div>
                             </div>
-                            <input type="hidden" name="id" id="ids">
+                            <input type="hidden" name="id" id="ids" >
 
 
 
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
-                                <div class="col-sm-4 col-sm-offset-2">
-
+                                <div class="col-sm-6 col-sm-offset-2">
+                                      <input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
+									  
                                     <button class="btn btn-primary" type="button" onClick="Edistore()">Save</button>
+									
                                 </div>
                             </div>
                         </form>
@@ -289,7 +291,8 @@
                             <div class="col-lg-8"><input type="text" placeholder="Department 1"  value ="<?php echo $dps->name; ?>" class="form-control" name="name[]" required> 
                                 <input type="hidden" placeholder="Department 1"  value ="<?php echo $dps->id; ?>" class="form-control" name="id[]" required> 
 
-                            </div>
+                            </div><a data-toggle="modal" data-target="#Deletedpt" onclick="GetDptid(this)" data-id="<?php echo $dps->id;?>"><span class="" ><img src="{{ asset('img/remove-icon.png')}}">
+                    </span></a>
                         </div>
                         @endforeach
                         <div class="input_fields_wrap">
@@ -436,7 +439,7 @@
 
                             <div class="form-group"><label class="col-lg-2 control-label">User Id</label>
 
-                                <div class="col-lg-8"><input type="text" name="unique_id" id="uneaque_ids" readonly placeholder="User Id" class="form-control"> <span
+                                <div class="col-lg-8"><input type="text" name="unique_id" id="uneaques_ids" readonly placeholder="User Id" class="form-control"> <span
                                         class="help-block m-b-none">User Id is generated automatically</span>
                                 </div>
                             </div>
@@ -476,7 +479,7 @@
 
                             <div class="form-group">
                                 <div class="col-lg-offset-2 col-lg-8">
-                                    <button class="btn btn-md btn-primary" type="button" onClick="editCreated()">Create User</button>
+                                    <button class="btn btn-md btn-primary" type="button" onClick="editCreated()">Save</button>
                                 </div>
                             </div>
                         </form>
@@ -510,5 +513,26 @@
         </div>
 
     </div>
+</div>
+
+<div class="modal fade" id="Deletedpt" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="H3">Delete this record?</h4>
+      </div>
+      <div class="modal-body">
+       Are you sure to delete this record?
+      </div>
+	  <input type="hidden" id="get_dptid">
+	  <div class="deletedpt" style="width:55%;margin-left:10px;text-align:center"></div>
+      <div class="modal-footer">
+	  
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" onClick="Deletedpt()">Delete</button>
+      </div>
+    </div>
+  </div>
 </div>
 @endsection

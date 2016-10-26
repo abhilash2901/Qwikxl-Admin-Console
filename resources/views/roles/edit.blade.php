@@ -28,21 +28,11 @@
         </div>
         <div class="ibox-content">
 
-            @if (count($errors) > 0)
-            <div class="alert alert-danger">
-                <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
+            <div class="role_update" tabindex="1"></div>
 
-
-            {!! Form::model($role, ['method' => 'PATCH','class'=>'form-horizontal','route' => ['roles.update', $role->id]]) !!}
+            {!! Form::model($role, ['method' => 'PATCH','class'=>'form-horizontal','id'=>'role_update','route' => ['roles.update', $role->id]]) !!}
             <div class="form-group"><label class="col-lg-2 control-label">Name</label>
-
+                <input type="hidden" name="id" value="<?php echo $role->id;?>">
                 <div class="col-lg-8">   {!! Form::text('display_name', null, array('placeholder' => 'Name','class' => 'form-control')) !!} <span
                         class="help-block m-b-none"></span>
                 </div>
@@ -84,9 +74,11 @@
             <div class="form-group">
                 <div class="col-lg-offset-2 col-lg-8">
                     <?php
-                    if ($role->name != 'admin') {
+                    if ($role->name != 'admin' && $role->display_name != 'Store Admin') {
                         ?>
-                        <button type="btn btn-md btn-primary" class="btn btn-primary" >Submit</button>
+                        <button type="submit" class="btn btn-primary" >Submit</button> 
+						<button type="button" class="btn btn-primary" onClick="Roleupdate()" style="display:none">Submit</button>
+						
                         <?php
                     }
                     ?>

@@ -19,6 +19,7 @@ $(document).ready(function ()
                     {
                         $("#loding1").hide();
                         var newOption = '';
+						newOption += '<option >Select State</option>';
                         $(html).each(function () {
                             newOption += '<option value=' + this.id + '>' + this.name + '</option>';
                         });
@@ -41,6 +42,7 @@ $(document).ready(function ()
                     {
                         $("#loding2").hide();
                         var newOption = '';
+						newOption += '<option >Select City</option>';
                         $(html).each(function () {
                             newOption += '<option value=' + this.id + '>' + this.name + '</option>';
                         });
@@ -122,12 +124,17 @@ $(document).ready(function ()
     var x = 1; //Initial field counter is 1
 
     $(addButton).click(function () { //Once add button is clicked
-        $(".city").hide();
+	    var country = $('.country').val();
+		var city = $('.state').val();
+	    if(country && city){
+			$(".city").hide();
         $(".fie").hide();
         if (x < maxField) { //Check maximum number of input fields
             x++; //Increment field counter
             $(wrapper).append(fieldHTML); // Add field html
         }
+		}
+        
     });
     $(wrapper).on('click', '.remove_button', function (e) { //Once remove button is clicked
         e.preventDefault();

@@ -46,9 +46,9 @@ class Stores extends Controller {
                 ->select('users.*', 'roles.display_name', 'roles.id as role_id ')
                 ->where('users.store_id', $user->store_id)
                 ->get();
-		$users = Store::join('countries','stores.country','=','countries.id')
-             ->join('states','states.country_id','=','countries.id')
-             ->join('cities','cities.state_id','=','states.id')
+		$users = Store::leftJoin('countries','stores.country','=','countries.id')
+             ->leftJoin('states','stores.state','=','states.id')
+             ->leftJoin('cities','stores.city','=','cities.id')
              ->select('stores.*')
              ->where('stores.id', '=',$user->store_id)
              ->get();		

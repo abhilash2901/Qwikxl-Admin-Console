@@ -42,7 +42,7 @@
                     <select name="status" id="status" class="form-control" ng-model="department">
                         <option value="0" >All Departments</option>
                         @foreach ($dept as $key => $user)
-                        <option value="{{$user-> id}}" >{{$user->name}}</option>
+                        <option value="{{$user->name}}" >{{$user->name}}</option>
                         @endforeach
                     </select>
                 </div>

@@ -145,6 +145,12 @@
                     <a href="{{ url('categorylist')}}"><i class="fa fa-cog"></i><span class="nav-label ng-binding">Categories </span></a>
 
                 </li>
+                 @endpermission
+				 @permission('add-category')
+                        <li ng-class="{active: $state.includes('mailbox')}">
+                    <a href="{{ url('category')}}"><i class="fa fa-cog"></i><span class="nav-label ng-binding">Add Category </span></a>
+
+                </li>
                  @endpermission @permission('list-product')
                 <li ng-class="{active: $state.includes('mailbox')}">
                     <a href="{{ url('listproduct')}}"><i class="fa fa-cog"></i><span class="nav-label ng-binding">Inventory </span></a>

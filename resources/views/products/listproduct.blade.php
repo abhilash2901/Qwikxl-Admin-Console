@@ -85,7 +85,7 @@
                         </thead>
                         <tbody>
                             <tr ng-show="listproducts.length == 0"><td colspan="8"> No Products</td></tr>
-                            <tr dir-paginate="product in listproducts| itemsPerPage:5 | filter:letter | filter:unique| filter:category | filter:department ">
+                            <tr dir-paginate="product in listproducts| itemsPerPage:10 | filter:letter | filter:unique| filter:category | filter:department ">
 
                                 <td>@{{product.name}}</td>
                                 <td>@{{product.unique_id}}</td>

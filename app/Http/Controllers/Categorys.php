@@ -65,6 +65,20 @@ class SubCate
 
             return $categories;
 
+        }public function showCategorieslist($ids){
+			
+
+            $categories=\App\Category:: join('departments','departments.id','=','categories.departments_id')
+            
+             ->select('categories.*','departments.name as dptname ')
+             ->where('categories.parent_id',0)
+			 ->where("categories.store_id", $ids)
+			 ->get();//united
+
+            $categories=$this->addRelation($categories);
+
+            return $categories;
+
         }public function getCategorieslist($ids){
 			
 
@@ -134,14 +148,28 @@ class Categorys extends Controller {
        $subcate=new SubCate;
         try {
 
-            $categories=$subcate->getCategorieslist($ids);
+            $categories=$subcate->showCategorieslist($ids);
               
         } catch (Exception $e) {
             
             //no parent category found
         }
+       
+        return view('storeuser.categorylist',['categories'=>$categories]);
+    } public function listingcategory() {
+        $ids = Session::get('store_userid');
+        //$categories = Category::where("store_id", $ids)->get();
+       $subcate=new SubCate;
+        try {
 
-        return view('storeuser.categorylist', ['categories' => $categories]);
+            $categories=$subcate->showCategorieslist($ids);
+              
+        } catch (Exception $e) {
+            
+            //no parent category found
+        }
+         print_r(json_encode($categories));
+        
     }
 
     public function editcategory($id) {
@@ -239,7 +267,7 @@ class Categorys extends Controller {
 	public function changedpt(Request $request) {
 		$input = $request->all();
         $id = $input['id'];
-		$category = $input['category'];
+		
 		
 		$ids = Session::get('store_userid');
 		$subcate=new SubCate;
@@ -251,17 +279,7 @@ class Categorys extends Controller {
             
             //no parent category found
         }
-		if(!empty($category)){
-			try {
-
-            $categories=$subcate->getCategoriesdpts($ids,$id,$category);
-            
-           } catch (Exception $e) {
-            
-            //no parent category found
-          }
-			
-		}
+		
 		print_r(json_encode($categories));
 	}
 

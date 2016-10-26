@@ -105,31 +105,88 @@ class RoleController extends Controller {
             'description' => 'required|max:150',
             'permission' => 'required',
         ]);
+         $input = $request->all();
+		$role = Role::find($id);
+		
+		$roleuser = DB::table("role_user")->where("role_id",$id)->get();
+		
+		if($role['type'] !=$input['type']){
+			foreach($roleuser as $user){
+				DB::table("role_user")->where('user_id', $user->user_id)->delete();
+			}
+			
+			
+		    // DB::update('update users set role_id = ? where user_id = ?', [$roleuser[0]['user_id'], $id]); 
+			$role->display_name = $request->input('display_name');
+			$role->description = $request->input('description');
+			$role->type = $request->input('type');
+			$role->save();
 
-        $role = Role::find($id);
-        $role->display_name = $request->input('display_name');
-        $role->description = $request->input('description');
-        $role->type = $request->input('type');
-        $role->save();
+			DB::table("permission_role")->where("permission_role.role_id", $id)
+					->delete();
 
-        DB::table("permission_role")->where("permission_role.role_id", $id)
-                ->delete();
+			foreach ($request->input('permission') as $key => $value) {
+				$role->attachPermission($value);
+			}
 
-        foreach ($request->input('permission') as $key => $value) {
-            $role->attachPermission($value);
-        }
+			return redirect()->route('roles.index')
+							->with('success', 'Role updated successfully');
+			
+		}else{
+			$role->display_name = $request->input('display_name');
+			$role->description = $request->input('description');
+			$role->type = $request->input('type');
+			$role->save();
 
-        return redirect()->route('roles.index')
-                        ->with('success', 'Role updated successfully');
+			DB::table("permission_role")->where("permission_role.role_id", $id)
+					->delete();
+
+			foreach ($request->input('permission') as $key => $value) {
+				$role->attachPermission($value);
+			}
+
+			return redirect()->route('roles.index')
+							->with('success', 'Role updated successfully');
+		}
+        
+		
+        
     }
 
-    public function updates(Request $request) {
+    public function roleupdate(Request $request) { 
+	    $input = $request->all();
+	    $role = Role::find($input['id']);
+		$roleuser = DB::table("role_user")->where("role_id",$input['id'])->get();
+		
+		if($role['type'] !=$input['type']){
+			foreach($roleuser as $user){
+				DB::table("role_user")->where('user_id', $user->user_id)->delete();
+			}
+			
+			
+		    // DB::update('update users set role_id = ? where user_id = ?', [$roleuser[0]['user_id'], $id]); 
+			
+			
+		}
+			$role->display_name = $request->input('display_name');
+			$role->description = $request->input('description');
+			$role->type = $request->input('type');
+			$role->save();
+
+			DB::table("permission_role")->where("permission_role.role_id", $input['id'])
+					->delete();
+
+			foreach ($request->input('permission') as $key => $value) {
+				$role->attachPermission($value);
+			}
+			print_r(json_encode(array('status' => 'success', 'msg' => 'Updated Succesfully', 'class' => 'alert alert-success')));
+		
+		
+	}
+	public function updates(Request $request) {
 
         $id = $request->input('id');
-
-
-
-
+        
         $name = $request->input('name');
         $firstname = $request->input('firstname');
         $lastname = $request->input('lastname');
@@ -150,12 +207,20 @@ class RoleController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
-
+    public function destroy(Request $request) {
+       $id =$request->input('id');
         //Role::find($id)->delete();
+		$user =DB::table("role_user")->where("role_id", $id)->get();
+		
+		if($user){
+			DB::table("users")->where('id', $user[0]->id)->delete();
+		}
+		
+		DB::table("role_user")->where('role_id', $id)->delete();
         DB::table("roles")->where('id', $id)->delete();
-        return redirect()->route('roles.index')
-                        ->with('success', 'Role deleted successfully');
+        //return redirect()->route('roles.index')
+                 //       ->with('success', 'Role deleted successfully');
+		  print_r(json_encode(array('status' => 'success', 'msg' => 'Dleted Succesfully')));
     }
 
 }

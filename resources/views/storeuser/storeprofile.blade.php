@@ -37,7 +37,8 @@
             {!! Form::model($user, ['method' => 'POST','class'=>'form-horizontal profile','route' => ['store.update', $user->id]]) !!}
             <div class="form-group"><label class="col-lg-2 control-label">Firstname</label>
 
-                <div class="col-lg-8">    {!! Form::text('firstname', null, array('placeholder' => 'Firstname','class' => 'form-control','required'=>'','data-parsley-pattern'=>"^[a-zA-Z ]+$")) !!} <span
+                <div class="col-lg-8">    {!! Form::text('firstname', null, array('placeholder' => 'Firstname','class' => 'form-control','required'=>'','data-parsley-trigger'=>"keyup",'data-parsley-pattern'=>"^[a-zA-Z ]+$")) !!} 
+				<span
                         class="help-block m-b-none"></span>
                 </div>
             </div>
@@ -58,7 +59,7 @@
             <div class="form-group"><label class="col-lg-2 control-label" >Contact no</label>
 
                 <div class="col-lg-8">
-                    {!! Form::text('contactnumber', null, array('placeholder' => 'contactnumber','class' => 'form-control')) !!} 
+                    {!! Form::text('contactnumber', null, array('placeholder' => 'contactnumber','class' => 'form-control','data-parsley-trigger'=>'keyup', 'data-parsley-type'=>'digits','required'=>'')) !!} 
 
                 </div>
             </div> 

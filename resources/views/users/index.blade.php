@@ -59,11 +59,26 @@
                             @endif
                         </td>
                         <td>
-                            <a class="btn btn-info" href="{{ route('users.show',$user->id) }}">Show</a>
+                          
                             <a class="btn btn-primary" href="{{ route('users.edit',$user->id) }}">Edit</a>
-                            {!! Form::open(['method' => 'DELETE','route' => ['users.destroy', $user->id],'style'=>'display:inline','onsubmit' => "return confirm('Are you sure you want to delete?')"]) !!}
-                            {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
-                            {!! Form::close() !!}
+                            @if(!empty($user->roles))
+                                @foreach($user->roles as $v)
+							     <?php 
+								$role= Session::get('roletype');
+								 if( $role=='admin' && $v->name !='admin' ){?>
+                                
+								<a  class="btn btn-danger" data-toggle="modal" data-target="#Deleteuser"  onClick="Takeid(this)" data-id="<?php echo $user->id;?>">
+								Delete</a>
+								<?php 
+								 } 
+								 ?>
+								
+								@endforeach
+                                @endif
+								@if(count($user->roles)==0)
+									<a  class="btn btn-danger" data-toggle="modal" data-target="#Deleteuser"  onClick="Takeid(this)" data-id="<?php echo $user->id;?>">
+								Delete</a>
+								@endif
                         </td>
                     </tr>
                     @endforeach
@@ -75,5 +90,29 @@
 
         </div>
     </div>
+</div>
+
+<div class="modal fade" id="Deleteuser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="H3">Delete this record?</h4>
+      </div>
+      <div class="modal-body">
+	  
+       Are you sure to delete this record?
+      </div>
+	  <input type="hidden" id="get_id">
+	  <div class="deleterole" style="width:55%;margin-left:10px;text-align:center"></div>
+      <div class="modal-footer">
+	  
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+		
+        <button type="button" class="btn btn-danger" onClick="Deleteduser()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 @endsection

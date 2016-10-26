@@ -45,7 +45,16 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-         if ($e instanceof ModelNotFoundException) {
+         
+		  if ($e instanceof \Illuminate\Session\TokenMismatchException)
+		{
+			return redirect()
+				->back()
+				->withInput($request->except('password', '_token'))
+				->withError('Validation Token has expired. Please try again');
+		}
+		 
+		 if ($e instanceof ModelNotFoundException) {
             // ajax 404 json feedback
             if ($request->ajax()) {
                 return response()->json(['error' => 'Not Found'], 404);

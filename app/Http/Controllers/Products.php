@@ -289,7 +289,7 @@ class Products extends Controller {
 						
 						//foreach ($value as $v) {
                            						
-							$insert = ['name' => $v['name'],'unique_id' =>mt_rand(100000,999999),'category_id' =>$input['category_id'], 'description' => $v['description'], 'nutritionalinformation' => $v['nutritionalinformation']];
+							$insert = ['name' => $v['name'],'unique_id' =>mt_rand(100000,999999),'category_id' =>$input['category_id'], 'description' => $v['description']];
 						 	$ids=Product::create($insert);
 							
 							$item=['product_id' => $ids->id,'store_id' => $input['store_id'],'department_id' => $input['department_id'],'price' => $v['price'],'quantity' => $v['quantity']];
@@ -306,5 +306,8 @@ class Products extends Controller {
 			 print_r(json_encode(array('status' => 'success', 'msg' => 'Product Import Succesfully')));
 
 		}
-	   }
+	   } public function downloadExcel(Request $request, $type)
+		{
+		  
+		}
 }

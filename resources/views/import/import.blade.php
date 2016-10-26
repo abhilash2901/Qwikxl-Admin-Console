@@ -1,7 +1,20 @@
 @extends('layouts.storeapp')
  
 @section('content')
-	
+	<script>
+	$(document).ready(function() {
+	   $('[type="file"]').ezdz({
+            text: 'Drop files here. (Drag and drop csv and excel stock files here.)',
+			reject: function(file, errors) {
+                if (errors.mimeType) {
+                    alert(file.name + ' must be an csv or xls.');
+                }
+
+                
+            }
+        });
+	});
+	</script>
 <div class="row wrapper border-bottom white-bg page-heading">
  <div class="col-lg-10">
   <h2>Add Inventory</h2>
@@ -26,7 +39,8 @@
    <div class="ibox float-e-margins">
     <div class="ibox-title">
      <h5>File Upload</h5>
-     
+                       <br>
+    <div style="text-align:right;"><a href="{{ url('download/product.csv') }}" style=" padding: 10px;"><span class="glyphicon glyphicon-arrow-down"></span> CSV</a><a href="{{ url('download/product.xls') }}" style=" padding: 10px;"><span class="glyphicon glyphicon-arrow-down"></span> XLS</a><a style=" padding: 10px;" href="{{ url('download/product.xlsx') }}"><span class="glyphicon glyphicon-arrow-down"></span> XLSX</a></div>
     </div>
     <div class="ibox-content">
 	<div class="uploadsucess" tabindex="1"></div>
@@ -36,7 +50,7 @@
 <input type="hidden" id="category" name="category_id">
 		                         <input type="hidden"  name="store_id" value="">
 									<div class="col-lg-8">  
-										<input type="radio" value="0" name="type"  onchange="Getdpttype(this);" required> General 
+										<input type="radio" value="0" name="type"  onchange="Getdpttype(this);" required > General 
 										<input type="radio" value="1" name="type"  onchange="Getdpttype(this);"> Departments
 										<span
 											class="help-block m-b-none"></span>
@@ -45,21 +59,21 @@
 								<div class="form-group dpts hide "><label class="col-lg-2 control-label">Departments</label>
 
 									<div class="col-lg-8">  
-										<select class="form-control m-b type " id="departments_id" name="department_id" required >
+										<select class="form-control m-b type " id="departments_id" name="department_id" required onchange="departmnt(this)">
 
 
 										</select> <span
 											class="help-block m-b-none"></span>
 									</div>
 								</div>
-								<div class="form-group sdpt hide"><label class="col-lg-2 control-label">Category</label>
+								<div class="form-group sdpt "><label class="col-lg-2 control-label">Category</label>
 
 									<div class="col-lg-8">  
-												<div class="tree ">
+												<div class="tree sss">
 
  <input type='checkbox' value='0'  onClick='getCategory(this)' data-id='0' > Base Category
 
-<ul class="category">
+<!--ul class="category">
   @foreach($categories as $subCate)
     <li class="<?php if(count($subCate->subCategory)==0) echo'active';?>"><a  onClick="getCategory(this)" data-id="{{ $subCate->id }}">{{ $subCate->categoryname }}</a>
 	 
@@ -88,7 +102,7 @@
 	 @endforeach
    
     
-</ul>
+</ul-->
 </div>		
                                         										
 
@@ -144,7 +158,7 @@
 	   
 	  
      <div class="dz-message m-t-lg m-b-lg ">
-	   <input type="file" name="import_file" required accept=".ods,.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+	   <input type="file" name="import_file" id="drag_file" required accept=".ods,.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
       
       </div>
     
@@ -152,6 +166,9 @@
       
       <a ui-sref="inventory.inventory_product_detail"> <input type="submit" class="btn-primary btn btn-lg saveimport" onClick="SaveImport()" value="Save" ></a>
       </form>
+	  						<div>   
+    
+</div>
      </div>
     </div>
    </div>
@@ -253,6 +270,7 @@
                                     </div>
                                 </div>
                             </form>
+	
                         </div>
                     </div>
                 </div>

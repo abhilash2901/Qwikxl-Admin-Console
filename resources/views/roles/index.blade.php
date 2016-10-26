@@ -35,13 +35,15 @@
             <h5>Roles </h5>            
         </div>		
         <div class="ibox-content">
+		   @permission('role-create')
             <a href="{{ route('roles.create') }}" class="btn btn-primary">Add roles</a>
+			@endpermission
             <table class="table table-bordered topspace">
                 <thead>
                     <tr>
                         <th>#</th>
                         <th>Name</th>
-                        <th>Descriptions</th>
+                        <th>Description</th>
 
 
                         <th class="">Action</th>
@@ -63,11 +65,11 @@
                             @endpermission
                             @permission('role-delete')
                             <?php
-                            if ($role->name != 'admin') {
+                            if ($role->name != 'admin' && $role->display_name != 'Store Admin') {
                                 ?>
-                                {!! Form::open(['method' => 'DELETE','route' => ['roles.destroy', $role->id],'style'=>'display:inline','onsubmit' => "return confirm('Are you sure you want to delete?')"]) !!}
-                                {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
-                                {!! Form::close() !!}
+                               
+								<a  class="btn btn-danger" data-toggle="modal" data-target="#Deleterole"  onClick="Takeid(this)" data-id="<?php echo $role->id;?>">
+								Delete</a>
                                 <?php
                             }
                             ?>			
@@ -82,7 +84,29 @@
         </div>
     </div>
 
-
+<div class="modal fade" id="Deleterole" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="H3">Delete this record?</h4>
+      </div>
+      <div class="modal-body">
+	  The role related user deleted.<br>
+	   This operation can't be undo.<br>
+       Are you sure to delete this record?
+      </div>
+	  <input type="hidden" id="get_id"><input type="hidden" id="token"  value="<?php echo csrf_token(); ?>">
+	  <div class="deleterole" style="width:55%;margin-left:10px;text-align:center"></div>
+      <div class="modal-footer">
+	  
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+		
+        <button class="btn btn-danger" onClick="Deleterole()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 
 

@@ -52,11 +52,11 @@
 </div-->
                         <div class="form-group"><label class="col-sm-2 control-label">Store name</label>
 
-                            <div class="col-sm-8"><input type="text" id="sname"  name ="name" class="form-control" value="@{{detailsstores.name}}"></div>
+                            <div class="col-sm-8"><input type="text" id="sname"  name ="name" class="form-control" value="@{{detailsstores.name}}"data-parsley-trigger="keyup"  data-parsley-minlength="3" required></div>
                         </div>
                         <div class="form-group"><label class="col-sm-2 control-label">Store Number</label>
 
-                            <div class="col-sm-8"><input type="text" class="form-control" name="corporateidentifier" value="@{{detailsstores.corporateidentifier}}" id="snumber" required> <span
+                            <div class="col-sm-8"><input type="text" class="form-control" name="corporateidentifier" value="@{{detailsstores.corporateidentifier}}" id="snumber" data-parsley-type="digits" data-parsley-trigger="keyup" data-parsley-minlength="3" required> <span
                                     class="help-block m-b-none">Corporate Store identifier #</span>
                             </div>
                         </div>
@@ -114,8 +114,8 @@
 
 
 
-                                                <div class="field_wrapper" align="right">                        
-                                                    <a href="javascript:void(0);" class="add_button" title="Add City">
+                                                <div class="field_wrapper" align="right" style="position: relative">                        
+                                                    <a href="javascript:void(0);" class="add_button" title="Add City"  style="position: absolute; top: 7px; right: -15px;">
                                                         <span class="fa fa-plus-circle fie" aria-hidden="true"></span></a>
 
                                                     <!--                                                  <fieldset class="answer">
@@ -140,7 +140,7 @@
                             </div>
                             
                         <div class="form-group"><label class="col-sm-2 control-label">Zip</label>
-                            <div class="col-md-4"><input name="zip" id="zip" type="text" placeholder="30350"
+                            <div class="col-md-4"><input name="zip" id="zip" type="text" placeholder="30350" data-parsley-minlength="3" data-parsley-type="digits" required 
                                                          class="form-control" value="@{{detailsstores.zip}}" ></div>
                         </div>
                         <div class="hr-line-dashed"></div>
@@ -148,8 +148,8 @@
                             <label class="col-sm-2 control-label">Phone</label>
 
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" data-mask="(999) 999-9999" placeholder="" name="phone" id="phone" value="@{{detailsstores.phone}}" >
-                                <span class="help-block">(999) 999-9999</span>
+                                <input type="text" class="form-control" data-parsley-trigger="keyup" data-parsley-minlength="4" data-parsley-type="digits" required placeholder="" name="phone" id="phone" value="@{{detailsstores.phone}}" >
+                                <!--span class="help-block">(999) 999-9999</span-->
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
@@ -168,9 +168,12 @@
 
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
-                            <div class="col-sm-4 col-sm-offset-2">
-
+                            <div class="col-sm-6 col-sm-offset-2">
+                                
                                 <button class="btn btn-primary" type="button" onClick="Editstore()">Save</button>
+								
+                    
+							
                             </div>
                         </div>
                         </form>
@@ -194,7 +197,7 @@
 
                 </div>
                 <div class="usersres"></div>
-                <div class="ibox-content" >
+                    <div class="ibox-content" ng-init="storeusersid('<?php echo Session::get('id')?>')">
 				
 				
                     <a ui-sref="settings.add_users" class="btn btn-primary"  data-toggle="modal" data-target="#myModal" >Add users  </a>
@@ -225,11 +228,12 @@
                                 <td>@{{lists.display_name }}</td>
                                 <td>
 								
-
+								
 
                                     <a data-popup-open="popup-1" href="#"> <button class="btn-warning btn btn-sm" data-id="@{{lists.id}}" onClick="edituser(this);"><i class="fa fa-wrench"></i> Edit</button></a>
-                                    <button class="btn-danger btn btn-sm" data-id="@{{lists.id}}" onClick="deleteuser(this);"><i class="fa fa-trash-o"></i> Delete</button>
-
+                                   
+									<button class="btn-danger btn btn-sm" data-id="@{{lists.id}}" ng-hide="storeuserid ==lists.id" onClick="deleteuser(this);"><i class="fa fa-trash-o"></i> Delete</button>
+                                   
                                 </td>
                             </tr>
 							
@@ -270,7 +274,8 @@
                         <div class="col-lg-8"><input type="text" placeholder="Department 1"  value ="<?php echo $dps->name;?>" class="form-control" name="name[]" required> 
 						<input type="hidden" placeholder="Department 1"  value ="<?php echo $dps->id;?>" class="form-control" name="id[]" required> 
                          
-                        </div>
+                        </div><a data-toggle="modal" data-target="#Deletedpt" onclick="GetDptid(this)" data-id="<?php echo $dps->id;?>"><span class="" ><img src="{{ asset('img/remove-icon.png')}}">
+                    </span></a>
                     </div><?php ++$i; ?>
 					@endforeach
 					
@@ -501,4 +506,26 @@
     </div>
 </div>
 	</div>
+<div class="modal fade" id="Deletedpt" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="H3">Delete this record?</h4>
+      </div>
+      <div class="modal-body">
+	   The departments related category,product deleted.<br>
+	   This operation can't be undo.<br>
+       Are you sure to delete this record?
+      </div>
+	  <input type="hidden" id="get_dptid">
+	  <div class="deletedpt" style="width:55%;margin-left:10px;text-align:center"></div>
+      <div class="modal-footer">
+	  
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" onClick="Deletedpt()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection

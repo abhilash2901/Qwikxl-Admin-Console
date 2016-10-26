@@ -129,8 +129,7 @@
              success: function(res) {
 
                  var newOption = '';
-				 
-				 if(res[0].name!='general'){
+				  if(res[0].name!='general'){
 					  newOption += '<option selected="selected">Select option</option>';
 				 }
                  if (res != '') {
@@ -617,15 +616,7 @@ $(elm).parent().toggleClass('active');
  }
 
  function AddProduct() {
-	  var id =$("#category").val();
-	 
-	 if (!id) {
-             alert("Please Select Category");
-             return false;
-            }
      if ($('#addproduct').parsley().validate()) {
-		 
-
          $('#addproduct').ajaxForm(function(options) {
              var items = JSON.parse(options);
              var s = items.msg;

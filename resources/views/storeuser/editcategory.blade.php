@@ -40,7 +40,7 @@
      
             <div class="form-group"><label class="col-lg-2 control-label">Name</label>
 
-                <div class="col-lg-8">   {!! Form::text('categoryname', null, array('placeholder' => 'Name','class' => 'form-control','data-parsley-trigger'=>'keyup','data-parsley-type'=>'alphanum','data-parsley-minlength'=>'3','required' => '')) !!}
+                <div class="col-lg-8">   {!! Form::text('categoryname', null, array('placeholder' => 'Name','class' => 'form-control','data-parsley-trigger'=>'keyup','data-parsley-type'=>'^[a-zA-Z0-9 ]*$','data-parsley-minlength'=>'3','required' => '')) !!}
 				<span
                         class="help-block m-b-none"></span>
                 </div>

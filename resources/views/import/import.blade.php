@@ -46,7 +46,7 @@
 	<div class="uploadsucess" tabindex="1"></div>
 	<form id="form" method="POST" class="form-horizontal  topspace"  action="{{ url('dumpproduct')}}">
 	<div class="" style="margin-left: 278px;">
-	 <div class="form-group"><label class="col-lg-2 control-label">Type</label>
+	 <div class="form-group"><label class="col-lg-2 control-label" style="padding-top: 0px;">Type</label>
 <input type="hidden" id="category" name="category_id">
 		                         <input type="hidden"  name="store_id" value="">
 									<div class="col-lg-8">  
@@ -66,10 +66,10 @@
 											class="help-block m-b-none"></span>
 									</div>
 								</div>
-								<div class="form-group sdpt "><label class="col-lg-2 control-label">Category</label>
+								<div class="form-group sdpt "><label class="col-lg-2 control-label" style="padding-top: 0px;">Category</label>
 
 									<div class="col-lg-8">  
-												<div class="tree sss">
+												<div class="tree sss tree-no-margin-top">
 
  <input type='checkbox' value='0'  onClick='getCategory(this)' data-id='0' > Base Category
 
@@ -107,12 +107,13 @@
                                         										
 
 									</div>
-								</div><div class="form-group nodpt hide"><label class="col-lg-2 control-label">Category</label>
+								</div><div class="form-group nodpt hide"><label class="col-lg-2 control-label" style="padding-top: 0px;">Category</label>
 
 									<div class="col-lg-8">  
-												<div class="tree ">
+												<div class="tree tree-no-margin-top">
 
- 
+  <?php
+ if(count($categoriesnon)>0){?>
 
 <ul class="category">
   @foreach($categoriesnon as $subCate)
@@ -144,6 +145,11 @@
    
     
 </ul>
+<?php
+ }else{
+	 echo "No Categories Found";
+ }
+ ?>
 </div>			
 									</div>
 								</div>

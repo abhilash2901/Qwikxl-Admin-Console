@@ -112,7 +112,7 @@
 								Departments/General
 							</div>
 							<div class="s_col_1">
-								Discription
+								Description
 							</div>
 							<div class="s_col_1">
 								Action
@@ -162,6 +162,12 @@
 					
 					<!-- Table body << -->
 					<!-- Table body >> -->
+					<div class="inbox-table-row" ng-show="listcategory.length==0" style="border-bottom:1px solid #ddd">
+						<div class="">
+						<div class="s_col_1">
+							No Categories
+						</div></div>
+					</div>
 					<div class="inbox-table-row" ng-repeat="subCate in listcategory | filter:department | filter:type| filter:category">
 						<div class="" >
 							<div class="s_col_1">

@@ -880,7 +880,7 @@ $(elm).parent().toggleClass('active');
              dataType: 'json',
              data: {'id':id},
              success: function(res) {
-                 if(res){
+                 if(res.length>0){
 					  var active ='';
 					  var active1 ='';
 					 var newOption ="<ul class='category'>";
@@ -916,6 +916,9 @@ $(elm).parent().toggleClass('active');
 							 $(this).addClass('parent');
 						 }
 					 });
+				 }else{
+					
+					 $(".sss").html('<p>No Categories Found</p>');
 				 }
 
              }
@@ -991,7 +994,7 @@ $(elm).parent().toggleClass('active');
              dataType: 'json',
              data: {'id':id},
              success: function(res) {
-                 if(res){
+                 if(res.length>0){
 					  var active ='';
 					  var active1 ='';
 					 var newOption ="<ul class='category'>";
@@ -1027,6 +1030,8 @@ $(elm).parent().toggleClass('active');
 							 $(this).addClass('parent');
 						 }
 					 });
+				 }else{
+					  $(".sss").html('<p>No Categories Found</p>');
 				 }
 
              }

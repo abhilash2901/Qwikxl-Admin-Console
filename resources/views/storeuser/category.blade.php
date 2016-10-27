@@ -40,7 +40,7 @@
      
             <div class="form-group"><label class="col-lg-2 control-label">Name</label>
 
-                <div class="col-lg-8">   {!! Form::text('categoryname', null, array('placeholder' => 'Name','class' => 'form-control','data-parsley-trigger'=>'keyup','data-parsley-type'=>'alphanum','data-parsley-minlength'=>'3','required' => '')) !!} <span
+                <div class="col-lg-8">   {!! Form::text('categoryname', null, array('placeholder' => 'Name','class' => 'form-control','data-parsley-trigger'=>'keyup','data-parsley-type'=>'^[a-zA-Z0-9 ]*$','data-parsley-minlength'=>'3','required' => '')) !!} <span
                         class="help-block m-b-none"></span>
                 </div>
             </div>
@@ -110,8 +110,9 @@
 					<div class="col-lg-8">  
 							<div class="tree ">
 
- <input type='checkbox' value='0'  onClick='getCategory(this)' data-id='0' > Base Category
-
+ <input type='checkbox' value='0'  onClick='getCategory(this)' data-id='0' > Base Category <br>
+<?php
+ if(count($categoriesnon)>0){?>
 <ul class="category">
   @foreach($categoriesnon as $subCate)
     <li class="<?php if(count($subCate->subCategory)==0) echo'active';?>"><a  onClick="getCategory(this)" data-id="{{ $subCate->id }}">{{ $subCate->categoryname }}</a>
@@ -142,6 +143,11 @@
    
     
 </ul>
+<?php
+ }else{
+	 echo "No Categories Found";
+ }
+ ?>
 </div>			
 					</div>
             </div>

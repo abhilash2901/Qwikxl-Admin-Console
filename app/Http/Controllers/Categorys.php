@@ -68,7 +68,7 @@ class SubCate
         }public function showCategorieslist($ids){
 			
 
-            $categories=\App\Category:: join('departments','departments.id','=','categories.departments_id')
+            $categories=\App\Category::join('departments','departments.id','=','categories.departments_id')
             
              ->select('categories.*','departments.name as dptname ')
              ->where('categories.parent_id',0)
@@ -155,7 +155,7 @@ class Categorys extends Controller {
             //no parent category found
         }
        
-        return view('storeuser.categorylist',['categories'=>$categories]);
+        return view('storeuser.categorylist');
     } public function listingcategory() {
         $ids = Session::get('store_userid');
         //$categories = Category::where("store_id", $ids)->get();

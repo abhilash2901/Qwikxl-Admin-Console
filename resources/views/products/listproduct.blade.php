@@ -39,7 +39,8 @@
             <div class="col-sm-4" >
                 <div class="form-group">
                     <label class="control-label" for="status">Department</label>
-                    <select name="status" id="status" class="form-control" ng-model="department">
+                    <!--select name="status" id="status" class="form-control" ng-model="department" onchange="departmntSearch(this)"--> 
+					<select name="status" id="status" class="form-control" ng-model="department" >
                         <option value="0" >All Departments</option>
                         @foreach ($dept as $key => $user)
                         <option value="{{$user->name}}" >{{$user->name}}</option>
@@ -47,10 +48,11 @@
                     </select>
                 </div>
             </div>
+			<!--a data-toggle="modal" data-target="#myCategory">select Category</a-->
             <div class="col-sm-2">
                 <div class="form-group">
                     <label class="control-label" for="quantity">Category</label>
-                    <input type="text" id="quantity" name="quantity" value="" placeholder="Category" class="form-control" ng-model="category">
+                    <input type="text" id="category" ng-model="categorys" placeholder="Category" class="form-control" ng-change="changeCategory();">
                 </div>
             </div>
 
@@ -137,6 +139,34 @@
                 <input type="hidden" id="addCategory_id">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-danger" onClick="DeleteProduct()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myCategory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="H3">Select Category</h4>
+            </div>
+            <div class="ibox-content">
+                
+				
+					
+							<div class="tree sss">
+
+ 
+
+</div>			
+					
+            
+            </div>
+            <div class="deletesucess" style="width:50%;margin-left:10px;text-align:center"></div>
+            <div class="modal-footer">
+                
+                <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+               
             </div>
         </div>
     </div>

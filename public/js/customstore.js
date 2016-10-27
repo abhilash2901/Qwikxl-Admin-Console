@@ -435,7 +435,60 @@ function dept() {
 				
                  $(res).each(function() {
 
-                     newOption += '<option value=' + this.id + '>' + this.name + '</option>';
+                     newOption += '<option value="' + this.id + '">' + this.name + '</option>';
+                 });
+             } else {
+                 newOption += '<option ></option>';
+                 alert("Please add Departments");
+             }
+             $('#departments_id').html(newOption);
+			 var dpt =$("#dpt_id").val();
+			 if(dpt!=undefined){
+			 $("#departments_id").val(dpt).trigger("change");
+			 }
+             if (type == '1') {
+                 $('#category').val(id);
+                 $(".dpts").removeClass("hide");
+                 $(".sdpt").removeClass("hide");
+                 $(".nodpt").addClass("hide");
+
+             } else {
+                 $('#category').val(id);
+                 $(".dpts").addClass("hide");
+                 $(".sdpt").addClass("hide");
+                 $(".nodpt").removeClass("hide");
+             }
+         }
+     });
+
+
+
+
+ } function GetdpttypeSearch(sel) {
+     var type = jQuery(sel).val();
+     var id = jQuery(sel).data('id');
+
+     jQuery.ajax({
+         type: 'POST',
+         url: base_url + '/getdepatments',
+
+         data: {
+             'type': type
+         },
+         dataType: 'JSON',
+         success: function(res) {
+
+             var newOption = '';
+             if (res != '') {
+				 
+				 if(res[0].name!='general'){
+					  newOption += '<option selected="selected">Select option</option>';
+					  newOption += '<option value="0">All</option>';
+				 }
+				
+                 $(res).each(function() {
+
+                     newOption += '<option value="'+ this.name +'">' + this.name + '</option>';
                  });
              } else {
                  newOption += '<option ></option>';
@@ -817,6 +870,7 @@ $(elm).parent().toggleClass('active');
 		var id= $(elm).val();
 		
 		var category= $("#categorys_id").val();
+		
 		if(category ==undefined){
 			category='';
 		}
@@ -834,20 +888,74 @@ $(elm).parent().toggleClass('active');
                           if(this.subCategory.length==0){
 							  var active ="active";
 						  }
-                         newOption += '<li class='+active+'><a  onClick="getCategory(this)" data-id='+this.id+'>'+this.categoryname+'</a><ul>';
+                         newOption += '<li class='+active+'><a  onClick="getCategory(this)" data-id="'+this.id+'">'+this.categoryname+'</a><ul>';
                          $(this.subCategory).each(function() {
 							   if(this.subCategory.length==0){
 							     var active1 ="active";
 						       }
-							   newOption +='<li  class='+active1+'><a  onClick="getCategory(this)" data-id='+this.id+'>'+this.categoryname+'</a><ul>';  
+							   newOption +='<li  class='+active1+'><a  onClick="getCategory(this)" data-id="'+this.id+'">'+this.categoryname+'</a><ul>';  
 					            $(this.subCategory).each(function() {
 									if(this.subCategory.length==0){
 							          var active2 ="active";
 						            }
-									newOption +='<li  class='+active2+'><a  onClick="getCategory(this)" data-id='+this.id+'>'+this.categoryname+'</a><ul>';  
+									newOption +='<li  class='+active2+'><a  onClick="getCategory(this)" data-id="'+this.id+'">'+this.categoryname+'</a><ul>';  
 					               $(this.subCategory).each(function() {
 								
-									 newOption +='<li><a  data-toggle="modal" data-target="#DeleteModal" data-id='+this.id+'>'+this.categoryname+'</a> </li>';  
+									 newOption +='<li><a  data-toggle="modal" data-target="#DeleteModal" data-id="'+this.id+'">'+this.categoryname+'</a> </li>';  
+						           });
+								   newOption +='</ul></li>';
+							   });
+								newOption +='</ul></li>';
+						   });
+						   newOption +='</ul></li>';
+					 });
+					 newOption +='</ul>';
+					 $(".sss").html(newOption);
+					 $('.tree li').each(function() {
+						 if ($(this).children('ul').length > 0) {
+							 $(this).addClass('parent');
+						 }
+					 });
+				 }
+
+             }
+         });
+	}function departmntSearch(elm){
+		var id= $(elm).val();
+		
+		var category= $("#categorys_id").val();
+		
+		if(category ==undefined){
+			category='';
+		}
+		 jQuery.ajax({
+             type: 'POST',
+             url: base_url + '/changedpt',
+             dataType: 'json',
+             data: {'id':id},
+             success: function(res) {
+                 if(res){
+					  var active ='';
+					  var active1 ='';
+					 var newOption ="<ul class='category'>";
+					 $(res).each(function() {
+                          if(this.subCategory.length==0){
+							  var active ="active";
+						  }
+                         newOption += '<li class='+active+'><a  onClick="getCategory(this)" data-id="'+this.categoryname+'">'+this.categoryname+'</a><ul>';
+                         $(this.subCategory).each(function() {
+							   if(this.subCategory.length==0){
+							     var active1 ="active";
+						       }
+							   newOption +='<li  class='+active1+'><a  onClick="getCategory(this)" data-id="'+this.categoryname+'">'+this.categoryname+'</a><ul>';  
+					            $(this.subCategory).each(function() {
+									if(this.subCategory.length==0){
+							          var active2 ="active";
+						            }
+									newOption +='<li  class='+active2+'><a  onClick="getCategory(this)" data-id="'+this.categoryname+'">'+this.categoryname+'</a><ul>';  
+					               $(this.subCategory).each(function() {
+								
+									 newOption +='<li><a  data-toggle="modal" data-target="#DeleteModal" data-id="'+this.categoryname+'">'+this.categoryname+'</a> </li>';  
 						           });
 								   newOption +='</ul></li>';
 							   });
@@ -891,20 +999,20 @@ $(elm).parent().toggleClass('active');
                           if(this.subCategory.length==0){
 							  var active ="active";
 						  }
-                         newOption += '<li class='+active+'><a  onClick="getCategory(this)" data-id='+this.id+'>'+this.categoryname+'</a><ul>';
+                         newOption += '<li class='+active+'><a  onClick="getCategory(this)" data-id="'+this.id+'">'+this.categoryname+'</a><ul>';
                          $(this.subCategory).each(function() {
 							   if(this.subCategory.length==0){
 							     var active1 ="active";
 						       }
-							   newOption +='<li  class='+active1+'><a  onClick="getCategory(this)" data-id='+this.id+'>'+this.categoryname+'</a><ul>';  
+							   newOption +='<li  class='+active1+'><a  onClick="getCategory(this)" data-id="'+this.id+'">'+this.categoryname+'</a><ul>';  
 					            $(this.subCategory).each(function() {
 									if(this.subCategory.length==0){
 							          var active2 ="active";
 						            }
-									newOption +='<li  class='+active2+'><a  onClick="getCategory(this)" data-id='+this.id+'>'+this.categoryname+'</a><ul>';  
+									newOption +='<li  class='+active2+'><a  onClick="getCategory(this)" data-id="'+this.id+'">'+this.categoryname+'</a><ul>';  
 					               $(this.subCategory).each(function() {
 								
-									 newOption +='<li><a  onClick="getCategory(this)"  data-id='+this.id+'>'+this.categoryname+'</a> </li>';  
+									 newOption +='<li><a  onClick="getCategory(this)"  data-id="'+this.id+'">'+this.categoryname+'</a> </li>';  
 						           });
 								   newOption +='</ul></li>';
 							   });

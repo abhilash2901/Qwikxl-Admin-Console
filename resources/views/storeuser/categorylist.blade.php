@@ -9,16 +9,16 @@
 	
 	<div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-sm-4">
-        <h2>Users</h2>
+        <h2>Categories</h2>
         <ol class="breadcrumb">
             <li>
                 <a ui-sref="orders.new_orders">Home</a>
             </li>
             <li >
-                Category 
+                Categories 
             </li>
 			 <li class="active">
-                <strong>Category</strong>
+                <strong>Categories</strong>
             </li>
         </ol>
     </div>
@@ -63,9 +63,7 @@
 <div class="row"  >
     <div class="col-lg-12">
 	<div class="ibox">
-            <div class="ibox-title">
-                <h5>Category </h5>            
-            </div>		
+            	
             <div class="ibox-content">
 			
 			<style>

@@ -179,7 +179,7 @@
 							</div>
 							<div class="s_col_1">
 								@permission('edit-category')  								
-								<a class="btn btn-primary " href="{{ url('/editcategory/ ')}}@{{firstNestedSub.id}}">Edit</a>
+								<a class="btn btn-primary " href="{{ url('/editcategory/')}}@{{firstNestedSub.id}}">Edit</a>
 								@endpermission
 						        @permission('delete-category') 
 								<a style="margin-left: 3px;" class="btn btn-danger" onClick="TakeId(this)"  data-toggle="modal" data-target="#DeleteModal" data-id="@{{ firstNestedSub.id }}">Delete</a>
@@ -201,7 +201,7 @@
 							</div>
 							<div class="s_col_1">
 								  @permission('edit-category')  								
-								<a class="btn btn-primary " href="{{ url('/editcategory/ ')}}@{{firstNestedSub.id}}">Edit</a>
+								<a class="btn btn-primary " href="{{ url('/editcategory/')}}@{{firstNestedSub.id}}">Edit</a>
 								@endpermission
 						        @permission('delete-category') 
 								<a style="margin-left: 3px;" class="btn btn-danger" onClick="TakeId(this)"  data-toggle="modal" data-target="#DeleteModal" data-id="@{{ firstNestedSub.id }}">Delete</a>
@@ -224,7 +224,7 @@
 							</div>
 							<div class="s_col_1">
 								@permission('edit-category')  								
-								<a class="btn btn-primary " href="{{ url('/editcategory/ ')}}@{{secondNestedSub.id}}">Edit</a>
+								<a class="btn btn-primary " href="{{ url('/editcategory/')}}@{{secondNestedSub.id}}">Edit</a>
 								@endpermission
 						        @permission('delete-category') 
 								<a style="margin-left: 3px;" class="btn btn-danger" onClick="TakeId(this)"  data-toggle="modal" data-target="#DeleteModal" data-id="@{{ secondNestedSub.id }}">Delete</a>
@@ -245,7 +245,7 @@
 							</div>
 							<div class="s_col_1">
 								@permission('edit-category')  								
-								<a class="btn btn-primary " href="{{ url('/editcategory/ ')}}@{{thirdNestedSub.id}}">Edit</a>
+								<a class="btn btn-primary " href="{{ url('/editcategory/')}}@{{thirdNestedSub.id}}">Edit</a>
 								@endpermission
 						        @permission('delete-category') 
 								<a style="margin-left: 3px;" class="btn btn-danger" onClick="TakeId(this)"  data-toggle="modal" data-target="#DeleteModal" data-id="@{{ thirdNestedSub.id }}">Delete</a>
@@ -279,104 +279,6 @@
 				</div>
 			</div>
 			
-			
-			
-			         @permission('add-category')
-                       <!--a href="{{ url('category')}}" class="btn btn-primary">Add Category</a-->
-					   @endpermission
-                <!--table class="footable table table-stripped toggle-arrow-tiny" ng-init="listcategory()">
-                    <thead>
-                    <tr>
-                        
-                        <th> Name </th>
-						<th> Departments/General </th>
-						
-                      
-						<th>Description</th>
-						
-						
-                       
-						<th class="">Action</th>
-						
-						
-						
-                    </tr>
-                    </thead>
-                            <tbody>
-					  
-               
-                   
-                    <tr ng-repeat="subCate in listcategory | filter:department | filter:type| filter:category">
-                        <td>@{{ subCate.categoryname }} </td>
-						<td>@{{ subCate.dptname }} </td>
-					
-                        <td>@{{ subCate.description }}</td>
-                       
-                        <td>	
-						@permission('edit-category')  
-						<a class="btn btn-primary" href="{{ url('/editcategory/ ')}}@{{subCate.id}}">Edit</a>
-						@endpermission
-						@permission('delete-category')  
-						<a class="btn btn-danger " onClick="TakeId(this)" data-id="@{{ subCate.id }}" data-toggle="modal" data-target="#DeleteModal">Delete</a>@endpermission</td>
-						
-						
-                            <tr ng-repeat="firstNestedSub in subCate.subCategory">
-                                <td>--@{{ firstNestedSub.categoryname }}</td>
-								
-                                <td>@{{ firstNestedSub.dptname }}</td> 
-								<td>@{{ firstNestedSub.description }}</td> 
-								
-                                <td>
-                                 @permission('edit-category')  								
-								<a class="btn btn-primary " href="{{ url('/editcategory/ ')}}@{{firstNestedSub.id}}">Edit</a>
-								@endpermission
-						        @permission('delete-category') 
-								<a style="margin-left: 3px;" class="btn btn-danger" onClick="TakeId(this)"  data-toggle="modal" data-target="#DeleteModal" data-id="@{{ firstNestedSub.id }}">Delete</a>
-								 @endpermission
-								 </td>
-                                
-                            <tr ng-repeat="secondNestedSub in firstNestedSub.subCategory">
-                                <td>---@{{ secondNestedSub.categoryname }}</td>
-                               
-								<td>@{{ secondNestedSub.dptname }}</td>
-								<td>@{{ secondNestedSub.description }}</td>
-                                <td>
-                                 @permission('edit-category')  								
-								<a class="btn btn-primary " href="{{ url('/editcategory/ ')}}@{{secondNestedSub.id}}">Edit</a>
-								@endpermission
-						        @permission('delete-category') 
-								<a style="margin-left: 3px;" class="btn btn-danger" onClick="TakeId(this)"  data-toggle="modal" data-target="#DeleteModal" data-id="@{{ secondNestedSub.id }}">Delete</a>
-								 @endpermission
-								 </td>
-                                   
-                            <tr ng-repeat="thirdNestedSub in secondNestedSub.subCategory">
-                                <td>----@{{ thirdNestedSub.categoryname }}</td>
-                               
-								<td>@{{ thirdNestedSub.description }}</td>
-								<td>@{{ thirdNestedSub.dptname }}</td>
-                                <td>
-                                 @permission('edit-category')  								
-								<a class="btn btn-primary " href="{{ url('/editcategory/ ')}}@{{thirdNestedSub.id}}">Edit</a>
-								@endpermission
-						        @permission('delete-category') 
-								<a style="margin-left: 3px;" class="btn btn-danger" onClick="TakeId(this)"  data-toggle="modal" data-target="#DeleteModal" data-id="@{{ thirdNestedSub.id }}">Delete</a>
-								 @endpermission
-								 </td>
-                                	
-                            </tr>
-                        
-
-								
-                            </tr >
-                       
-                            </tr >
-                        
-                    </tr>
-					
-                
- </tbody>
-	</table-->
-	
 
             </div>
         </div>

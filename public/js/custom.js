@@ -60,8 +60,8 @@ $(document).ready(function() {
         dataType: 'json',
 
         success: function(res) {
-            if (res[0].uneaque_id != '') {
-                var ids = res[0].uneaque_id;
+            if (res[0].unique_id != '') {
+                var ids = res[0].unique_id;
                 var sname = res[0].name;
                 var snumber = res[0].corporateidentifier;
                 var saddress = res[0].address;

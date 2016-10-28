@@ -178,8 +178,9 @@
 								@{{ subCate.description }}
 							</div>
 							<div class="s_col_1">
-								@permission('edit-category')  								
-								<a class="btn btn-primary " href="{{ url('/editcategory/')}}@{{firstNestedSub.id}}">Edit</a>
+								@permission('edit-category') 					
+
+								<a class="btn btn-primary " href="{{ url('/editcategory/')}}@{{subCate.id}}">Edit</a>
 								@endpermission
 						        @permission('delete-category') 
 								<a style="margin-left: 3px;" class="btn btn-danger" onClick="TakeId(this)"  data-toggle="modal" data-target="#DeleteModal" data-id="@{{ firstNestedSub.id }}">Delete</a>

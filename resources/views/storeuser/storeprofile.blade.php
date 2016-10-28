@@ -19,7 +19,10 @@
     <div class="ibox float-e-margins">
         <div class="ibox-title">
             <h5>Edit Profile</h5>    <br>  <br>
+			
+			@permission('storechange-password')
             <a data-toggle="modal" data-target="#myModalp" class="btn btn-primary">Change Password</a>
+			@endpermission
         </div>
         <div class="ibox-content">
 

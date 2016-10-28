@@ -18,7 +18,7 @@ App.filter('startsWithLetter', function () {
 	 $scope.storeusersid=function(id){
 		 
 		 $scope.storeuserid=id;
-	    };
+	    }; 
 	 $scope.liststoreuser= function(){
 		
 		 post_data  ='';

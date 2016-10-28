@@ -42,7 +42,7 @@
                 </div>
                 <div class="form-group"><label class="col-lg-2 control-label">Name</label>
 
-                    <div class="col-lg-8">   {!! Form::text('name', null, array('placeholder' => 'Item name','class' => 'form-control','required' => '')) !!} <span
+                    <div class="col-lg-8">   {!! Form::text('name', null, array('placeholder' => 'Item name','class' => 'form-control','data-parsley-trigger'=>'keyup','data-parsley-pattern'=>'^[a-zA-Z0-9 ]*$','data-parsley-minlength'=>'3','required' => '')) !!} <span
                             class="help-block m-b-none"></span>
                     </div>
                 </div>
@@ -112,7 +112,8 @@
 					<div class="col-lg-8">  
 							<div class="tree ">
 
- 
+ <?php
+ if(count($categoriesnon)>0){?>
 
 <ul class="category">
   @foreach($categoriesnon as $subCate)
@@ -144,6 +145,11 @@
    
     
 </ul>
+<?php
+ }else{
+	 echo "No Categories Found";
+ }
+ ?>
 </div>			
 					</div>
             </div>
@@ -163,7 +169,7 @@
                 <div class="form-group"><label class="col-lg-2 control-label">Description</label>
 
                     <div class="col-lg-8">  
-                        <textarea cols="25" class="form-control" rows="4" name="description"></textarea><span
+                        <textarea cols="25" class="form-control" rows="4" name="description" data-parsley-trigger="keyup"  data-parsley-maxlength="200" required></textarea><span
                             class="help-block m-b-none">
                     </div>
                 </div>

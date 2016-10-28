@@ -43,7 +43,7 @@
                 <div class="form-group"><label class="col-lg-2 control-label">Name</label>
 
                     <div class="col-lg-8">
-                        <input  type="text" name="name"  placeholder="name" value="{{$data->name}}" required class="form-control">							
+                        <input  type="text" name="name"  placeholder="name" value="{{$data->name}}" data-parsley-trigger='keyup' data-parsley-type='^[a-zA-Z0-9 ]*$' data-parsley-minlength='3' required class="form-control">							
                         <span
                             class="help-block m-b-none"></span>
                     </div>
@@ -163,7 +163,7 @@
                 <div class="form-group"><label class="col-lg-2 control-label">Description</label>
 
                     <div class="col-lg-8">  
-                        <textarea cols="25" class="form-control" rows="4" name="description">{{$data->description}}</textarea><span
+                        <textarea cols="25" class="form-control" rows="4" name="description" data-parsley-trigger="keyup"  data-parsley-maxlength="200" required>{{$data->description}}</textarea><span
                             class="help-block m-b-none">
                     </div>
                 </div>

@@ -93,7 +93,7 @@
                                     <div class="">
                                         <div class="col-md-8 form-group">       
                                             <div class="input-group">
-                                                <select  name="country" class="form-control m-b country"  style="width:275px;" tabindex="4" required>
+                                                <select  name="country" class="form-control m-b country"  style="width:275px;" tabindex="4" >
                                                     <option value="">Select Country</option>
                                                     @foreach ($countries as $key => $users)
                                                     <option value="{{ $users -> id}}">{{ $users -> name}}</option>
@@ -110,7 +110,7 @@
                                     <div class="">
                                         <div class="col-md-8 form-group">       
                                             <div class="input-group">
-                                                <select  name="state" class="form-control m-b state" style="width:275px;" tabindex="4" required>
+                                                <select  name="state" class="form-control m-b state" style="width:275px;" tabindex="4" >
                                                     <option value="">Select State</option>
 
                                                 </select>

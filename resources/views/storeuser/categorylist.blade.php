@@ -71,7 +71,7 @@
                                 <td>{{ $firstNestedSub->description }}</td>
                                 <td>
                                  @permission('edit-category')  								
-								<a class="btn btn-primary " href="{{ url('/editcategory/ ')}}{{$firstNestedSub->id}}">Edit</a>
+								<a class="btn btn-primary " href="{{ url('/editcategory/')}}{{$firstNestedSub->id}}">Edit</a>
 								@endpermission
 						        @permission('delete-category') 
 								<a style="margin-left: 3px;" class="btn btn-danger" onClick="TakeId(this)"  data-toggle="modal" data-target="#DeleteModal" data-id="{{ $firstNestedSub->id }}">Delete</a>
@@ -83,7 +83,7 @@
                                 <td>{{ $secondNestedSub->description }}</td>
                                 <td>
                                  @permission('edit-category')  								
-								<a class="btn btn-primary " href="{{ url('/editcategory/ ')}}{{$secondNestedSub->id}}">Edit</a>
+								<a class="btn btn-primary " href="{{ url('/editcategory/')}}{{$secondNestedSub->id}}">Edit</a>
 								@endpermission
 						        @permission('delete-category') 
 								<a style="margin-left: 3px;" class="btn btn-danger" onClick="TakeId(this)"  data-toggle="modal" data-target="#DeleteModal" data-id="{{ $secondNestedSub->id }}">Delete</a>
@@ -95,7 +95,7 @@
                                 <td>{{ $thirdNestedSub->description }}</td>
                                 <td>
                                  @permission('edit-category')  								
-								<a class="btn btn-primary " href="{{ url('/editcategory/ ')}}{{$thirdNestedSub->id}}">Edit</a>
+								<a class="btn btn-primary " href="{{ url('/editcategory/')}}{{$thirdNestedSub->id}}">Edit</a>
 								@endpermission
 						        @permission('delete-category') 
 								<a style="margin-left: 3px;" class="btn btn-danger" onClick="TakeId(this)"  data-toggle="modal" data-target="#DeleteModal" data-id="{{ $thirdNestedSub->id }}">Delete</a>

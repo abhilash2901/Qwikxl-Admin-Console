@@ -159,7 +159,7 @@
             <div class="modal-body">
                 Are you sure to delete this record?
             </div>
-            <div class="deletesucess" style="width:50%;margin-left:10px;text-align:center"></div>
+            <div class="deletedpts" style="width:50%;margin-left:10px;text-align:center"></div>
             <div class="modal-footer">
                 <input type="hidden" id="addCategory_id">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>

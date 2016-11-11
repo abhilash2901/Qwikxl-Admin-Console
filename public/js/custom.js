@@ -77,8 +77,8 @@ $(document).ready(function() {
                 var snumber = res[0].corporateidentifier;
                 var saddress = res[0].address;
                 var saddress2 = res[0].address2;
-                var city = res[0].city;
-                var country = res[0].cname;
+                var city = res[0].ctname;
+                var country = res[0].country;
                 var state = res[0].state;
                 var zip = res[0].zip;
                 var phone = res[0].phone;

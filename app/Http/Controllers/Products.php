@@ -105,8 +105,9 @@ class Products extends Controller {
                 ->where('productinventories.store_id', $ids)
                 ->orderBy('products.id', 'desc')
                 ->get();
+				
         $dept = DB::table('departments')->where('store_id', '=', $ids)->get();
-
+          
         return view('products.listproduct', ['dept' => $dept]);
     }
 

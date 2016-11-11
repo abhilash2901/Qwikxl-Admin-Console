@@ -75,7 +75,7 @@ class BannerController  extends Controller {
 	 public function bannerupdate(Request $request) {
 		 $input = $request->all();
 		
-		 if (Input::file('image')!='') {
+		 if (Input::file('image')) {
 
 				$image = Input::file('image');
 				$filename = time() . '.' . $image->getClientOriginalExtension();
@@ -93,6 +93,7 @@ class BannerController  extends Controller {
 			$res = Banner::where('id',$input['id']);
             $res->update($input);
 			$result =Banner::find($input['id']);
+			
 	           print_r(json_encode(array('status' => 'success', 'msg' => 'Banner Updated Succesfully','id'=>$result->store_id,'img'=>$result->image)));
 	   }public function bannerdelete(Request $request) {
 

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Response;
 use App\User;
 use App\Role;
+use App\Store;
 use App\Departments;
 use DB;
 use Session;
@@ -66,10 +67,10 @@ class StoreController extends Controller {
         $input = $request->all();
         $id = $input['id'];
          $stores = DB::table('stores')
-             ->join('countries','stores.country','=','countries.id')
-             ->join('states','states.country_id','=','countries.id')
-             ->join('cities','cities.state_id','=','states.id')
-             ->select('stores.*','countries.id as cname','states.id as sname','cities.name as ctname')
+             ->leftJoin('countries','stores.country','=','countries.id')
+             ->leftJoin('states','stores.state','=','states.id')
+             ->leftJoin('cities','stores.city','=','cities.id')
+             ->select('stores.*','countries.id as cname','states.id as sname','cities.id as ctname')
              ->where('stores.id', '=',$input['id'])
              ->get();
         print_r(json_encode($stores));
@@ -142,7 +143,9 @@ class StoreController extends Controller {
           'zip'=>'required|integer',
           'website'=>"required|url"
           ]); */
-
+          $input['city']='';
+		  $input['state']='';
+		  $input['country']='';
         $input = $request->all();
        
        if(isset($input['mcity']))
@@ -192,8 +195,12 @@ class StoreController extends Controller {
     public function storeedit(Request $request) {
 
          $id="";
+		 $input['city']='';
+		  $input['state']='';
+		  $input['country']='';
 		$input = $request->all();
-       
+       //var_dump($input);
+	   //exit;
       if(isset($input['mcity']))
      {
         $cityinsert=array(["name"=>$input['mcity'],"state_id"=>$input['state']]);
@@ -211,7 +218,7 @@ class StoreController extends Controller {
 			$id = $data->id;
 		}
 		
-        $item = array([
+        /*$item = array([
                 "unique_id" => $input['unique_id']+$id,
                 "name" => $input['name'],
                 "corporateidentifier" => $input['corporateidentifier'],
@@ -223,15 +230,27 @@ class StoreController extends Controller {
                 "zip" => $input['zip'],
                 "phone" => $input['phone'],
                 "mail" => $input['mail'],
+
                 "website" => $input['website'],
 				"latitude" => $input['latitude'],
                 "longitude" => $input['longitude']
         ]);
 
+                "website" => $input['website']
+        ]);*/
+
+
         // move here
         // DB::table('stores')->insert($item );
         $id = $input['id'];
+
                DB::update('update stores set name = ? ,corporateidentifier = ? ,address = ? ,address2 = ? ,city = ?,state = ? ,zip = ?,latitude=?,longitude=?,phone = ?,mail = ?,website = ? where id = ?', [$input['name'], $input['corporateidentifier'], $input['address'], $input['address2'], $input['city'], $input['state'], $input['zip'],$input['latitude'],$input['longitude'], $input['phone'], $input['mail'], $input['website'], $id]);
+  
+		/* $id = $input['id'];
+		  $user = Store::find($id);
+
+                $user->update($input);*/
+
         print_r(json_encode(array('status' => 'success', 'msg' => 'Store Created Succesfully')));
     }
 

@@ -39,7 +39,7 @@ class BannerController  extends Controller {
     public function savebanner(Request $request) {
 		$input = $request->all();
 		//$input['store_id']=$input['store_id'];
-        if (Input::file('image')!='') {
+        if (Input::file('image')) {
 
             $image = Input::file('image');
             $filename = time() . '.' . $image->getClientOriginalExtension();

@@ -15,7 +15,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
 Route::auth();
 Route::get('/login', function () {
     return view('welcome');
@@ -111,10 +110,70 @@ Route::get('downloadExcel/{type}', 'Products@downloadExcel');
 //Route::resource('store', 'stores');
 //sooraj
 Route::post('changepassed', ['uses' => 'Stores@changepass', 'middleware' => ['permission:storechange-password']]);
-Route::post('storeprofiles', ['as' => 'store.update', 'uses' => 'Stores@updates',]);
+Route::post('storeprofiles', ['as' => 'store.update', 'uses' => 'Stores@updates']);
 Route::post('state', 'StoreController@state');
 Route::post('city', 'StoreController@city');
 Route::post('createcity','StoreController@insertcity');
+Route::get('listOrders','OrdersController@listOrders');
+Route::get('listcustomer','OrdersController@listCustomer');
+Route::post('getOrders','OrdersController@getOrders');
+Route::post('deleteOrder','OrdersController@deleteOrder');
+Route::post('customerlist','OrdersController@CustomerList');
+Route::post('savebanner','BannerController@savebanner');
+Route::post('listbanner','BannerController@listbanner');
+Route::post('banneredit','BannerController@banneredit');
+Route::post('bannerupdate','BannerController@bannerupdate');
+Route::post('bannerdelete','BannerController@bannerdelete');
+Route::post('getsingleorder','OrdersController@getsingleorder');
+Route::get('editorder/{id}','OrdersController@editOrder');
+Route::post('customupdate','OrdersController@customupdate');
+Route::post('updatestatus','OrdersController@updatestatus');
+
+//webservices 
+//2
 
 });
+
+
+Route::post('distanceList', 'GroceryWebservice@distanceList');
+Route::post('getStorelist', 'GroceryWebservice@getStorelist');
+/*Listing the entire category list of a grocery shop (store)*/
+Route::post('getCategoryList', 'GroceryWebservice@getCategoryList');
+//Route::get('getCategoryLists', 'GroceryWebservice@getCategoryListss');
+//Route::any('getCategoryListtest', 'GroceryWebservice@getCategoryListtest');
+//Route::get('getCategoryList/{store_id}/{keyword}', 'GroceryWebservice@getCategoryLists');
+/*Listing the Subcategory details according to the grocery store and the category*/
+
+//Route::get('getSubCategoryList/{store_id}/{category_id}/{keyword}', 'GroceryWebservice@getSubCategoryLists');
+Route::post('getSubCategoryList', 'GroceryWebservice@getSubCategoryList');
+/*Listing the product/inventry list according to the subcategory*/
+Route::post('getProductList', 'GroceryWebservice@getProductList');
+/*Get the item/product details according to the item/product*/
+Route::post('getSingleProduct', 'GroceryWebservice@getSingleProduct');
+/*Get the latitude of a city*/
+Route::post('getLatitudeCity', 'GroceryWebservice@getLatitudeCity');
+/*For Registering a New customer*/
+Route::post('customerRegister', 'CustomerWebservice@customerRegister');
+/*8.For getting the Login details of a customer*/
+Route::post('customerLogin', 'CustomerWebservice@customerLogin');
+/*Getting the customer details*/
+Route::post('customerDetails', 'CustomerWebservice@customerDetails');
+/*10. For updating the customer details*/
+Route::post('updateCustomer', 'CustomerWebservice@updateCustomer');
+/*11. For updating the Customer Card Details*/
+Route::post('updateCreditCard', 'CustomerWebservice@updateCreditCard');
+/*12. For updating the customer Password*/
+Route::post('updatePassword', 'CustomerWebservice@updatePassword');
+/*13. For updating the customer profile image*/
+Route::post('customerImage', 'CustomerWebservice@customerImage');
+/*14. For forgot password*/
+Route::post('sentPassword', 'CustomerWebservice@sentPassword');
+/*15. Listing the entire country details*/
+Route::post('getCountryList', 'CustomerWebservice@getCountryList');
+/*16. Saving the order details in the Database (using Stripe)*/
+Route::post('saveOrderDetails', 'OrderWebservice@saveOrderDetails');
+/*16. Getting the order details by the user email*/
+Route::post('orderDetails', 'OrderWebservice@orderDetails');
+/*18. Getting the order details by the order id*/
+Route::post('orderData', 'OrderWebservice@orderData');
 

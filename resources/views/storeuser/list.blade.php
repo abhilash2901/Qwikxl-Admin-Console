@@ -143,6 +143,14 @@
                             <div class="col-md-4"><input name="zip" id="zip" type="text" placeholder="30350" data-parsley-minlength="3" data-parsley-type="digits" required 
                                                          class="form-control" value="@{{detailsstores.zip}}" ></div>
                         </div>
+						   <div class="form-group"><label class="col-sm-2 control-label">latitude</label>
+                            <div class="col-md-4"><input name="latitude" id="latitude" type="text" 
+                                                         class="form-control" value="@{{detailsstores.latitude}}"></div>
+                        </div>
+                        <div class="form-group"><label class="col-sm-2 control-label">longitude</label>
+                            <div class="col-md-4"><input name="longitude" id="longitude"   type="text" 
+                                                         class="form-control" value="@{{detailsstores.longitude}}"></div>
+                        </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Phone</label>
@@ -253,10 +261,14 @@
 
         </div>
 		
-       <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>Store Departments</h5>
-            </div>
+       <div class="ibox float-e-margins" >
+           <div class="tabs-container"  >
+		    <ul class="nav nav-tabs">
+					<li class="active"><a data-toggle="tab" href=".sumesh1" aria-expanded="true">Store Departments</a></li>
+					<li class=""><a data-toggle="tab" href=".sumesh2" aria-expanded="false">Banner</a></li>
+			</ul>
+			<div class="tab-content">
+           <div id="sumesh1" class="tab-pane active sumesh1">
             <div class="dptsucess"></div>
             <div class="ibox-content">
 			<?php 
@@ -328,6 +340,92 @@
 				<input type="hidden" value="<?php echo $i-1;?>" class="dpti">
             </div>
         </div>
+		
+		
+		<div id="sumesh2" class="tab-pane sumesh2">
+						<div class="panel-body">
+							
+							<br>
+						       <div class="uploadsucess" tabindex="1"></div>
+								<div class="">
+									<form role="form" class="form-horizontal ng-pristine ng-valid" id="addbanner" method="POST" action="{{ url('savebanner')}}">
+										<div class="form-group">
+											<label class="col-sm-2 control-label">Ad Name</label>
+											<div class="col-sm-6">
+												<input class="form-control" type="text" required name="title">
+												<input class="form-control stores_id" type="hidden"  name="store_id" value="<?php echo Session::get('id')?>">
+											</div>
+										</div>
+										<div class="form-group"><label class="col-sm-2 control-label">Upload Banner</label>
+											<div class="col-sm-6">
+												<div class="fileinput fileinput-new" data-provides="fileinput">
+													
+													<input type="file" required name="image">
+										
+								
+												</div>
+											</div> 
+										</div>
+										
+										<div class="form-group">
+											<div class="col-sm-8">
+											   <button type="submit" class="btn btn-primary pull-right" ng-click="AddBanner()">Add New Banner</button>
+												
+											</div>
+										</div>
+																
+									</form>
+									
+								</div>
+								
+								
+						
+							
+							
+							
+							<br>
+							
+							<div class="ibox-title">
+								<h5>Edit or Remove Banner</h5>
+							</div>
+							<div class="ibox-content" style="display: block;" >
+                                
+								<table class="table" ng-init="listbanner('<?php echo Session::get('id')?>');">
+									<thead>
+									<tr>
+										<th>#</th>
+										<th>Banner</th>
+										<th>Ad title</th>
+										<th>Action</th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr ng-show="listbanner.length==0" colspan="4"><td>No Banners</td></tr>
+									<tr dir-paginate="list in listbanner | itemsPerPage:7">
+										<td>@{{$index}}</td>
+										<td> 
+							             <img src="@{{list.image}}" width="50" height="50"></td> <!-- Image -->
+										<td>@{{list.title}}</td>
+										<td>
+											<a href="#" data-id="@{{list.id}}" onClick="editbanner(this);" class="btn btn-primary" data-toggle="modal" data-target="#myBanner">Edit banner</a>
+											  <a  class="btn btn-danger" data-toggle="modal" data-target="#Deleteroles"  onClick="Takeids(this)" data-id="@{{list.id}}">
+        Delete</a></td>
+									</tr>
+									
+									</tbody>
+								</table>
+                               <dir-pagination-controls 
+			boundary-links="true" 
+			direction-links="true" >
+			</dir-pagination-controls>
+							</div>
+							
+							
+						</div>
+					</div>
+		</div>
+		</div>
+		</div>
     </div>
 
     <!-- Modal -->
@@ -524,6 +622,94 @@
 	  
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         <button type="button" class="btn btn-danger" onClick="Deletedpt()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="myBanner" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+      <div class="modal-content">
+            <div class="modal-body">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Edit banner</h5>
+
+
+                    </div>
+                    <div class="ibox-content">
+                        <div class="uploadsucesss"></div>
+                        
+                        
+                        
+                        
+                        <form class="form-horizontal editbanner" id="editbanner" method="POST" action="{{ url('bannerupdate')}}">                      
+                            <div class="form-group"><label class="col-lg-2 control-label">Tittle</label>
+                                <div class="col-lg-8">
+                                    <input type="text"  name ="title" class="form-control"  required id="title">
+                                    <input type="hidden"  name ="id" class="form-control" required id="panid">
+
+                                </div>
+                            </div>
+                            
+                            <div class="form-group"><label class="col-lg-2 control-label">Image</label>
+
+                                <div class="col-lg-8" id="imaged">
+                                    
+                                     <div class="imageshow"></div>
+                                       </div>
+          
+                            </div> 
+                         
+                                  
+                            <div class="form-group"><label class="col-sm-2 control-label">Upload Banner</label>
+                                <div class="col-lg-4">  
+                                    <input type="file" name="image" >
+                                    <span class="help-block m-b-none"></span>
+
+                                </div>
+          
+                            </div> 
+                      
+                                     
+                                     
+                                     
+                             
+
+
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-8">
+                                  
+                       <button type="submit" class="btn btn-primary pull-left" Onclick="bannerCreated()">Edit Banner</button>
+                                </div>
+                            </div>
+                     </form> 
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        </div>
+        </div>
+		<div class="modal fade" id="Deleteroles" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="H3">Delete this record?</h4>
+      </div>
+
+   <input type="hidden" id="get_id"><input type="hidden" id="token"  value="<?php echo csrf_token(); ?>">
+  <div class="modal-body">
+                Are you sure to delete this record?
+            </div>
+			<div class="deleteroles" style="width:50%;margin-left:10px;text-align:center"></div>
+      <div class="modal-footer">
+   
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+  
+        <button class="btn btn-danger" onClick="deletebanner()">Delete</button>
       </div>
     </div>
   </div>

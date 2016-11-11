@@ -1073,3 +1073,170 @@ function Deletedpt() {
      });
 
  }
+ function DeleteOrder() {
+    //alert("fd");
+        var id=$("#addCategory_id").val();
+     jQuery.ajax({
+         type: 'POST',
+         url: base_url + '/deleteOrder',
+
+         dataType: 'json',
+         data:{'id':id},
+         success: function(res) {
+             $(".deletedpts").show();
+            
+
+             if (res.status == 'success') {
+                 $(".deletedpts").html('<p class="alert alert-success">' + res.msg + '</p>');
+                 setTimeout(function() {
+                     $(".deletedpts").hide();
+                     $('#DeleteModal').modal('hide');
+                   location.reload(); 
+                       
+
+                 }, 2000);
+
+
+             } 
+
+         }
+     });
+
+ }
+  function SaveOrderstatus() {
+    if ($('#updatestatus').parsley().validate()) {
+        var form = $('#updatestatus').serializeArray();
+        jQuery.ajax({
+            type: 'POST',
+            url: base_url + '/updatestatus',
+
+            dataType: 'json',
+            data: form,
+            success: function(res) {
+                $(".custmstatus").show();
+               
+               
+                    $('html, body').animate({
+                        scrollTop: $(".custmstatus").offset().top - 100
+                    }, 'fast');
+                    $(".custmstatus").html('<p class="' + res.class + '">' + res.msg + '</p>');
+					setTimeout(function() {
+                     $(".custmstatus").hide();
+                    // location.reload();
+                 }, 2000);
+
+                post_data  ={'id': res.id};
+		    link="/getsingleorder";
+		
+	
+			var promise = WebService.send_data( link,post_data);
+			promise.then(function(response){  
+			    $scope.getsingleorder=response.single;
+				$scope.getitemlist=response.itemlist;
+			});
+
+            }
+        });
+    }
+  }
+  	function AddBanner() {
+	 
+     if ($('#addbanner').parsley().validate()) {
+		 
+
+         $('#addbanner').ajaxForm(function(options) {
+             var items = JSON.parse(options);
+              var s = items.msg;
+             $('html, body').animate({
+                 scrollTop: $(".uploadsucess").offset().top - 100
+             }, 'fast');
+             $(".uploadsucess").show();
+             $(".uploadsucess").html('<p class="alert alert-success">' + s + '</p>');
+			 
+
+             setTimeout(function() {
+                 $(".uploadsucess").hide(); $('#addbanner')[0].reset();
+             }, 2000);
+
+         });
+     }
+ }
+ function editbanner(elm) {
+    var id = $(elm).data("id");
+    jQuery.ajax({
+        type: 'POST',
+        url: base_url + '/banneredit',
+        dataType: 'json',
+        data: {
+            'id': id
+        },
+        success: function (res) {
+
+
+            var title = res.title;
+            var imagess = res.image;
+            var panid = res.id;
+    
+            $('#title').val(title);
+            //$('#imaged').val(imaged);
+            $('#panid').val(panid);
+			$(".imageshow").html('<img src=' + base_url + '/' + imagess + ' width="50" height="50px">');
+           
+        }
+    });
+
+
+}function bannerCreated() {
+ 
+    if ($('.editbanner').parsley().validate()) {
+   
+
+         $('.editbanner').ajaxForm(function(options) {
+             var items = JSON.parse(options);
+              var s = items.msg;
+			   imagess=items.img;
+             $('html, body').animate({
+                 scrollTop: $(".uploadsucess").offset().top - 100
+             }, 'fast');
+             $(".uploadsucesss").show();
+             $(".uploadsucesss").html('<p class="alert alert-success">' + s + '</p>');
+             $(".imageshow").html('<img src=' + base_url + '/' + imagess + ' width="50" height="50px">');
+             setTimeout(function() {
+                 $(".uploadsucesss").hide(); 
+             }, 2000);
+
+         });
+	}
+ }
+ function deletebanner() {
+ 
+        var id=$("#get_id").val();
+     jQuery.ajax({
+         type: 'POST',
+         url: base_url + '/bannerdelete',
+
+         dataType: 'json',
+         data:{'id':id,'_token':$("#token").val()},
+         success: function(res) {
+             $(".deleteroles").show();
+
+
+             if (res.status == 'success') {
+				 
+                 $(".deleteroles").html('<p class="alert alert-success">' + res.msg + '</p>');
+                 setTimeout(function() {
+                     $(".deleteroles").hide();
+//                     $('#Deletedpt').modal('hide');
+                     location.reload(); 
+                       
+
+                 }, 2000);
+			             } 
+
+         }
+     });
+
+ }function Takeids(elm) {
+     var id = $(elm).data("id");
+     $("#get_id").val(id);
+ }

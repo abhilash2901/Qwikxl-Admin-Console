@@ -13,5 +13,7 @@ class VerifyCsrfToken extends BaseVerifier
      */
     protected $except = [
         //
+		'stripe/*','distanceList','getStorelist','getCategoryList','getSubCategoryList','getProductList','getSingleProduct','getLatitudeCity','customerRegister','customerLogin','updateCustomer','updatePassword','customerImage','sentPassword','getCountryList','saveOrderDetails','orderDetails','orderData',
+		
     ];
 }

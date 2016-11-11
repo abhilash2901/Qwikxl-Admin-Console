@@ -9,7 +9,7 @@ use DB;
 class Category extends Model
 {
 	
-     protected $table = 'Categories';
+     protected $table = 'categories';
     /**
      * The attributes that are mass assignable.
      *

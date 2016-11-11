@@ -209,6 +209,7 @@ class Products extends Controller {
 
     public function saveproduct(Request $request) {
         $input = $request->all();
+		
         if (Input::file()) {
 
             $image = Input::file('image');
@@ -217,12 +218,13 @@ class Products extends Controller {
             $extension = $image->getClientOriginalExtension();
             // RENAME THE UPLOAD WITH RANDOM NUMBER 
             $fileName = rand(11111, 99999) . '.' . $extension;
-            $path = public_path('upload/' . $filename);
+            $path = public_path('upload/');
 
 
             $image->move($path, $fileName);
-            $input['image'] = 'upload/' . $filename . '/' . $fileName;
+            $input['image'] = 'upload/' . $fileName;
         }
+		
 
         $input['store_id'] = Session::get('store_userid');
 

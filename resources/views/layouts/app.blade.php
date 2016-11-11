@@ -30,7 +30,8 @@
 
     <!-- Bootstrap -->
 	
-    <link href="{{ asset('css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('plugin/blueimp/css/blueimp-gallery.min.css')}}" rel="stylesheet">
+	<link href="{{ asset('css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap-confirm-delete.css')}}" rel="stylesheet">
     <link href="{{ asset('css/select2.min.css')}}" rel="stylesheet">
     <!-- Font awesome -->
@@ -242,9 +243,10 @@
 
      <script src="{!! asset('js/angular/angular.js') !!}"></script>
     <script src="{!! asset('js/dirPagination.js') !!}"></script>
-    <script src="{!! asset('js/custom/custom.js') !!}"></script>
+   
 
     <script src="http://malsup.github.com/jquery.form.js"></script>
+	 <script src="{!! asset('js/custom/custom.js') !!}"></script>
     <script src="{!! asset('js/custom.js') !!}"></script>
     <script src="{!! asset('js/customstates.js') !!}"></script>
 
@@ -277,6 +279,7 @@
     <script src="{!! asset('js/translations.js') !!}"></script>
     <script src="{!! asset('js/directives.js') !!}"></script>
     <script src="{!! asset('js/controllers.js') !!}"></script>
+	<script src="{!! asset('js/controllers.js') !!}"></script>
 
 </body>
 

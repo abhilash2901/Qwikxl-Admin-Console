@@ -169,7 +169,9 @@ class StoreController extends Controller {
                 "zip" => $input['zip'],
                 "phone" => $input['phone'],
                 "mail" => $input['mail'],
-                "website" => $input['website']
+                "website" => $input['website'],
+				"latitude" => $input['latitude'],
+                "longitude" => $input['longitude']
         ]);
 
 
@@ -221,14 +223,15 @@ class StoreController extends Controller {
                 "zip" => $input['zip'],
                 "phone" => $input['phone'],
                 "mail" => $input['mail'],
-                "website" => $input['website']
+                "website" => $input['website'],
+				"latitude" => $input['latitude'],
+                "longitude" => $input['longitude']
         ]);
 
         // move here
         // DB::table('stores')->insert($item );
         $id = $input['id'];
-        DB::update('update stores set name = ? ,corporateidentifier = ? ,address = ? ,address2 = ? ,city = ?,state = ? ,zip = ?,phone = ?,mail = ?,website = ? where id = ?', [$input['name'], $input['corporateidentifier'], $input['address'], $input['address2'], $input['city'], $input['state'], $input['zip'], $input['phone'], $input['mail'], $input['website'], $id]);
-
+               DB::update('update stores set name = ? ,corporateidentifier = ? ,address = ? ,address2 = ? ,city = ?,state = ? ,zip = ?,latitude=?,longitude=?,phone = ?,mail = ?,website = ? where id = ?', [$input['name'], $input['corporateidentifier'], $input['address'], $input['address2'], $input['city'], $input['state'], $input['zip'],$input['latitude'],$input['longitude'], $input['phone'], $input['mail'], $input['website'], $id]);
         print_r(json_encode(array('status' => 'success', 'msg' => 'Store Created Succesfully')));
     }
 

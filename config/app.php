@@ -159,6 +159,8 @@ return [
 		Zizaco\Entrust\EntrustServiceProvider::class,
 		 'Collective\Html\HtmlServiceProvider',
 		 Maatwebsite\Excel\ExcelServiceProvider::class,
+		 
+		 EllipseSynergie\ApiResponse\Laravel\ResponseServiceProvider::class,
 
     ],
 

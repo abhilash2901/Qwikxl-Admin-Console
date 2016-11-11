@@ -1,0 +1,222 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Response;
+use App\User;
+use App\Customer;
+use App\Role;
+use App\Departments;
+use DB;
+use Session;
+use App\Category;
+use App\Order;
+use App\Country;
+use App\Product;
+use App\Store;
+
+use Mail;
+use Hash;
+
+class CustomerWebservice extends Controller {
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function customerLogin(Request $request) {
+	   $input = $request->all();
+		
+		$user = Customer::where('email',$input['email'])->where('password',$input['password'])->get();
+		
+		if(count($user)==1){
+			
+			/*if (Hash::check($input['password'], $user[0]->password)) {
+                
+                $data = array("status"=>'Login Successful','Mobile'=>$user[0]->mobile);
+            } else {
+               $data = array("status"=>'Login failed');
+            }*/
+			$data = array("Status"=>'Login Successful','Mobile'=>$user[0]->mobile);
+		}else{
+			$data = array("Status"=>'Login failed');
+		}
+		print_r(json_encode($data));
+
+
+
+	} 
+	 public function customerRegister(Request $request) {
+		 $inputs = $request->all(); 
+		 $input = json_decode($inputs['User_details']);
+		 //$input['password'] = Hash::make($input['password']);
+		
+		 $user = Customer::where('email',$input->email)->get();
+		 $inputdetails=array(
+		 'firstname'=>$input->firstname, 
+		 'lastname'=>$input->lastname,
+		 
+		 'email'=>$input->email,
+		 'country_code'=>$input->country_code,
+		 'mobile'=>$input->mobile,
+		// 'zipcode'=>$input->zipcode, 
+		// 'address'=>$input->address,
+		 'country'=>$input->country,
+		 'password'=>$input->password
+		 );
+		 if(count($user)==0){
+		      $customer=Customer::insert($inputdetails);
+		      $data = array("Status"=>'Registration Success');
+		 }else{
+			 $data = array("Status"=>'Email ID Already Exist'); 
+		 }
+		 print_r(json_encode($data));
+	 } 
+	 public function customerDetails(Request $request) {
+		 $input = $request->all();
+		
+		 $customer=Customer::where('email', '=', $input['email'])->get();
+		
+		 $data = array("customerDetails"=>$customer);
+		 print_r(json_encode($data));
+	 }
+	 public function updateCustomer(Request $request) {
+		  $inputs = $request->all(); 
+		 $input = json_decode($inputs['User_details']);
+		 $inputdetails=array(
+		 'firstname'=>$input->firstname, 
+		 'lastname'=>$input->lastname,
+		 'email'=>$input->email,
+		 'country_code'=>$input->country_code,
+		 'mobile'=>$input->mobile,
+		// 'zipcode'=>$input->zipcode, 
+		 'address'=>$input->address,
+		 'country'=>$input->country
+		 );
+		 $customer=Customer::where('email', '=', $input->email)->get();
+		 if(count($customer)>0){
+			 $user = Customer::where('email', '=', $input->email);
+			// $id =$users[0]->id;
+			 //$users = Customer::find($id);
+             $user->update($inputdetails);
+			  $data = array("Status"=>'Updation Successful' ,"Mobile"=>$customer[0]->mobile); 
+		 }
+		 else{
+			  $data = array("Status"=>'Email ID Not Exist'); 
+		 }
+		 
+		 print_r(json_encode($data));
+	 }
+	 public function updateCreditCard(Request $request) {
+		 $input = $request->all();
+		 $inputs =array(
+				'creditcardno,' =>$input['creditcardno'],
+				'month' =>$input['month'],
+				'year' =>$input['year'],
+				'cvv' =>$input['cvv'],
+				'country' =>$input['country'],
+				'zipcode' =>$input['zipcode'],
+				'modifiedDate' =>$input['modifiedDate'],
+			
+			);
+		 $customer=Customer::where('email', '=', $input['email'])->get();
+		 if(count($customer)>0){
+			 $user = Customer::where('email', '=', $input['email'])->get();
+             $user->update($inputs);
+			  $data = array("Status"=>'Updation Successful' ); 
+		 }
+		 else{
+			  $data = array("Status"=>'Email ID Not Exist'); 
+		 }
+		 
+		 print_r(json_encode($data));
+	    }
+	    public function updatePassword(Request $request) {
+			$input = $request->all();
+			$input['passwords'] = $input['password'];
+			$inputs =array(
+				'password' =>$input['passwords']
+			
+			);
+		 $customer=Customer::where('email', '=', $input['email'])->get();
+		 if(count($customer)>0){
+			 $user = Customer::where('email', '=', $input['email']);
+             $user->update($inputs);
+			  $data = array("Status"=>'Password Changed Successfully' ); 
+		 }
+		 else{
+			  $data = array("Status"=>'Email ID Not Exist'); 
+		 }
+		 
+		 print_r(json_encode($data));
+			
+		}
+		public function base64_to_jpeg($base64_string, $output_file) {
+    $ifp = fopen($output_file, "wb"); 
+
+    $data = explode(',', $base64_string);
+
+    fwrite($ifp, base64_decode($data[1])); 
+    fclose($ifp); 
+
+    return $output_file; 
+}
+		public function customerImage(Request $request) {
+				 $input = $request->all();
+				 //$inputs =array(
+				//	'image' =>$input['image']
+				
+				//);
+			 $customer=Customer::where('email', '=', $input['email'])->get();
+			 if(count($customer)>0){
+				 $filename_path = md5(time().uniqid()).".jpg"; 
+					$decoded=base64_decode($input['image']);
+					file_put_contents("uploadapp/".$filename_path,$decoded);
+
+       
+		/* $encodedData = str_replace(' ','+',$input['image']);
+            $image = base64_decode($encodedData);
+            $filename = time().'.png';
+           // $name = Input::file('image')->getClientOriginalName();
+            $extension = 'png';
+            // RENAME THE UPLOAD WITH RANDOM NUMBER 
+            $fileName = rand(11111, 99999) . '.png';
+            $path = public_path('uploadapp/' . $filename);
+
+            file_put_contents($path, $image);*/
+            //$image->move($path, $fileName);
+			$inputs['image']="uploadapp/".$filename_path;
+		$user = Customer::where('email', '=', $input['email']);
+				 $user->update($inputs);
+				  $data = array("Status"=>'Profile Picture Uploaded' ,"imagepath"=>$inputs['image']); 
+			    }
+			 else{
+				  $data = array("Status"=>'Email ID Not Exist'); 
+			    }
+			 
+			 print_r(json_encode($data));
+			
+		 }
+		 public function sentPassword(Request $request) {
+			 ini_set('max_execution_time', 123456);
+			 $input = $request->all();
+			 $data = ['foo' => 'bar'];
+			 
+			 $customer=Customer::where('email', '=', $input['email'])->get();
+			Mail::send('email.welcome', $data, function ($message) {
+				$message->from('us@example.com', 'Laravel');
+
+				$message->to('shibila.b@spericorn.com');
+				$message->subject("Your QwikXL Password Information");
+
+			});
+		}
+		public function getCountryList(Request $request) {
+			$country=Country::get();
+			$data = array("countryDetails"=>$country); 
+			print_r(json_encode($data));
+		}
+}

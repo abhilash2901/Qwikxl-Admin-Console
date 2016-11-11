@@ -47,9 +47,10 @@
     <!-- Main Inspinia CSS files -->
 
     <link href="{{ asset('css/animate.css')}}" rel="stylesheet">
-    <link href="{{ asset('css/datepick.css')}}" rel="stylesheet">
+   
 
     <link id="loadBefore" href="{{ asset('css/style.css')}}" rel="stylesheet">
+	 <link href="{{ asset('css/plugins/datapicker/bootstrap-datepicker.css')}}" rel="stylesheet">
 </head>
 
 <!-- ControllerAs syntax -->
@@ -165,6 +166,21 @@
                     <a href="{{ url('import')}}"><i class="fa fa-cog"></i><span class="nav-label ng-binding">Import </span></a>
 
                 </li> 
+                    </ul>
+                </li>
+				
+				<li ng-class="{active: $state.includes('pages')}"  class="treeview">
+                    <a ui-sref="#"><i class="fa fa-th-large"></i> <span class="nav-label">ORDERS</span><span class="fa arrow"></span></a>
+                   <ul class="nav nav-second-level collapse treeview-menu" >
+					
+                        <li ng-class="{active: $state.includes('mailbox')}">
+                    <a href="{{ url('listOrders')}}"><i class="fa fa-cog"></i><span class="nav-label ng-binding">Orders </span></a>
+
+                </li> <li ng-class="{active: $state.includes('mailbox')}">
+                    <a href="{{ url('listcustomer')}}"><i class="fa fa-cog"></i><span class="nav-label ng-binding">Customer </span></a>
+
+                </li>
+                 
                     </ul>
                 </li>
         </div>
@@ -286,6 +302,7 @@
 
 
      <script src="{!! asset('js/angular/angular.js') !!}"></script>
+	 <script src="{!! asset('js/moment.js') !!}"></script>
     <script src="{!! asset('js/dirPagination.js') !!}"></script>
     <script src="{!! asset('js/custom/customstore.js') !!}"></script>
 
@@ -301,6 +318,7 @@
 
     <!-- MetsiMenu -->
     <script src="{!! asset('js/plugins/metisMenu/jquery.metisMenu.js') !!}"></script>
+	
 
     <!-- SlimScroll -->
     <script src="{!! asset('js/plugins/slimscroll/jquery.slimscroll.min.js') !!}"></script>
@@ -324,7 +342,15 @@
     <script src="{!! asset('js/translations.js') !!}"></script>
     <script src="{!! asset('js/directives.js') !!}"></script>
     <script src="{!! asset('js/controllers.js') !!}"></script>
-
+	<script src="{!! asset('js/plugins/datapicker/bootstrap-datepicker.js') !!}"></script>
+	
+  <script>
+  $(document).ready(function(){
+      $('.date').datepicker({
+		  dateFormat: 'dd-MMM-yyyy' 
+   });
+  });
+ </script>
 </body>
 
 </html>

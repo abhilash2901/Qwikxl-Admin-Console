@@ -169,6 +169,14 @@
                                 <div class="col-md-4"><input name="zip" data-parsley-trigger="keyup" data-parsley-minlength="3" data-parsley-type="digits" required type="text" placeholder="30350"
                                                              class="form-control" id="valid"></div>
                             </div>
+							  <div class="form-group"><label class="col-sm-2 control-label">latitude</label>
+                                <div class="col-md-4"><input name="latitude" type="text" 
+                                                             class="form-control" id="valid"></div>
+                            </div>
+                              <div class="form-group"><label class="col-sm-2 control-label">longitude</label>
+                                <div class="col-md-4"><input name="longitude"  type="text" 
+                                                             class="form-control" id="valid"></div>
+                            </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Phone</label>

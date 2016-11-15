@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Role;
@@ -63,6 +64,7 @@ class Stores extends Controller {
     }
 
     public function editstoredata(Request $request) {
+		
         $input = $request->all();
        
        if(isset($input['mcity']))
@@ -76,11 +78,48 @@ class Stores extends Controller {
         
        
        }
-        $id = $input['id'];
-        Store::where("id", $id)->update($input);
+	   if (Input::file()) {
 
+            $image = Input::file('image');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            $name = Input::file('image')->getClientOriginalName();
+            $extension = $image->getClientOriginalExtension();
+            // RENAME THE UPLOAD WITH RANDOM NUMBER 
+            $fileName = rand(11111, 99999) . '.' . $extension;
+            $path = public_path('logo/');
+
+
+            $image->move($path, $fileName);
+            $input['image'] = 'logo/' . $fileName;
+        }
+		if($input['image'] ){
+			$input['image']=$input['image'];
+		}else{
+			 $row =Store::where("id", $id)->get();
+			 $input['image']=$row[0]->logo;
+		}
+        $id = $input['id'];
+		$item = array(
+                
+                "name" => $input['name'],
+                "corporateidentifier" => $input['corporateidentifier'],
+                "address" => $input['address'],
+                "address2" => $input['address2'],
+                "city" => $input['city'],
+                "state" => $input['state'],
+                "country" => $input['country'],
+                "zip" => $input['zip'],
+                "phone" => $input['phone'],
+                "mail" => $input['mail'],
+                "website" => $input['website'],
+				"latitude" => $input['latitude'],
+                "longitude" => $input['longitude'],
+				   "logo"=>$input['image']
+        );
+        Store::where("id", $id)->update($item);
+   $row =Store::where("id", $id)->get();
         //$item = Item::find($id);
-        print_r(json_encode(array('status' => 'success', 'msg' => 'Store Updated Succesfully')));
+        print_r(json_encode(array('status' => 'success', 'msg' => 'Store Updated Succesfully','logo'=>$row[0]->logo)));
     }
 
     public function changepass(Request $request) {

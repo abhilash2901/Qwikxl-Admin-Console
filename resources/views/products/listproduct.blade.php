@@ -41,7 +41,7 @@
                     <label class="control-label" for="status">Department</label>
                     <!--select name="status" id="status" class="form-control" ng-model="department" onchange="departmntSearch(this)"--> 
 					<select name="status" id="status" class="form-control" ng-model="department" >
-                        <option value="0" >All Departments</option>
+                        <option value="0" selected="selected" >All Departments</option>
                         @foreach ($dept as $key => $user)
                         <option value="{{$user->name}}" >{{$user->name}}</option>
                         @endforeach
@@ -49,12 +49,12 @@
                 </div>
             </div>
 			<!--a data-toggle="modal" data-target="#myCategory">select Category</a-->
-            <div class="col-sm-2">
+            <!--div class="col-sm-2">
                 <div class="form-group">
                     <label class="control-label" for="quantity">Category</label>
                     <input type="text" id="category" ng-model="categorys" placeholder="Category" class="form-control" ng-change="changeCategory();">
                 </div>
-            </div>
+            </div-->
 
         </div>
         <div class="text-right">

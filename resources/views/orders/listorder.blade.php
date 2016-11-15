@@ -25,6 +25,7 @@
     </div>
 </div>
 <div class="wrapper wrapper-content animated fadeInRight ecommerce" ng-app="apps" ng-controller="store">
+<form id="searchs">
     <div class="ibox-content m-b-sm border-bottom" >
         <div class="row">
             <div class="col-sm-4">
@@ -42,8 +43,8 @@
             <div class="col-sm-3" >
                 <div class="form-group">
                     <label class="control-label" for="status">Order Status</label>
-                    <select name="status" id="status" class="form-control" ng-model="status" >
-					  
+                    <select name="status" id="statusff" class="form-control" ng-model="status" >
+					    <option  value="0">All</option>
                         <option ng-repeat="status in getstatus" value="@{{status.status}}" >@{{status.status}}</option>
                        
                     </select>
@@ -52,8 +53,8 @@
 			<div class="col-sm-3" >
                 <div class="form-group">
                     <label class="control-label" for="status">Transaction Status</label>
-                    <select name="status" id="status" class="form-control" ng-model="status" >
-					  
+                    <select name="status" id="statusd" class="form-control" ng-model="statust" >
+					   <option value="0">All</option>
                         <option  value="succeeded" >succeeded</option>
 						<option  value="paid" >paid</option>
 						<option  value="pending" >pending</option>
@@ -68,26 +69,34 @@
                         <div class="form-group">
                             <label class="control-label" for="date_added">Date </label>
                             <div class="input-group date">
-                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="date_addede" class="form-control" ng-model="from" type="text">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="date_addede" class="form-control fromdate " ng-model="from" type="text">
                             </div>
                         </div>
                     </div> <div class="col-sm-3">
                         <div class="form-group">
                             <label class="control-label" for="date_added">Date </label>
-                            <div class="input-group date">
-                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="date_addede" class="form-control" ng-model="to"  type="text">
+                            <div class="input-group ">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="datess" class="form-control datess" ng-model="to"  type="text">
                             </div>
                         </div>
                     </div>
 					
+					 <div class="col-sm-3">
+                <div class="form-group" style="margin:25px">
+				<button type="button" class="btn btn-w-m btn-primary" ng-click="Clear()">
+                Reset
+            </button>
+			</div>
+            </div>
 
         </div>
-        <div class="text-right">
+        <!--div class="text-right">
             <button type="button" class="btn btn-w-m btn-primary" >
                 Search
             </button>
-        </div>
+        </div-->
     </div>
+	</form>
 <div class="row">
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
@@ -107,7 +116,7 @@
                             
 							<th>Quantity</th>
 							<th>Price</th><th>Date</th>
-							<th> Status </th>
+							<th> Order Status </th>
 
 
                             <th class="">Action</th>
@@ -118,7 +127,7 @@
                     </thead>
                     <tbody>
 					  <tr ng-show="getOrders.length==0" colspan="4"><td>No Orders</td></tr>
-					  <tr dir-paginate="order in getOrders | filter: dateRangeFilter('createddate', from, to) |itemsPerPage:10 | filter:orderid | filter:status  ">
+					  <tr dir-paginate="order in getOrders | filter: dateRangeFilter('createddate', from, to) |itemsPerPage:10 | filter:orderid | filter:status | filter:statust  ">
 					  <td>@{{$index + 1}}</td>
 					      
 						  
@@ -127,12 +136,16 @@
 						  <td>@{{order.quantity}}</td>
 						  <td>@{{order.price}}</td><td>@{{order.createddate}}</td>
 						  
-						  <td>@{{order.status}}</td>
+						  <td>@{{order.o}}</td>
 						  <td>  
 								
+								@permission('edit-order')
 								 <a class="btn btn-primary" href="{{ url('/editorder/ ')}}@{{order.order_id}}" >Edit</a>
+								@endpermission 
+								@permission('delete-order')
 								<a style="margin-left: 3px;" class="btn btn-danger" onClick="TakeId(this)" data-id="@{{order.order_id}}" data-toggle="modal" data-target="#DeleteModal" >Delete</a></td>
-                           </td>
+                                @endpermission 
+						   </td>
 					  </tr>
                        
                     </tbody>

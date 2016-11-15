@@ -35,7 +35,7 @@
                 <div class="ibox-content">
                     <div class="row">
                         <div class="updatemessage" tabindex='1'></div>
-                        <form class="form-horizontal" id="store">
+                        <form class="form-horizontal" id="store" method="POST" action="{{ url('storecreate')}}">
                             <div class="form-group"><label class="col-sm-2 control-label">Store ID</label>
 
                                 <div class="col-sm-8"><input  type="text" name="unique_id"  placeholder="002456" value="<?php echo  rand(); ?>" readonly="" class="form-control"> <span
@@ -196,10 +196,18 @@
 
                                 <div class="col-sm-8"><input type="text" placeholder="www.redstore.com" class="form-control" name="website"  ></div>
                             </div>
-                            <div class="hr-line-dashed"></div>
+                                  <div class="hr-line-dashed"></div>
+           
+                            <div class="form-group"><label class="col-sm-2 control-label">Upload logo</label>
+                                <div class="col-sm-6">
+                                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                                        <input type="file"  name="image">
+                                    </div>
+                                </div> 
+                            </div>
                             <div class="form-group">
                                 <div class="col-sm-4 col-sm-offset-2">
-                                    <button class="btn btn-primary" type="button" onClick="Addstore()">Save</button>							
+                                    <button class="btn btn-primary" type="submit" onClick="Addstoress()">Save</button>							
                                 </div>
                             </div>
                         </form>

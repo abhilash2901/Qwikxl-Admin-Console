@@ -97,11 +97,11 @@ Route::post('deleteproduct', ['uses'=> 'Products@deleteproduct','middleware' => 
 Route::post('selectcategory', 'Categorys@selectcategory');
 Route::post('getdepatments', 'Products@getdepatments');
 Route::post('listingproducts', 'Products@listingproducts');
-Route::get('import',['uses'=>'Products@import'] );
-Route::post('dumpproduct', 'Products@dumpproduct');
+Route::get('import',['uses'=>'Products@import','middleware' => ['permission:import']]);
+Route::post('dumpproduct', ['uses'=>'Products@dumpproduct','middleware' => ['permission:import']]);
 Route::post('changedpt', 'Categorys@changedpt');
 Route::post('deletestore', 'Stores@deletestore');
-Route::post('deletedpartmt', 'Stores@deletedpartmt');
+Route::post('deletedpartmt', ['uses'=>'Stores@deletedpartmt','middleware' => ['permission:delete-departments']]);
 Route::post('roleupdate', ['uses'=>'RoleController@roleupdate','middleware' => ['permission:role-edit']]);
 Route::post('deleterole', ['uses'=>'RoleController@destroy','middleware' =>['permission:role-delete']]);
 Route::post('deleteduser', ['uses'=>'UserController@destroy','middleware' =>['permission:users-delete']]);
@@ -114,10 +114,10 @@ Route::post('storeprofiles', ['as' => 'store.update', 'uses' => 'Stores@updates'
 Route::post('state', 'StoreController@state');
 Route::post('city', 'StoreController@city');
 Route::post('createcity','StoreController@insertcity');
-Route::get('listOrders','OrdersController@listOrders');
+Route::get('listOrders', ['uses' => 'OrdersController@listOrders', 'middleware' => ['permission:order-list']]);
 Route::get('listcustomer','OrdersController@listCustomer');
 Route::post('getOrders','OrdersController@getOrders');
-Route::post('deleteOrder','OrdersController@deleteOrder');
+Route::post('deleteOrder',['uses' => 'OrdersController@deleteOrder', 'middleware' => ['permission:delete-order']]);
 Route::post('customerlist','OrdersController@CustomerList');
 Route::post('savebanner','BannerController@savebanner');
 Route::post('listbanner','BannerController@listbanner');
@@ -125,7 +125,7 @@ Route::post('banneredit','BannerController@banneredit');
 Route::post('bannerupdate','BannerController@bannerupdate');
 Route::post('bannerdelete','BannerController@bannerdelete');
 Route::post('getsingleorder','OrdersController@getsingleorder');
-Route::get('editorder/{id}','OrdersController@editOrder');
+Route::get('editorder/{id}',['uses' => 'OrdersController@editOrder', 'middleware' => ['permission:edit-order']]);
 Route::post('customupdate','OrdersController@customupdate');
 Route::post('updatestatus','OrdersController@updatestatus');
 
@@ -138,6 +138,7 @@ Route::post('updatestatus','OrdersController@updatestatus');
 Route::post('distanceList', 'GroceryWebservice@distanceList');
 Route::post('getStorelist', 'GroceryWebservice@getStorelist');
 /*Listing the entire category list of a grocery shop (store)*/
+Route::post('getDepartmentList', 'GroceryWebservice@getDepartmentList');
 Route::post('getCategoryList', 'GroceryWebservice@getCategoryList');
 //Route::get('getCategoryLists', 'GroceryWebservice@getCategoryListss');
 //Route::any('getCategoryListtest', 'GroceryWebservice@getCategoryListtest');

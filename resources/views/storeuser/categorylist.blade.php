@@ -31,9 +31,17 @@
         <div class="row">
             <div class="col-sm-4">
                 <div class="form-group" >
-                    <label class="control-label" for="product_name">Type</label><br>
-					<input type="radio" value="general" name="type"    onchange="GetdpttypeSearch(this);" ng-model="type"> General 
-                    <input type="radio" value="1" name="type"  onchange="GetdpttypeSearch(this);" ng-model="type"> Departments</div>
+                    <label class="control-label" for="product_name">Select</label><br>
+					<select  class="form-control alls" id="alls" ng-model="type" ng-change="selectetype(type)">
+                       <option value="all" >ALL</option>
+					   <option value="0">General</option>
+					   <option value="1">Departments</option>
+					   
+                       
+                    </select>
+					<div style="Display:none">
+					<input type="radio" value="general" name="type"   id="general" onchange="GetdpttypeSearch(this);" > General 
+                    <input type="radio" value="1" name="type"  id="dpt" onchange="GetdpttypeSearch(this);" > Departments</div></div>
             </div>
             
             <div class="col-sm-4 dpts hide" >
@@ -166,7 +174,7 @@
 							No Categories
 						</div></div>
 					</div>
-					<div class="inbox-table-row" ng-repeat="subCate in listcategory | filter:department | filter:type| filter:category">
+					<div class="inbox-table-row" ng-repeat="subCate in listcategory | filter:department |  filter:category |selectedTags:tags">
 						<div class="" >
 							<div class="s_col_1">
 								@{{ subCate.categoryname }}

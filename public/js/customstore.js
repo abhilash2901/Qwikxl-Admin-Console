@@ -211,7 +211,7 @@
      $(sel).parent().remove();
  }
 
- function Editstore() {
+/* function Editstore() {
      if ($('#store').parsley().validate()) {
          var form = $('#store').serializeArray();
          jQuery.ajax({
@@ -236,8 +236,32 @@
              }
          });
      }
- }
+ }*/
+ function Editstore() {  
+     if ($('#store').parsley().validate()) {
+        
 
+         $('#store').ajaxForm(function(options) {
+             var items = JSON.parse(options);
+              var s = items.msg;
+             $('html, body').animate({
+                 scrollTop: $(".changepasres").offset().top - 100
+             }, 'fast');
+             $(".changepasres").show();
+             $(".changepasres").html('<p class="alert alert-success">' + s + '</p>');
+			 if(items.image){
+				 $(".imageshow").html('<img src=' + base_url + '/' + items.image + ' width="50%" height="50px">');
+			 }
+              
+
+              setTimeout(function() {
+                        $(".changepasres").hide();location.reload();
+                        //window.location.replace(base_url + "/editstore");
+                    }, 1500);
+
+         });
+     }
+ }
  function deleteuser(elm) {
 
      var id = $(elm).data("id");

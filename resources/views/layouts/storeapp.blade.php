@@ -80,7 +80,7 @@
                         <a uib-dropdown-toggle href>
                             <span class="clear">
                                     <span class="block m-t-xs" align="center">
-                                        <strong class="font-bold"> {{ Auth::user()->firstname }} {{ Auth::user()->firstname }}</strong>
+                                        <strong class="font-bold"> {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</strong>
                                     </span>
                             <span class=" block m-t-xs" align="center">profile</span>
                             </span>
@@ -162,13 +162,16 @@
                     <a href="{{ url('addproduct')}}"><i class="fa fa-cog"></i><span class="nav-label ng-binding">Add Inventory </span></a>
 
                 </li> @endpermission 
+				@permission('import')
 				<li ng-class="{active: $state.includes('mailbox')}">
                     <a href="{{ url('import')}}"><i class="fa fa-cog"></i><span class="nav-label ng-binding">Import </span></a>
 
                 </li> 
+				@endpermission 
                     </ul>
                 </li>
 				
+				@permission('order-list')
 				<li ng-class="{active: $state.includes('pages')}"  class="treeview">
                     <a ui-sref="#"><i class="fa fa-th-large"></i> <span class="nav-label">ORDERS</span><span class="fa arrow"></span></a>
                    <ul class="nav nav-second-level collapse treeview-menu" >
@@ -176,13 +179,11 @@
                         <li ng-class="{active: $state.includes('mailbox')}">
                     <a href="{{ url('listOrders')}}"><i class="fa fa-cog"></i><span class="nav-label ng-binding">Orders </span></a>
 
-                </li> <li ng-class="{active: $state.includes('mailbox')}">
-                    <a href="{{ url('listcustomer')}}"><i class="fa fa-cog"></i><span class="nav-label ng-binding">Customer </span></a>
-
-                </li>
+                </li> 
                  
                     </ul>
                 </li>
+				@endpermission 
         </div>
     </nav>
     @endif
@@ -346,9 +347,21 @@
 	
   <script>
   $(document).ready(function(){
+	 // $('#datetimepicker').datetimepicker('setStartDate', '2012-01-01');
       $('.date').datepicker({
-		  dateFormat: 'dd-MMM-yyyy' 
+		  dateFormat: 'dd-MMM-yyyy' ,
+		    minDate: moment()
    });
+   $(".date").on('change',function(e){
+		//alert($(this).val());
+		$('#datess').datepicker({
+	     
+         startDate:  new Date($(".fromdate").val()),
+		 dateFormat: 'dd-MMM-yyyy' 
+		 
+     //this option for allowing user to select from year range
+        }); 
+	});
   });
  </script>
 </body>

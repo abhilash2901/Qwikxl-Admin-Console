@@ -51,13 +51,20 @@ class OrdersController extends Controller {
 			
 			->join('customers', 'customers.email', '=', 'orders.username')
 			->leftjoin('order_status_histories', 'order_status_histories.order_id', '=', 'orders.id')
+			
 			->leftjoin('order_status', 'order_status.id', '=', 'order_status_histories.status_id')
+			
 			
 		    ->select(DB::raw('sum(orderdetails.quantity) AS quantity'),'order_status.status as o','orders.createddate',DB::raw('sum(orderdetails.price) AS price'),'customers.firstname','orders.unique_id','orders.transaction_id','customers.lastname', 'orders.id as order_id', 'products.name', 'orders.status' ,'orders.grand_total')
 			->where('productinventories.store_id', $ids)
+			->where('order_status_histories.current_status_flag', 1)
+			
 		
 			->groupBy('orderdetails.orderid')
-		
+			->orderBy('orderdetails.id' ,'DESC')
+			
+            
+		    
 			->get();
 			$status =Status::get();
 			print_r(json_encode(array('orders'=>$numss,'statuss'=>$status)));
@@ -109,7 +116,7 @@ class OrdersController extends Controller {
 			->join('orders', 'orderdetails.orderid', '=', 'orders.id')
 			->join('stores', 'stores.id', '=', 'productinventories.store_id')
 			->join('customers', 'customers.email', '=', 'orders.username')
-		    ->select('orderdetails.createddate as cdate','customers.id as customer_id','orderdetails.quantity','orders.total','stores.name','orders.createddate','customers.firstname','customers.email','customers.address','customers.mobile','customers.country','orders.transaction_id','customers.lastname', 'orders.id as order_id','orderdetails.price','orders.transaction_id', 'orderdetails.price', 'products.name', 'orders.status' ,'orders.grand_total')
+		    ->select('orderdetails.createddate as cdate','customers.id as customer_id','orderdetails.quantity','orders.total','stores.name','orders.createddate','customers.firstname','customers.email','customers.address','customers.mobile','customers.country','orders.unique_id','orders.transaction_id','customers.lastname', 'orders.id as order_id','orderdetails.price','orders.transaction_id', 'orderdetails.price', 'products.name', 'orders.status' ,'orders.grand_total')
 			->where('orders.id', $input['id'])
 			->get();
 			$item = Product::
@@ -122,7 +129,21 @@ class OrdersController extends Controller {
 		    ->select('products.name','orderdetails.price','orderdetails.quantity')
 			->where('orders.id', $input['id'])
 			->get();
-			print_r(json_encode(array('single'=>$nums[0],'itemlist'=>$item )));
+			$items = Product::
+		     join('orderdetails', 'orderdetails.itemid', '=', 'products.id')
+			->join('productinventories', 'products.id', '=', 'productinventories.product_id')
+			
+			->join('orders', 'orderdetails.orderid', '=', 'orders.id')
+			->join('stores', 'stores.id', '=', 'productinventories.store_id')
+			->join('customers', 'customers.email', '=', 'orders.username')
+		    ->select(DB::raw('sum(orderdetails.quantity*orderdetails.price) AS total'))
+			->where('orders.id', $input['id'])
+			->get();
+			$status=DB::table('order_status_histories')
+			->join('order_status', 'order_status.id', '=', 'order_status_histories.status_id')
+			 ->select('order_status.status')
+			->orderBy('order_status_histories.id', 'desc')->first();
+			print_r(json_encode(array('single'=>$nums[0],'itemlist'=>$item ,'statuss'=>$status,'total'=>$items[0]->total)));
 	}public function CustomerList(Request $request) {
 		//return view('orders.listcustomer');
 		 $input = $request->all();
@@ -146,9 +167,24 @@ class OrdersController extends Controller {
 		 $inputs=array(
 		  'order_id'=>$input['order_id'],
 		  'description'=>$input['description'],
-		  'status_id'=>$input['status_id']
+		  'status_id'=>$input['status_id'],
+		  'current_status_flag'=>1
+		 ); 
+		 $inpt=array(
+		  
+		  'current_status_flag'=>0
 		 );
-		 $res =Orderstatus::insert($inputs);
+		 $count =Orderstatus::where('order_id',$input['order_id'])->get();
+		 if(count($count)>0){
+			$res= Orderstatus::where('order_id',$input['order_id']);
+            $res->update($inpt);
+			 //DB::update('update order_status_histories set current_status_flag = ? where order_id = ?', ['0',$input['order_id']]);
+
+			$res =Orderstatus::insert($inputs);
+		 }else{
+			 $res =Orderstatus::insert($inputs);
+		 }
+		 
 		 
          //$res->update($input);
 		 print_r(json_encode(array('status' => 'success ',  'class' => 'alert alert-success' ,'msg' => 'Updated Sucessfully')));

@@ -7,17 +7,133 @@ use App\Http\Controllers\Controller;
 use Response;
 use App\User;
 use App\Role;
+use App\Category;
 use App\Departments;
 use DB;
 use Session;
-use App\Category;
+
 use App\Product;
 use App\Banner;
 use App\Store;
 use input;
 use App\Http\Requests;
 use Hash;
+class SubCate
+    {
+        
+        public function getCategoriesdpt($ids,$id){
+			
 
+            //$categories=\App\Category::where('parent_id',0)->where("store_id", $id)->where("type", $type)->get();//united
+            $categories=\App\Category::join('departments', 'departments.id', '=', 'categories.departments_id')
+               
+                ->select('categories.id','categories.categoryname','categories.image')
+                ->where('categories.parent_id', 0)
+				->where('categories.store_id', $ids)
+				->where('departments.id', $id)
+                ->get();
+            $categories=$this->addRelation($categories);
+
+            return $categories;
+
+        } public function getCategoriesdptkey($ids,$id,$key){
+			
+
+            //$categories=\App\Category::where('parent_id',0)->where("store_id", $id)->where("type", $type)->get();//united
+            $categories=\App\Category::join('departments', 'departments.id', '=', 'categories.departments_id')
+               
+                ->select('categories.id','categories.categoryname','categories.image')
+                ->where('categories.parent_id', 0)
+				->where('categories.store_id', $ids)->where('categories.categoryname', 'like', '%' .$key . '%')
+				->where('departments.id', $id)
+                ->get();
+            $categories=$this->addRelation($categories);
+
+            return $categories;
+
+        } public function getCategoriesdpts($ids,$id,$category){
+			
+
+            //$categories=\App\Category::where('parent_id',0)->where("store_id", $id)->where("type", $type)->get();//united
+            $categories=\App\Category::join('departments', 'departments.id', '=', 'categories.departments_id')
+               
+                ->select('categories.id','categories.categoryname','categories.image')
+                ->where('categories.parent_id', 0)
+				->where('categories.store_id', $ids)
+				->where('departments.id', $id)
+				->where('categories.id', '!=', $category)
+                ->get();
+            $categories=$this->addRelation($categories);
+
+            return $categories;
+
+        } public function getCategories($id,$type){
+			
+
+            $categories=\App\Category::where('parent_id',0)->where("store_id", $id)->where("type", $type)->get();//united
+
+            $categories=$this->addRelation($categories);
+
+            return $categories;
+
+        } public function getCategoriesedit($ids,$id,$type){
+			
+
+            $categories=\App\Category::where('parent_id',0)->where("store_id", $ids)->where('id', '!=', $id)->where("type", $type)->get();//united
+
+            $categories=$this->addRelation($categories);
+
+            return $categories;
+
+        }public function showCategorieslist($ids){
+			
+
+            $categories=\App\Category::join('departments','departments.id','=','categories.departments_id')
+            
+             ->select('categories.*','departments.name as dptname ')
+             ->where('categories.parent_id',0)
+			 ->where("categories.store_id", $ids)
+			 ->get();//united
+
+            $categories=$this->addRelation($categories);
+
+            return $categories;
+
+        }public function getCategorieslist($ids){
+			
+
+            $categories=\App\Category::where('parent_id',0)->where("store_id", $ids)->get();//united
+
+            $categories=$this->addRelation($categories);
+
+            return $categories;
+
+        }
+
+        protected function selectChild($id)
+        {
+			$ids = Session::get('store_userid');
+            $categories=\App\Category::where('parent_id',$id)->get(); //rooney
+
+            $categories=$this->addRelation($categories);
+
+            return $categories;
+
+        }
+
+        protected function addRelation($categories){
+
+            $categories->map(function ($item, $key) {
+                
+                $sub=$this->selectChild($item->id); 
+                
+                return $item=array_add($item,'subCategory',$sub);
+
+            });
+
+            return $categories;
+        }
+    }
 class GroceryWebservice extends Controller {
 
     /**
@@ -39,13 +155,52 @@ class GroceryWebservice extends Controller {
         print_r(json_encode($data));
 
 
-	} public function getCategoryList(Request $request) {
+	} public function getDepartmentList(Request $request) {
 		$input = $request->all();
 		if(isset($input['keyword'])){
-			$categories = Category::select('id','categoryname','image')->where("store_id",$input['store_id'])->where('categoryname', 'like', '%' .$input['keyword'] . '%')->get();
+			$categories = DB::table('departments')->select('id','name')->where("type",0)->where("store_id",$input['store_id'])->where('name', 'like', '%' .$input['keyword'] . '%')->get();
 		}else{
-			$categories = Category::select('id','categoryname','image')->where("store_id",$input['store_id'])->get();
+			$categories = DB::table('departments')->select('id','name')->where("type",0)->where("store_id",$input['store_id'])->get();
 		
+		}
+		$banner=Banner::select('image')->where("store_id",$input['store_id'])->limit(3)->get();
+		
+        if(count($categories)>0){
+			$data = array("Status"=>'true',"categoryDetails"=>$categories ,"banners"=>$banner); 
+		}else{
+			$data = array("Status"=>'false',"categoryDetails"=>$categories ); 
+		}
+        print_r(json_encode($data));
+	} 
+	public function getCategoryList(Request $request) {
+		$input = $request->all();
+		if(isset($input['keyword'])){
+			
+			$subcate=new SubCate;
+		try {
+             $categories=$subcate->getCategoriesdptkey($input['store_id'],$input['department_id'],$input['keyword']);
+           // $categories=$subcate->getCategoriesdpt($input['store_id'],$input['department_id']);
+            
+        } catch (Exception $e) {
+            
+           
+        }
+			
+			
+			//$categories = Category::select('id','categoryname','image')->where("store_id",$input['store_id'])->where('categoryname', 'like', '%' .$input['keyword'] . '%')->get();
+		}else{
+			//$categories = Category::select('id','categoryname','image')->where("store_id",$input['store_id'])->get();
+		
+		   
+			$subcate=new SubCate;
+		try {
+            // $categories=$subcate->getCategoriesdpt($input['store_id'],$input['department_id'],$input['keyword']);
+            $categories=$subcate->getCategoriesdpt($input['store_id'],$input['department_id']);
+            
+        } catch (Exception $e) {
+            
+           
+        }
 		}
 		$banner=Banner::select('image')->where("store_id",$input['store_id'])->limit(3)->get();
 		
@@ -57,7 +212,9 @@ class GroceryWebservice extends Controller {
         print_r(json_encode($data));
 
 
-	} public function getCategoryListtest(Request $request) {
+	}
+	
+	public function getCategoryListtest(Request $request) {
 		//$id=Request::post('store_id');
 		//$postInput = file_get_contents('php://input');
 //$datas = json_decode($postInput, true);

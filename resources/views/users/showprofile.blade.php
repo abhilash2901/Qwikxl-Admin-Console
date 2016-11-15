@@ -132,7 +132,7 @@
                        
                         <div class="form-group">
                             <div class="col-lg-offset-2 col-lg-8">
-                                <button class="btn btn-md btn-primary" type="button" onClick="Changepass()">Create User</button>
+                                <button class="btn btn-md btn-primary" type="button" onClick="Changepass()">Save</button>
                             </div>
                         </div>
                     </form>

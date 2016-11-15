@@ -33,10 +33,10 @@
                 <div class="ibox-content" >
                     <div class="row">
                        <div class="changepasres" tabindex='1'></div>
-                        <form class="form-horizontal" id="store">
+                        <form class="form-horizontal" id="store"  method="POST" action="{{ url('editstoredata')}}">
                         <div class="form-group"><label class="col-sm-2 control-label">Store ID</label>
 
-                            <div class="col-sm-8"><input  type="text"  name="unique_id" id="uneaque_id"  placeholder="002456"  readonly="" class="form-control" value="@{{detailsstores.uneaque_id}}"> <span
+                            <div class="col-sm-8"><input  type="text"   id="uneaque_id"  placeholder="002456"  readonly="" class="form-control" value="@{{detailsstores.uneaque_id}}"> <span
                                     class="help-block m-b-none">Generated automatically</span>
                             </div>
                         </div>
@@ -175,10 +175,19 @@
 
 
                         <div class="hr-line-dashed"></div>
+							 <div class="form-group"><label class="col-sm-2 control-label">Upload logo</label>
+                                <div class="col-sm-6">
+                                    <div class="fileinput fileinput-new" data-provides="fileinput" >
+                                        <input type="file"  name="image">
+                                    </div>
+                                </div> 
+                            </div>
+							<div class="imageshows" style="text-align:center;margin-bottom:10px">
+							</div>
                         <div class="form-group">
                             <div class="col-sm-6 col-sm-offset-2">
                                 
-                                <button class="btn btn-primary" type="button" onClick="Editstore()">Save</button>
+                                <button class="btn btn-primary" type="submit" onClick="Editstore()">Save</button>
 								
                     
 							
@@ -286,8 +295,8 @@
                         <div class="col-lg-8"><input type="text" placeholder="Department 1"  value ="<?php echo $dps->name;?>" class="form-control" name="name[]" required> 
 						<input type="hidden" placeholder="Department 1"  value ="<?php echo $dps->id;?>" class="form-control" name="id[]" required> 
                          
-                        </div><a data-toggle="modal" data-target="#Deletedpt" onclick="GetDptid(this)" data-id="<?php echo $dps->id;?>"><span class="" ><img src="{{ asset('img/remove-icon.png')}}">
-                    </span></a>
+                        </div>@permission('delete-departments')<a data-toggle="modal" data-target="#Deletedpt" onclick="GetDptid(this)" data-id="<?php echo $dps->id;?>"><span class="" ><img src="{{ asset('img/remove-icon.png')}}">
+                    </span></a>@endpermission
                     </div><?php ++$i; ?>
 					@endforeach
 					

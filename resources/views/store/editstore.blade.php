@@ -49,7 +49,7 @@
                 <div class="ibox-content">
                     <div class="row">
                         <div class="changepasres" tabindex='1'></div>
-                        <form class="form-horizontal" id="store">
+                        <form class="form-horizontal" id="store" method="POST" action="{{ url('storeedit')}}">
                             <div class="form-group"><label class="col-sm-2 control-label">Store ID</label>
 
                                 <div class="col-sm-8"><input  type="text"  name="unique_id" id="uneaque_id"  placeholder="002456"  readonly="" class="form-control"> <span
@@ -192,11 +192,20 @@
 
 
                             <div class="hr-line-dashed"></div>
+							 <div class="form-group"><label class="col-sm-2 control-label">Upload logo</label>
+                                <div class="col-sm-6">
+                                    <div class="fileinput fileinput-new" data-provides="fileinput" >
+                                        <input type="file"  name="image">
+                                    </div>
+                                </div> 
+                            </div>
+							<div class="imageshow" style="text-align:center;margin-bottom:10px">
+							</div>
                             <div class="form-group">
                                 <div class="col-sm-6 col-sm-offset-2">
                                       <input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
 									  
-                                    <button class="btn btn-primary" type="button" onClick="Edistore()">Save</button>
+                                    <button class="btn btn-primary" type="submit" onClick="Edistore()">Save</button>
 									
                                 </div>
                             </div>

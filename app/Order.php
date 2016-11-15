@@ -9,6 +9,7 @@ use DB;
 class Order extends Model
 
 {
+	 protected $table = 'orders';
  protected $fillable = [
         'username', 'pick_type', 'delivery_phone','total','status','createddate','grand_total','stripe_token','transaction_id'
 ];

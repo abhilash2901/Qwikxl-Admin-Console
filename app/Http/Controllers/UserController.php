@@ -227,7 +227,7 @@ class UserController extends Controller {
                 $user->update($input);
                 print_r(json_encode(array('status' => 'success', 'msg' => 'Password Changed Succesfully')));
             } else {
-                print_r(json_encode(array('status' => 'failed', 'msg' => 'Current Password is incorect ')));
+                print_r(json_encode(array('status' => 'failed', 'msg' => 'Current Password is incorrect ')));
             }
         }
     }

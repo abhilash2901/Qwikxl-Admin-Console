@@ -35,7 +35,7 @@
 									<br>
 									
                                     <dl class="dl-horizontal">
-                                        <dt>Status:</dt> <dd><span class="label label-primary">Active</span></dd>
+                                        <dt>Status:</dt> <dd><span class="label label-primary">@{{statuss.status}}</span></dd>
                                     </dl>
                                 </div>
                             </div>
@@ -44,7 +44,7 @@
                                     <dl class="dl-horizontal">
 
                                         <dt>Created by:</dt> <dd>@{{getsingleorder.firstname}} @{{getsingleorder.lastname}} </dd>
-                                        <dt>Order Date:</dt> <dd> <?php echo date('M d,Y  h:i:sa',strtotime( $result[0]->cdate));?>
+                                        <dt>Order Date:</dt> <dd> @{{getsingleorder.createddate | date :" MMMM d, y"}}<!--?php echo date('M d,Y  h:i:sa',strtotime( $result[0]->cdate));?-->
 										</dd>
 										<dt>Purchased From:</dt> <dd>   @{{getsingleorder.name}}</dd>
 										<dt>Payment type:</dt> <dd>  Cash on Delivery</dd>
@@ -203,7 +203,7 @@
 									<tbody>
 									<tr>
 										<td><strong>Sub Total :</strong></td>
-										<td>$ @{{getsingleorder.total}}</td>
+										<td>$ @{{total}}</td>
 									</tr>
 									<!--tr>
 										<td><strong>TAX :</strong></td>
@@ -211,7 +211,7 @@
 									</tr-->
 									<tr>
 										<td><strong>TOTAL :</strong></td>
-										<td>$ @{{getsingleorder.total}}</td>
+										<td>$ @{{total}}</td>
 									</tr>
 									</tbody>
 								</table>

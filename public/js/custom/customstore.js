@@ -20,14 +20,59 @@ App.filter('dateRange', function() {
             });
         }
     });
+App.filter('selectedTags', function() {
+    return function(listcategory, tags) {
+        return listcategory.filter(function(task) {
+            if(tags !=''){
+            for (var i in task.type) {
+                if (tags.indexOf(task.type[i]) != -1) {
+                    return true;
+                }
+            }
+            return false;
+			}else{
+				return listcategory;
+			}
 
+        });
+		return true;
+		
+    };
+});
  App.controller('store', function ($scope,$rootScope,$http,$timeout,WebService,$filter) {
 	 
+	  setTimeout(function() {
+                     $("#alls").val('all').trigger("change");
+                 }, 500); setTimeout(function() {
+                     $("#status").val('0').trigger("change");
+                 }, 500);
 	 $scope.storeusersid=function(id){
 		 
 		 $scope.storeuserid=id;
 	    }; 
-	 $scope.liststoreuser= function(){
+		 $scope.tags = [];
+	 $scope.selectetype= function(type){
+		// alert(type);
+		$scope.tags = [];
+		 if(type !='all'){
+			 if(type==1){
+				 $("#dpt").click();
+			 }else{
+				 $("#general").click();
+			 }
+		 var i = $.inArray(type,  $scope.tags);
+		
+        if (i < -1) {
+             $scope.tags.splice(i, 1);
+			
+        } else {
+            
+			$scope.tags.push(type);
+		}
+		console.log($scope.tags)
+		 }
+	   };
+		 $scope.liststoreuser= function(){
 		
 		 post_data  ='';
 		    link="/liststoreuser";
@@ -38,6 +83,11 @@ App.filter('dateRange', function() {
 			    $scope.detailsstores = response.users;
 				$scope.detailsusers = response.storeuser;
 				console.log( $scope.detailsstores);
+				var s =response.users;
+				//alert(s.logo);
+				if(s.logo){
+				 $(".imageshows").html('<img src=' + base_url + '/' + s.logo + ' width="50%" height="100px">');
+			 }
 				$(".country").val($scope.detailsstores.country).trigger("change");
 				
 				setTimeout(function() {
@@ -105,7 +155,19 @@ App.filter('dateRange', function() {
 			    $scope.customerlist=response;
 			});
 		 };
-		 
+		 $scope.clear=false;
+		 $scope.Clear= function(){
+			 $scope.clear=true;
+			 if($scope.clear == true){
+			     $scope.orderid='';
+				 $scope.unique='';
+				 $scope.status='0';
+				 $scope.statust='0'; 
+				 $scope.from=''; $scope.to='';
+				 
+			   }
+			
+		 };
 		 $scope.Getsingleorder= function(id){
 			 
 			 post_data  ={'id':id};
@@ -116,6 +178,8 @@ App.filter('dateRange', function() {
 			promise.then(function(response){  
 			    $scope.getsingleorder=response.single;
 				$scope.getitemlist=response.itemlist;
+				$scope.statuss=response.statuss;
+				$scope.total=response.total;
 			});
 		 };
 		  $scope.Editcustm= function(){
@@ -200,6 +264,7 @@ App.filter('dateRange', function() {
 		  
      }
 		 };
+		 
 		 $scope.Changedate= function(){
 			 
 			 
@@ -217,9 +282,9 @@ App.filter('dateRange', function() {
         var itemDate = item[property];
         var s =$filter('date')(new Date(startDate), "dd-MMM-yyyy");
         var e =$filter('date')(new Date(endDate), "dd-MMM-yyyy");
-       console.log(s );
-	   console.log(e );
-        if (itemDate >= s && itemDate <= e) return true;
+       //console.log(s );
+	   //console.log(e );
+        if (itemDate >= s && itemDate <= e ) return true;
         return false;
     }
 			}

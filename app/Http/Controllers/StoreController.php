@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 use App\Http\Controllers\Controller;
 use Response;
 use App\User;
@@ -145,7 +146,7 @@ class StoreController extends Controller {
           ]); */
           $input['city']='';
 		  $input['state']='';
-		  $input['country']='';
+		  $input['country']='';$input['image']='';
         $input = $request->all();
        
        if(isset($input['mcity']))
@@ -159,7 +160,21 @@ class StoreController extends Controller {
         
        
        }
+         if (Input::file()) {
 
+            $image = Input::file('image');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            $name = Input::file('image')->getClientOriginalName();
+            $extension = $image->getClientOriginalExtension();
+            // RENAME THE UPLOAD WITH RANDOM NUMBER 
+            $fileName = rand(11111, 99999) . '.' . $extension;
+            $path = public_path('logo/');
+
+
+            $image->move($path, $fileName);
+            $input['image'] = 'logo/' . $fileName;
+        }
+		
         $item = array([
                 "unique_id" => $input['unique_id'],
                 "name" => $input['name'],
@@ -174,7 +189,8 @@ class StoreController extends Controller {
                 "mail" => $input['mail'],
                 "website" => $input['website'],
 				"latitude" => $input['latitude'],
-                "longitude" => $input['longitude']
+                "longitude" => $input['longitude'],
+				   "logo"=>$input['image']
         ]);
 
 
@@ -193,11 +209,11 @@ class StoreController extends Controller {
     }
 
     public function storeedit(Request $request) {
-
-         $id="";
-		 $input['city']='';
-		  $input['state']='';
-		  $input['country']='';
+        $input['city']='';
+	    $input['state']='';
+	    $input['country']='';
+		$input['image']='';
+	 
 		$input = $request->all();
        //var_dump($input);
 	   //exit;
@@ -212,11 +228,29 @@ class StoreController extends Controller {
         
        
      }
-        $input = $request->all();
-        $data = DB::table('stores')->orderBy('id', 'desc')->first();
-		if($data){
-			$id = $data->id;
+	 
+         if (Input::file()) {
+
+            $image = Input::file('image');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            $name = Input::file('image')->getClientOriginalName();
+            $extension = $image->getClientOriginalExtension();
+            // RENAME THE UPLOAD WITH RANDOM NUMBER 
+            $fileName = rand(11111, 99999) . '.' . $extension;
+            $path = public_path('logo/');
+
+
+            $image->move($path, $fileName);
+            $input['image'] = 'logo/' . $fileName;
+        }
+		$id = $input['id'];
+        if($input['image'] ){
+			$input['image']=$input['image'];
+		}else{
+			 $row =Store::where("id", $id)->get();
+			 $input['image']=$row[0]->logo;
 		}
+       
 		
         /*$item = array([
                 "unique_id" => $input['unique_id']+$id,
@@ -242,16 +276,18 @@ class StoreController extends Controller {
 
         // move here
         // DB::table('stores')->insert($item );
-        $id = $input['id'];
+        
+		
 
-               DB::update('update stores set name = ? ,corporateidentifier = ? ,address = ? ,address2 = ? ,city = ?,state = ? ,zip = ?,latitude=?,longitude=?,phone = ?,mail = ?,website = ? where id = ?', [$input['name'], $input['corporateidentifier'], $input['address'], $input['address2'], $input['city'], $input['state'], $input['zip'],$input['latitude'],$input['longitude'], $input['phone'], $input['mail'], $input['website'], $id]);
+               DB::update('update stores set name = ? ,corporateidentifier = ? ,address = ? ,address2 = ? ,country = ?,city = ?,state = ? ,zip = ?,latitude=?,longitude=?,phone = ?,mail = ?,website = ?,logo = ? where id = ?', [$input['name'], $input['corporateidentifier'], $input['address'], $input['address2'], $input['country'],$input['city'], $input['state'], $input['zip'],$input['latitude'],$input['longitude'], $input['phone'], $input['mail'], $input['website'],$input['image'], $id]);
   
 		/* $id = $input['id'];
 		  $user = Store::find($id);
 
                 $user->update($input);*/
+				 $data = DB::table('stores')->where('id',$input['id'])->get();
 
-        print_r(json_encode(array('status' => 'success', 'msg' => 'Store Created Succesfully')));
+        print_r(json_encode(array('status' => 'success', 'msg' => 'Store Created Succesfully','image'=>$data[0]->logo)));
     }
 
     public function deleteusers(Request $request) {

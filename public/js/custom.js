@@ -97,7 +97,10 @@ $(document).ready(function() {
                 $('#snumber').val(snumber);
                 $('#saddress2').val(saddress2);
                 //$("#role_id").val(role_id);
-				
+				if(res[0].logo){
+					$(".imageshow").html('<img src=' + base_url + '/' + res[0].logo + ' width="50%" height="50px">');
+				}
+				 
                 $(".country").val(country).trigger("change");
 				//selectcountry();
 				
@@ -419,7 +422,7 @@ function Changepass() {
     }
 }
 
-function Addstore() {
+/*function Addstore() {
     if ($('#store').parsley().validate()) {
         var form = $('#store').serializeArray();
         jQuery.ajax({
@@ -453,7 +456,55 @@ function Addstore() {
         });
     }
 }
+*/
 
+ function Addstoress() {  
+     if ($('#store').parsley().validate()) {
+   
+
+         $('#store').ajaxForm(function(options) {
+             var items = JSON.parse(options);
+              var s = items.msg;
+             $('html, body').animate({
+                 scrollTop: $(".updatemessage").offset().top - 100
+             }, 'fast');
+             $(".updatemessage").show();
+             $(".updatemessage").html('<p class="alert alert-success">' + s + '</p>');
+    
+
+              setTimeout(function() {
+                        $(".updatemessage").hide();
+                        window.location.replace(base_url + "/editstore");
+                    }, 1500);
+
+         });
+     }
+ } function Edistore() {  
+     if ($('#store').parsley().validate()) {
+        
+
+         $('#store').ajaxForm(function(options) {
+             var items = JSON.parse(options);
+              var s = items.msg;
+             $('html, body').animate({
+                 scrollTop: $(".changepasres").offset().top - 100
+             }, 'fast');
+             $(".changepasres").show();
+             $(".changepasres").html('<p class="alert alert-success">' + s + '</p>');
+			 if(items.image){
+				 $(".imageshow").html('<img src=' + base_url + '/' + items.image + ' width="50%" height="100px">');
+			 }
+              
+
+              setTimeout(function() {
+                        $(".changepasres").hide();
+                        window.location.replace(base_url + "/editstore");
+                    }, 1500);
+
+         });
+     }
+ }
+ /*
 function Edistore() {
     if ($('#store').parsley().validate()) {
         var form = $('#store').serializeArray();
@@ -485,7 +536,7 @@ function Edistore() {
         });
     }
 }
-
+*/
 function editdept() {
     if ($('#dept').parsley().validate()) {
         var form = $('#dept').serializeArray();

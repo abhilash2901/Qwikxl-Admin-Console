@@ -78,7 +78,7 @@
                         <a uib-dropdown-toggle href>
                             <span class="clear">
                                     <span class="block m-t-xs" align="center">
-                                        <strong class="font-bold"> {{ Auth::user()->firstname }} {{ Auth::user()->firstname }}</strong>
+                                        <strong class="font-bold"> {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</strong>
                                     </span>
                             <span class=" block m-t-xs" align="center">profile</span>
                             </span>

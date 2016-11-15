@@ -16,6 +16,7 @@ use App\Order;
 use App\Country;
 use App\Product;
 use App\Orderdetail;
+use App\Orderstatus;
 use App\Productinventory;
 use App\Store;
 use Stripe\Stripe;
@@ -94,7 +95,8 @@ $customer = \Stripe\Customer::create(array(
 				
 				'grand_total'=>$grand_total,
 				'stripe_token'=>$stripe_token,
-				'transaction_id'=>$transaction_id
+				'transaction_id'=>$transaction_id,
+				'unique_id'=>mt_rand(100000,999999)
 				);
 				$order = Order::insert($inputs);
 				 $data = Order::orderBy('id', 'desc')->first();
@@ -129,6 +131,13 @@ $customer = \Stripe\Customer::create(array(
 					$result = mysql_query( $sql3 );*/
 					//var_dump($qnty[0]->quantity);
 					//exit;
+					$inputs=array(
+					  'order_id'=>$order_id,
+					  
+					  'status_id'=>3,
+					  'current_status_flag'=>1
+					 );
+					$res =Orderstatus::insert($inputs);
 					$remainingQuantity = $qnty[0]->quantity - $item->quantity ;
 					if($remainingQuantity < 0) {
 						$remainingQuantity = 0;
@@ -141,6 +150,7 @@ $customer = \Stripe\Customer::create(array(
 					);
 					$quantitys = Productinventory::where('product_id',$item->item_id);
                     $quantitys->update($quantitysinpt);
+					
 					/*$sql4 = "update item set quantity = '$remainingQuantity' where id = '".$item->item_id."'";
 					$result3 = mysql_query( $sql4 );*/
 					
@@ -174,7 +184,7 @@ $customer = \Stripe\Customer::create(array(
 	 }
 	  public function orderDetails(Request $request) {
 		  $inputs = $request->all();
-		 $num = Order::select('id', 'createddate')->where('username',$inputs['userid'])->get();
+		 $num = Order::select('id', 'createddate','unique_id')->where('username',$inputs['userid'])->orderBy('id','DESC')->get();
 		  //print_r($num);
 		 // echo count($num);
            if(count($num)>0){
@@ -193,11 +203,11 @@ $customer = \Stripe\Customer::create(array(
 			->where('orders.id', $inputs['orderid'])
 			
 			->get();
-			$nums = Orderdetail::selectRaw('sum(price) as sum')->where('orderid', $inputs['orderid'])->get();
+			$nums = Orderdetail::selectRaw('sum(quantity*price)as total')->where('orderid', $inputs['orderid'])->get();
 		 // print_r($nums);
 		 // echo count($nums);
            if(count($num)>0){
-			   $data =array('orderDetails'=>$num ,'Status'=>'Success','Total'=>$nums[0]->sum);
+			   $data =array('orderDetails'=>$num ,'Status'=>'Success','Total'=>$nums[0]->total);
 		   }else{
 			   $data =array('Status'=>'No Record found !' );
 			   

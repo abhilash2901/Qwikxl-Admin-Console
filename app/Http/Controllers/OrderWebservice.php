@@ -102,6 +102,7 @@ $customer = \Stripe\Customer::create(array(
 				 $data = Order::orderBy('id', 'desc')->first();
 
 				$order_id = $data->id;
+				
 				/*$sql = "SELECT reward_point FROM customers WHERE email = '".$username."'";	
 				$result = mysql_query( $sql );
 				$balanceReward = intval(mysql_fetch_assoc($result)['reward_point'])-$rewardPoint;
@@ -109,7 +110,12 @@ $customer = \Stripe\Customer::create(array(
 				
 				$sql = "UPDATE customers SET reward_point = '$rewardedpoint' WHERE email = '".$username."'";
 				$result = mysql_query( $sql );*/
-				
+				$inputss=array(
+					  'order_id'=>$order_id,
+					  
+					  'status_id'=>3,
+					  'current_status_flag'=>1
+					 );
 				foreach ($input->cart as $item)
 				{
 				    $inputdetails=array(
@@ -121,6 +127,7 @@ $customer = \Stripe\Customer::create(array(
 						'createddate'=>$createddate,
 						
 					);
+					
 				    $orderdetails = Orderdetail::insert($inputdetails);
 					//$sql2 = "INSERT INTO orderdetails (orderid, itemid, quantity, price, createddate)  VALUES ('$order_id', '".$item->item_id."', '".$item->quantity."', '".$item->price."', '$createddate')";
 					//$result2 = mysql_query($sql2 );
@@ -131,13 +138,9 @@ $customer = \Stripe\Customer::create(array(
 					$result = mysql_query( $sql3 );*/
 					//var_dump($qnty[0]->quantity);
 					//exit;
-					$inputs=array(
-					  'order_id'=>$order_id,
-					  
-					  'status_id'=>3,
-					  'current_status_flag'=>1
-					 );
-					$res =Orderstatus::insert($inputs);
+					
+					$res =Orderstatus::insert($inputss);
+					
 					$remainingQuantity = $qnty[0]->quantity - $item->quantity ;
 					if($remainingQuantity < 0) {
 						$remainingQuantity = 0;
@@ -190,7 +193,7 @@ $customer = \Stripe\Customer::create(array(
            if(count($num)>0){
 			   $data =array('orderDetails'=>$num ,'Status'=>'Success');
 		   }else{
-			   $data =array('Status'=>'No Record found !' );
+			   $data =array('Status'=>'Failed','orderDetails'=>''  );
 			   
 		   }
 		  print_r(json_encode($data));

@@ -89,6 +89,12 @@ class BannerController  extends Controller {
 				$image->move($path, $fileName);
 				$input['image'] = 'banner/' . $fileName;
 			}
+			if($input['image']){
+				$input['image'] =$input['image'];
+			}else{
+				$res = Banner::where('id',$input['id'])->get();
+				$input['image']=$res[0]->image;
+			}
 			
 			$res = Banner::where('id',$input['id']);
             $res->update($input);

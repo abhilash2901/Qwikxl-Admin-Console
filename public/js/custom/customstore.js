@@ -83,6 +83,7 @@ App.filter('selectedTags', function() {
 			    $scope.detailsstores = response.users;
 				$scope.detailsusers = response.storeuser;
 				console.log( $scope.detailsstores);
+				$scope.storesid=$scope.detailsstores.id;
 				var s =response.users;
 				//alert(s.logo);
 				if(s.logo){
@@ -222,7 +223,7 @@ App.filter('selectedTags', function() {
 			  
 		    };
 			 $scope.listbanner= function(id){
-			
+			   
 			 post_data  ={"id":id};
 		    link="/listbanner";
 		

@@ -43,7 +43,29 @@ class OrdersController extends Controller {
     }
 	public function getOrders(Request $request) {
 		 $ids = Session::get('store_userid');
-      
+           $nums = Product::
+			join('productinventories', 'products.id', '=', 'productinventories.product_id')
+			->join('orderdetails', 'orderdetails.itemid', '=', 'products.id')
+			->join('orders', 'orderdetails.orderid', '=', 'orders.id')
+			
+			->join('customers', 'customers.email', '=', 'orders.username')
+		    ->leftjoin('order_status_histories', 'order_status_histories.order_id', '=', 'orders.id')
+			
+			->leftjoin('order_status', 'order_status.id', '=', 'order_status_histories.status_id')
+			
+			
+		    ->select('order_status.status as o','orders.createddate',DB::raw('sum((orderdetails.price*orderdetails.quantity))  AS price'),DB::raw('sum(orderdetails.quantity) AS quantity'),'customers.firstname','orders.unique_id','orders.transaction_id','customers.lastname', 'orders.id as order_id', 'products.name', 'orders.status' ,'orders.grand_total')
+			->where('productinventories.store_id', $ids)
+			->where('order_status_histories.current_status_flag', 1)
+			
+		
+			->groupBy('orders.id')
+			->orderBy('orders.id' ,'DESC')
+			
+            
+		    
+			->get();
+			
 			$numss =Order::
 			join('orderdetails', 'orderdetails.orderid', '=', 'Orders.id' )
 			->join('products', 'products.id', '=', 'orderdetails.itemid')
@@ -55,7 +77,7 @@ class OrdersController extends Controller {
 			->leftjoin('order_status', 'order_status.id', '=', 'order_status_histories.status_id')
 			
 			
-		    ->select(DB::raw('sum(orderdetails.quantity) AS quantity'),'order_status.status as o','orders.createddate',DB::raw('sum(orderdetails.price) AS price'),'customers.firstname','orders.unique_id','orders.transaction_id','customers.lastname', 'orders.id as order_id', 'products.name', 'orders.status' ,'orders.grand_total')
+		    ->select(DB::raw('sum(orderdetails.quantity) AS quantity'),'order_status.status as o','orders.createddate',DB::raw('sum((orderdetails.price*orderdetails.quantity)) AS price'),'customers.firstname','orders.unique_id','orders.transaction_id','customers.lastname', 'orders.id as order_id', 'products.name', 'orders.status' ,'orders.grand_total')
 			->where('productinventories.store_id', $ids)
 			->where('order_status_histories.current_status_flag', 1)
 			
@@ -67,7 +89,7 @@ class OrdersController extends Controller {
 		    
 			->get();
 			$status =Status::get();
-			print_r(json_encode(array('orders'=>$numss,'statuss'=>$status)));
+			print_r(json_encode(array('orders'=>$nums,'statuss'=>$status)));
     }
 
 	public function deleteOrder(Request $request) {
@@ -142,8 +164,10 @@ class OrdersController extends Controller {
 			$status=DB::table('order_status_histories')
 			->join('order_status', 'order_status.id', '=', 'order_status_histories.status_id')
 			 ->select('order_status.status')
-			->orderBy('order_status_histories.id', 'desc')->first();
-			print_r(json_encode(array('single'=>$nums[0],'itemlist'=>$item ,'statuss'=>$status,'total'=>$items[0]->total)));
+			 ->where('order_status_histories.current_status_flag', 1)
+			 ->where('order_status_histories.order_id', $input['id'])
+			->orderBy('order_status_histories.id', 'desc')->get();
+			print_r(json_encode(array('single'=>$nums[0],'itemlist'=>$item ,'statuss'=>$status[0],'total'=>$items[0]->total)));
 	}public function CustomerList(Request $request) {
 		//return view('orders.listcustomer');
 		 $input = $request->all();

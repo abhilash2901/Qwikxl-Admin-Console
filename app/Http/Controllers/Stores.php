@@ -66,7 +66,7 @@ class Stores extends Controller {
     public function editstoredata(Request $request) {
 		
         $input = $request->all();
-       
+       $id =$input['id'];
        if(isset($input['mcity']))
        {
         $cityinsert=array(["name"=>$input['mcity'],"state_id"=>$input['state']]);
@@ -137,7 +137,7 @@ class Stores extends Controller {
                 $user->update($input);
                 print_r(json_encode(array('status' => 'success', 'msg' => 'Password Changed Succesfully')));
             } else {
-                print_r(json_encode(array('status' => 'failed', 'msg' => 'Current Password is incorect ')));
+                print_r(json_encode(array('status' => 'failed', 'msg' => 'Current Password is incorrect ')));
             }
         }
     }

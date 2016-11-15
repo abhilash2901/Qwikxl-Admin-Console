@@ -362,7 +362,7 @@
 											<label class="col-sm-2 control-label">Ad Name</label>
 											<div class="col-sm-6">
 												<input class="form-control" type="text" required name="title">
-												<input class="form-control stores_id" type="hidden"  name="store_id" value="<?php echo Session::get('store_id')?>">
+												<input class="form-control stores_id" type="hidden"  name="store_id" value="<?php echo Session::get('store_userid')?>">
 											</div>
 										</div>
 										<div class="form-group"><label class="col-sm-2 control-label">Upload Banner</label>
@@ -399,7 +399,7 @@
 							</div>
 							<div class="ibox-content" style="display: block;" >
                                 
-								<table class="table" ng-init="listbanner('<?php echo Session::get('store_id')?>');">
+								<table class="table" ng-init="listbanner('<?php echo Session::get('store_userid')?>');">
 									<thead>
 									<tr>
 										<th>#</th>

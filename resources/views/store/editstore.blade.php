@@ -425,7 +425,7 @@
 									<tbody>
 									<tr ng-show="listbanner.length==0" colspan="4"><td>No Banners</td></tr>
 									<tr dir-paginate="list in listbanner | itemsPerPage:7">
-										<td>@{{$index}}</td>
+										<td>@{{$index+1}}</td>
 										<td> 
 							             <img src="@{{list.image}}" width="50" height="50"></td> <!-- Image -->
 										<td>@{{list.title}}</td>

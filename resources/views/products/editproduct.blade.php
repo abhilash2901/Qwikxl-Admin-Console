@@ -43,7 +43,7 @@
                 <div class="form-group"><label class="col-lg-2 control-label">Name</label>
 
                     <div class="col-lg-8">
-                        <input  type="text" name="name"  placeholder="name" value="{{$data->name}}" data-parsley-trigger='keyup' data-parsley-type='^[a-zA-Z0-9 ]*$' data-parsley-minlength='3' required class="form-control">							
+                        <input  type="text" name="name"  placeholder="name" value="{{$data->name}}" data-parsley-trigger="keyup" data-parsley-pattern="^[a-zA-Z0-9 ]*$" data-parsley-minlength="3"  required class="form-control">							
                         <span
                             class="help-block m-b-none"></span>
                     </div>

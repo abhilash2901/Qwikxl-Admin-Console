@@ -29,7 +29,7 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="m-b-md">
-                                        <h2>#@{{getsingleorder.transaction_id}} (Order Number)</h2>
+                                        <h2>#@{{getsingleorder.unique_id}} (Order Number)</h2>
                                     </div>
 									
 									<br>
@@ -46,8 +46,8 @@
                                         <dt>Created by:</dt> <dd>@{{getsingleorder.firstname}} @{{getsingleorder.lastname}} </dd>
                                         <dt>Order Date:</dt> <dd> @{{getsingleorder.createddate | date :" MMMM d, y"}}<!--?php echo date('M d,Y  h:i:sa',strtotime( $result[0]->cdate));?-->
 										</dd>
-										<dt>Purchased From:</dt> <dd>   @{{getsingleorder.name}}</dd>
-										<dt>Payment type:</dt> <dd>  Cash on Delivery</dd>
+										<dt>Transaction ID:</dt> <dd>   @{{getsingleorder.transaction_id}}</dd>
+										<dt>Payment type:</dt> <dd>  Online Transaction</dd>
 
                                     </dl>
                                 </div>

@@ -20,7 +20,7 @@ use App\Product;
 use App\Orderdetail;
 use App\Productinventory;
 use App\Store;
-
+use Image;
 use Hash;
 class BannerController  extends Controller {
 
@@ -47,10 +47,10 @@ class BannerController  extends Controller {
             $extension = $image->getClientOriginalExtension();
             // RENAME THE UPLOAD WITH RANDOM NUMBER 
             $fileName = rand(11111, 99999) . '.' . $extension;
-            $path = public_path('banner/');
-
-
-            $image->move($path, $fileName);
+            $destinationPath = public_path('banner/');
+            $thumb_img = Image::make($image->getRealPath())->resize(1000, 450);
+            $thumb_img->save($destinationPath.'/'.$fileName,80);
+				//$image->move($path, $fileName);
             $input['image'] = 'banner/' . $fileName;
         }
 		$create = Banner::create($input);
@@ -83,10 +83,10 @@ class BannerController  extends Controller {
 				$extension = $image->getClientOriginalExtension();
 				// RENAME THE UPLOAD WITH RANDOM NUMBER 
 				$fileName = rand(11111, 99999) . '.' . $extension;
-				$path = public_path('banner/');
-
-
-				$image->move($path, $fileName);
+				$destinationPath = public_path('banner/');
+                $thumb_img = Image::make($image->getRealPath())->resize(1000, 450);
+                $thumb_img->save($destinationPath.'/'.$fileName,80);
+				//$image->move($path, $fileName);
 				$input['image'] = 'banner/' . $fileName;
 			}
 			if($input['image']){

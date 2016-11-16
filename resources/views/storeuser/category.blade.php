@@ -34,8 +34,8 @@
 		<div class="dptsucess"></div>
         <div class="ibox-content">
 
+           <form method="POST" id="Catogoryadd" class="form-horizontal" action="{{ url('addcategory')}}">
            
-            {!! Form::open(array('class'=>'form-horizontal','method'=>'POST','id'=>'Catogoryadd')) !!}
 
      
             <div class="form-group"><label class="col-lg-2 control-label">Name</label>
@@ -108,9 +108,10 @@
             </div><div class="form-group nodpt hide"><label class="col-lg-2 control-label">Category</label>
 				
 					<div class="col-lg-8">  
+					<input type='checkbox' value='0'  onClick='getCategory(this)' data-id='0' > Base Category <br>
 							<div class="tree ">
 
- <input type='checkbox' value='0'  onClick='getCategory(this)' data-id='0' > Base Category <br>
+ 
 <?php
  if(count($categoriesnon)>0){?>
 <ul class="category">
@@ -157,6 +158,16 @@
 					   <textarea cols="25" class="form-control" rows="4" name="description" data-parsley-trigger="keyup"  data-parsley-maxlength="200" required></textarea><span
 							class="help-block m-b-none"></span>
 					</div>
+            </div><div class="form-group "><label class="col-lg-2 control-label">Image</label>
+				
+					<div class="col-lg-4">  
+					   <input type="file" name="image">
+					   <span class="help-block m-b-none"></span>
+					</div>
+					<div class="col-lg-4" style="text-align:center">  
+                        <div class="imageshow"></div>
+
+                    </div>
             </div>
 				
 <!--table class="table table-bordered table-hover">
@@ -198,7 +209,7 @@
 
             <div class="form-group">
                 <div class="col-lg-offset-2 col-lg-8">
-                    <button type="button" class="btn btn-primary" onClick="Catogoryadd()">Submit</button>
+                    <button type="submit" class="btn btn-primary" onClick="Catogoryadd()">Submit</button>
 
                 </div>
             </div>

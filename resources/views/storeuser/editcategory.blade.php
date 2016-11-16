@@ -34,14 +34,11 @@
 		<div class="dptsucess"></div>
         <div class="ibox-content">
 
-           
+            <form method="POST" id="Catogoryadd" class="form-horizontal" action="{{ url('editscategorylist')}}">
             
-{!! Form::model($data, ['method' => 'POST','class'=>'form-horizontal','id'=>'Catogoryadd']) !!}
-     
-            <div class="form-group"><label class="col-lg-2 control-label">Name</label>
+       <div class="form-group"><label class="col-lg-2 control-label">Name</label>
 
-                <div class="col-lg-8">   {!! Form::text('categoryname', null, array('placeholder' => 'Name','class' => 'form-control','data-parsley-trigger'=>'keyup','data-parsley-pattern'=>'^[a-zA-Z0-9 ]*$','data-parsley-minlength'=>'3','required' => '')) !!}
-				<span
+                <div class="col-lg-8">  <input type="text" value="{{$data->categoryname}}" name="categoryname" class="form-control" placeholder="Name" data-parsley-trigger="keyup" data-parsley-pattern="^[a-zA-Z0-9 ]*$" data-parsley-minlength="3" required="" name="categoryname"><span
                         class="help-block m-b-none"></span>
                 </div>
             </div>
@@ -190,7 +187,18 @@
                     {{--@endforeach--}}
                 @endforeach
             </table-->
-		
+		<div class="form-group "><label class="col-lg-2 control-label">Image</label>
+				
+					<div class="col-lg-4">  
+					   <input type="file" name="image" accept="image/jpeg">
+					   <span class="help-block m-b-none"></span>
+					</div>
+					<div class="col-lg-4" style="text-align:center">  
+                        <div class="imageshow"><?php 
+						if($data->image){?><img src="{{ asset($data->image)}}"  width="69%" height="100px"><?php }?></div>
+
+                    </div>
+            </div>
 
 
 					
@@ -202,11 +210,11 @@
 
             <div class="form-group">
                 <div class="col-lg-offset-2 col-lg-8">
-                    <button type="button" class="btn btn-primary" onClick="Catogoryedit()">Submit</button>
+                    <button type="submit" class="btn btn-primary" onClick="Catogoryedit()">Submit</button>
 
                 </div>
             </div>
-            {!! Form::close() !!}
+            </form>
         </div>
     </div>
 </div>

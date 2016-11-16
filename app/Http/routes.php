@@ -50,6 +50,10 @@ Route::post('changepass', ['uses'=>'UserController@changepass','middleware' => [
 Route::post('getuserdetails', 'StoreController@getuserdetails' );
 Route::post('edituser', 'StoreController@edituser' );
 Route::post('adddept', 'StoreController@adddept' );
+Route::post('adddepts', 'StoreController@adddepts' );
+Route::post('listdepartments', 'StoreController@listdepartments' );
+Route::post('departmentedit', 'StoreController@departmentedit' );
+Route::post('dptsupdate', 'StoreController@dptsupdate' );
 Route::post('editdept',  'StoreController@editdept');
 Route::post('storecreate', 'StoreController@create' );
 Route::post('storeedit', 'StoreController@storeedit' );
@@ -101,7 +105,8 @@ Route::get('import',['uses'=>'Products@import','middleware' => ['permission:impo
 Route::post('dumpproduct', ['uses'=>'Products@dumpproduct','middleware' => ['permission:import']]);
 Route::post('changedpt', 'Categorys@changedpt');
 Route::post('deletestore', 'Stores@deletestore');
-Route::post('deletedpartmt', ['uses'=>'Stores@deletedpartmt','middleware' => ['permission:delete-departments']]);
+Route::post('deletedpartmt','Stores@deletedpartmt');
+
 Route::post('roleupdate', ['uses'=>'RoleController@roleupdate','middleware' => ['permission:role-edit']]);
 Route::post('deleterole', ['uses'=>'RoleController@destroy','middleware' =>['permission:role-delete']]);
 Route::post('deleteduser', ['uses'=>'UserController@destroy','middleware' =>['permission:users-delete']]);

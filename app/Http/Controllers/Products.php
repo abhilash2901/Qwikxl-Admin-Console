@@ -10,7 +10,7 @@ use App\Role;
 use App\Store;
 use App\Product;
 use App\Departments;
-use App\productinventory;
+use App\Productinventory;
 use App\Category;
 use DB;
 use Session;

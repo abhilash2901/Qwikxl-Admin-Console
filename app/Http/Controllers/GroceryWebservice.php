@@ -158,9 +158,9 @@ class GroceryWebservice extends Controller {
 	} public function getDepartmentList(Request $request) {
 		$input = $request->all();
 		if(isset($input['keyword'])){
-			$categories = DB::table('departments')->select('id','name')->where("type",0)->where("store_id",$input['store_id'])->where('name', 'like', '%' .$input['keyword'] . '%')->get();
+			$categories = DB::table('departments')->select('id','name','image')->where("type",0)->where("store_id",$input['store_id'])->where('name', 'like', '%' .$input['keyword'] . '%')->get();
 		}else{
-			$categories = DB::table('departments')->select('id','name')->where("type",0)->where("store_id",$input['store_id'])->get();
+			$categories = DB::table('departments')->select('id','name','image')->where("type",0)->where("store_id",$input['store_id'])->get();
 		
 		}
 		$banner=Banner::select('image')->where("store_id",$input['store_id'])->limit(3)->get();

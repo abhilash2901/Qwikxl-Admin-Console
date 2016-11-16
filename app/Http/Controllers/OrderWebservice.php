@@ -204,15 +204,27 @@ $customer = \Stripe\Customer::create(array(
 		 $num = Order::join('orderdetails', 'orderdetails.orderid', '=', 'orders.id')
 		    ->join('products', 'products.id', '=', 'orderdetails.itemid')
 			
-			->select('orderdetails.quantity', 'orderdetails.price', 'orderdetails.price', 'products.name', 'orders.status' ,'orders.grand_total')
+			
+			->select('orderdetails.quantity', 'orderdetails.price', 'orderdetails.price', 'products.name', 'orders.status','orders.grand_total')
 			->where('orders.id', $inputs['orderid'])
+			
+			
+			->get();
+			$status = Order::
+		   
+			join('order_status_histories', 'order_status_histories.order_id', '=', 'orders.id')
+			->join('order_status', 'order_status.id', '=', 'order_status_histories.status_id')
+			
+			->select('order_status.status as orderstatus')
+			->where('orders.id', $inputs['orderid'])
+			->where('order_status_histories.current_status_flag', 1)
 			
 			->get();
 			$nums = Orderdetail::selectRaw('sum(quantity*price)as total')->where('orderid', $inputs['orderid'])->get();
 		 // print_r($nums);
 		 // echo count($nums);
            if(count($num)>0){
-			   $data =array('orderDetails'=>$num ,'Status'=>'Success','Total'=>$nums[0]->total);
+			   $data =array('orderDetails'=>$num ,'Status'=>'Success','Total'=>$nums[0]->total,'orderstatus'=>$status[0]->orderstatus);
 		   }else{
 			   $data =array('Status'=>'No Record found !' );
 			   

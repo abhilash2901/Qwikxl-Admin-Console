@@ -342,6 +342,72 @@ class StoreController extends Controller {
 
 
         print_r(json_encode(array('status' => 'success', 'msg' => 'Updated Succesfully')));
+    } public function listdepartments(Request $request) {
+        $input = $request->all(); 
+        $result= DB::table('departments')->where('store_id',$input['store_id'])->where('type',0)->orderBy('id','DESC')->get();
+        
+
+
+        print_r(json_encode($result));
+    } public function departmentedit(Request $request) {
+        $input = $request->all(); 
+        $result= DB::table('departments')->where('id',$input['id'])->get();
+        
+
+
+        print_r(json_encode($result[0]));
+    } public function adddepts(Request $request) {
+        $input = $request->all();
+            if (Input::file('image')) {
+
+				$image = Input::file('image');
+				$filename = time() . '.' . $image->getClientOriginalExtension();
+				$name = Input::file('image')->getClientOriginalName();
+				$extension = $image->getClientOriginalExtension();
+				// RENAME THE UPLOAD WITH RANDOM NUMBER 
+				$fileName = rand(11111, 99999) . '.' . $extension;
+				$destinationPath = public_path('upload/departments');
+                $thumb_img = Image::make($image->getRealPath())->resize(1000, 450);
+                $thumb_img->save($destinationPath.'/'.$fileName,80);
+				//$image->move($path, $fileName);
+				$input['image'] = 'upload/departments/' . $fileName;
+			}
+       
+            
+            DB::table('departments')->insert($input);
+       
+
+
+        print_r(json_encode(array('status' => 'success', 'msg' => 'Updated Succesfully','storeid'=>$input['store_id'])));
+    }public function dptsupdate(Request $request) {
+        $input = $request->all();
+            if (Input::file('image')) {
+
+				$image = Input::file('image');
+				$filename = time() . '.' . $image->getClientOriginalExtension();
+				$name = Input::file('image')->getClientOriginalName();
+				$extension = $image->getClientOriginalExtension();
+				// RENAME THE UPLOAD WITH RANDOM NUMBER 
+				$fileName = rand(11111, 99999) . '.' . $extension;
+				$destinationPath = public_path('upload/departments');
+                $thumb_img = Image::make($image->getRealPath())->resize(1000, 450);
+                $thumb_img->save($destinationPath.'/'.$fileName,80);
+				//$image->move($path, $fileName);
+				$input['image'] = 'upload/departments/' . $fileName;
+			}
+            if($input['image'] ){
+				$input['image']=$input['image'];
+			}else{
+				$result = DB::table('departments')->where('id',$input['id'])->get();
+				$input['image']=$result[0]->image;
+			}
+            $res = DB::table('departments')->where('id',$input['id']);
+            $res->update($input);
+            //DB::table('departments')->insert($input);
+       
+
+
+        print_r(json_encode(array('status' => 'success', 'msg' => 'Updated Succesfully','image'=>$input['image'])));
     }
 
     public function editdept(Request $request) {

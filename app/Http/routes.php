@@ -82,7 +82,7 @@ Route::post('editstoredata',['uses'=> 'Stores@editstoredata','middleware' => ['p
 Route::post('addcategory', ['uses'=> 'Categorys@addcategory','middleware' => ['permission:add-category']]);
 Route::post('liststoresuser', 'Stores@liststoresuser');
 Route::get('storelistss', ['uses'=> 'Stores@storelists','middleware' => ['permission:store-profile']]);
-Route::get('category',  ['uses'=> 'Categorys@index' ,'middleware' => ['permission:add-category']]);
+Route::get('categorys',  ['uses'=> 'Categorys@index' ,'middleware' => ['permission:add-category']]);
 Route::get('categorylist',  ['uses'=> 'Categorys@categorylist' ,'middleware' => ['permission:list-category']]);
 Route::get('editcategory/{id}',  ['uses'=> 'Categorys@editcategory' ,'middleware' => ['permission:edit-category']]);
 Route::post('editscategorylist', 'Categorys@editscategorylist');

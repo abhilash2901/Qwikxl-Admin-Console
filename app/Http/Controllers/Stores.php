@@ -11,6 +11,7 @@ use App\Store;
 use App\Departments;
 use DB;
 use Session;
+use Image;
 use Hash;
 
 class Stores extends Controller {
@@ -87,8 +88,8 @@ class Stores extends Controller {
             // RENAME THE UPLOAD WITH RANDOM NUMBER 
             $fileName = rand(11111, 99999) . '.' . $extension;
             $path = public_path('logo/');
-
-
+            $thumb_img = Image::make($image->getRealPath())->resize(200, 140);
+            $thumb_img->save($path.'/'.$fileName,80);
             $image->move($path, $fileName);
             $input['image'] = 'logo/' . $fileName;
         }

@@ -82,7 +82,7 @@ $customer = \Stripe\Customer::create(array(
 		            exit;
 			}else {
 				 $emails =Customer::where('email', '=', $username)->get();
-				
+				 
 				$transaction_id = json_encode($charge ->created);
 				$inputs=array(
 				'username'=>$username,
@@ -102,6 +102,7 @@ $customer = \Stripe\Customer::create(array(
 				 $data = Order::orderBy('id', 'desc')->first();
 
 				$order_id = $data->id;
+				$unique_id = $data->unique_id;
 				
 				/*$sql = "SELECT reward_point FROM customers WHERE email = '".$username."'";	
 				$result = mysql_query( $sql );
@@ -161,7 +162,8 @@ $customer = \Stripe\Customer::create(array(
 					
 				if ($qnty && $quantitys)
 				{	
-				    $data = array("Status"=>"Ordering Successful","Orderid"=>$order_id, "transaction_id"=>$transaction_id); 
+			         
+				    $data = array("Status"=>"Ordering Successful","Orderid"=>$order_id,"unique_id"=>$unique_id, "transaction_id"=>$transaction_id); 
 					//echo '{"status":"Ordering Successful","Orderid":'.$order_id.', "transaction_id":'.$transaction_id.'}';
 					// $result32 = $gcm->send_notification($registatoin_ids, $message);	
                     print_r(json_encode($data));
@@ -170,7 +172,7 @@ $customer = \Stripe\Customer::create(array(
 				else
 				{
 					//echo '{"status":"Ordering Failed","Orderid":"null", "transaction_id":"null"}';
-					$data = array("Status"=>"Ordering Failed","Orderid"=>null, "transaction_id"=>null); 
+					$data = array("Status"=>"Ordering Failed","Orderid"=>null,"unique_id"=>null, "transaction_id"=>null); 
 					print_r(json_encode($data));
 		            exit;
 				}

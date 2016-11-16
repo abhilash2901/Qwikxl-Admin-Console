@@ -161,6 +161,8 @@ return [
 		 Maatwebsite\Excel\ExcelServiceProvider::class,
 		 
 		 EllipseSynergie\ApiResponse\Laravel\ResponseServiceProvider::class,
+		  Intervention\Image\ImageServiceProvider::class,
+
 
     ],
 
@@ -210,6 +212,8 @@ return [
 		'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
 		'Form'      => 'Collective\Html\FormFacade',
          'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+		 'HTML'      => Collective\Html\HtmlFacade::class,
+    'Image'     => Intervention\Image\Facades\Image::class
 
 
 		

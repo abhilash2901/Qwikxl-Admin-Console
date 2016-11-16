@@ -276,7 +276,7 @@ class GroceryWebservice extends Controller {
 			->join('productinventories', 'products.id', '=', 'productinventories.product_id')
 			->join('categories', 'categories.id', '=', 'products.category_id')
 			->join('departments', 'departments.id', '=', 'productinventories.department_id')
-			->select('products.id', 'products.name as itemname', 'productinventories.quantity', 'productinventories.price',  'products.description')
+			->select('products.id', 'products.name as itemname', 'productinventories.quantity', 'productinventories.price',  'products.description', 'products.image')
 			->where('productinventories.store_id', $input['store_id'])
 			->where('products.category_id', $input['category_id'])
 			->orderBy('products.id', 'desc')

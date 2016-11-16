@@ -199,7 +199,7 @@
          e.preventDefault();
          if (y < max_fields) { //max input box allowed
              y++; //text box increment
-             $(wrapper).append('<div class="form-group" ><label class="col-lg-2 control-label">Dept ' + y + '</label><div class="col-lg-8"><input type="text" placeholder="Department ' + y + '" class="form-control" name="name[]" required><br><input type="file" name="image"></div> <span class="" onClick="remove(this)"><img src="' + base_url + '/img/remove-icon.png" ></span></div>'); //add input box
+             $(wrapper).append('<div class="form-group" ><label class="col-lg-2 control-label">Dept ' + y + '</label><div class="col-lg-8"><input type="text" placeholder="Department ' + y + '" class="form-control" name="name[]" required></div> <span class="" onClick="remove(this)"><img src="' + base_url + '/img/remove-icon.png" ></span></div>'); //add input box
          }
      });
      // $(".stores").hide();

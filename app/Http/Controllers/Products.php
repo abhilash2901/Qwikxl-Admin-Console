@@ -15,6 +15,7 @@ use App\Category;
 use DB;
 use Session;
 use Excel;
+use Image;
 use Hash;
 class SubCate
     {
@@ -179,10 +180,12 @@ class Products extends Controller {
             $extension = $image->getClientOriginalExtension();
             // RENAME THE UPLOAD WITH RANDOM NUMBER 
             $fileName = rand(11111, 99999) . '.' . $extension;
-            $path = public_path('upload/' . $filename);
+            $path = public_path('upload');
 
 
-            $image->move($path, $fileName);
+            $thumb_img = Image::make($image->getRealPath())->resize(200, 140);
+            $thumb_img->save($path.'/'.$fileName,80);
+            //$image->move($path, $fileName);
             $input['image'] = 'upload/' . $filename . '/' . $fileName;
         }
 
@@ -219,9 +222,10 @@ class Products extends Controller {
             $extension = $image->getClientOriginalExtension();
             // RENAME THE UPLOAD WITH RANDOM NUMBER 
             $fileName = rand(11111, 99999) . '.' . $extension;
-            $path = public_path('upload/');
+            $path = public_path('upload');
 
-
+            $thumb_img = Image::make($image->getRealPath())->resize(200, 140);
+            $thumb_img->save($path.'/'.$fileName,80);
             $image->move($path, $fileName);
             $input['image'] = 'upload/' . $fileName;
         }

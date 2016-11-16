@@ -67,7 +67,7 @@ class OrdersController extends Controller {
 			->get();
 			
 			$numss =Order::
-			join('orderdetails', 'orderdetails.orderid', '=', 'Orders.id' )
+			join('orderdetails', 'orderdetails.orderid', '=', 'orders.id' )
 			->join('products', 'products.id', '=', 'orderdetails.itemid')
 			->join('productinventories', 'products.id', '=', 'productinventories.product_id')
 			

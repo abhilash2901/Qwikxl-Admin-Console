@@ -186,7 +186,7 @@ class Products extends Controller {
             $thumb_img = Image::make($image->getRealPath())->resize(200, 140);
             $thumb_img->save($path.'/'.$fileName,80);
             //$image->move($path, $fileName);
-            $input['image'] = 'upload/' . $filename . '/' . $fileName;
+            $input['image'] = 'upload/'.$fileName;
         }
 
         $id = $input['id'];

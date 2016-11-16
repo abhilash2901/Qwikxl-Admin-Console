@@ -209,7 +209,7 @@ class Categorys extends Controller {
 				// RENAME THE UPLOAD WITH RANDOM NUMBER 
 				$fileName = rand(11111, 99999) . '.' . $extension;
 				
-				$destinationPath = public_path('upload/categories/');
+				$destinationPath = public_path('upload/categories');
                   
                $thumb_img = Image::make($image->getRealPath())->resize(200, 140);
                $thumb_img->save($destinationPath.'/'.$fileName,80);
@@ -245,7 +245,7 @@ class Categorys extends Controller {
 				$extension = $image->getClientOriginalExtension();
 				// RENAME THE UPLOAD WITH RANDOM NUMBER 
 				$fileName = rand(11111, 99999) . '.' . $extension;
-				$destinationPath = public_path('upload/categories/');
+				$destinationPath = public_path('upload/categories');
                   
                $thumb_img = Image::make($image->getRealPath())->resize(200, 140);
                $thumb_img->save($destinationPath.'/'.$fileName,80);

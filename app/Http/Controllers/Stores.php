@@ -87,10 +87,10 @@ class Stores extends Controller {
             $extension = $image->getClientOriginalExtension();
             // RENAME THE UPLOAD WITH RANDOM NUMBER 
             $fileName = rand(11111, 99999) . '.' . $extension;
-            $path = public_path('logo/');
+            $path = public_path('logo');
             $thumb_img = Image::make($image->getRealPath())->resize(200, 140);
             $thumb_img->save($path.'/'.$fileName,80);
-            $image->move($path, $fileName);
+            //$image->move($path, $fileName);
             $input['image'] = 'logo/' . $fileName;
         }
 		if($input['image'] ){

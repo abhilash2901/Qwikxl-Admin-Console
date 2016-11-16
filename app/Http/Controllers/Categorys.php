@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
+use Image;
 use App\User;
 use App\Role;
 use App\Store;
@@ -198,8 +199,26 @@ class Categorys extends Controller {
         $input = Input::except(['_method', '_token']);
         $input['store_id'] = Session::get('store_userid');
         $id = $input['id'];
+		$pic='';
+		if (Input::file('image')) {
+
+				$image = Input::file('image');
+				$filename = time() . '.' . $image->getClientOriginalExtension();
+				$name = Input::file('image')->getClientOriginalName();
+				$extension = $image->getClientOriginalExtension();
+				// RENAME THE UPLOAD WITH RANDOM NUMBER 
+				$fileName = rand(11111, 99999) . '.' . $extension;
+				
+				$destinationPath = public_path('upload/categories');
+                  
+               $thumb_img = Image::make($image->getRealPath())->resize(200, 140);
+               $thumb_img->save($destinationPath.'/'.$fileName,80);
+				//$image->move($path, $fileName);
+				$input['image'] = 'upload/categories/' . $fileName;
+				$pic=$input['image'];
+			}
         Category::where("id", $id)->update($input);
-        print_r(json_encode(array('status' => 'success', 'msg' => 'Store Updated Succesfully')));
+        print_r(json_encode(array('status' => 'success', 'msg' => 'Store Updated Succesfully','pic'=>$pic)));
     }
 
     public function deletecategory(Request $request) {
@@ -216,14 +235,35 @@ class Categorys extends Controller {
 
     public function addcategory(Request $request) {
         $input = $request->all();
-		
+		$pic='';
         $id = Session::get('id');
-		
+		if (Input::file('image')) {
+
+				$image = Input::file('image');
+				$filename = time() . '.' . $image->getClientOriginalExtension();
+				$name = Input::file('image')->getClientOriginalName();
+				$extension = $image->getClientOriginalExtension();
+				// RENAME THE UPLOAD WITH RANDOM NUMBER 
+				$fileName = rand(11111, 99999) . '.' . $extension;
+				$destinationPath = public_path('upload/categories');
+                  
+               $thumb_img = Image::make($image->getRealPath())->resize(200, 140);
+               $thumb_img->save($destinationPath.'/'.$fileName,80);
+				//$image->move($path, $fileName);
+				$input['image'] = 'upload/categories/' . $fileName;
+				$pic=$input['image'];
+			}
 		
         $user = User::find($id);
         $input['store_id'] = $user->store_id;
-        $create = Category::create($input);
-        print_r(json_encode(array('status' => 'success', 'msg' => 'Category Created Succesfully')));
+		  $result =Category::where('categoryname',$input['categoryname'])->get();
+		if(count($result)==0){
+			$create = Category::create($input);
+            print_r(json_encode(array('status' => 'success', 'msg' => 'Category Created Succesfully','pic'=>$pic)));
+		}else{
+			print_r(json_encode(array('status' => 'Failed', 'msg' => 'Category Exist')));
+		}
+       
     }
 
     public function liststoreuser(Request $request) {

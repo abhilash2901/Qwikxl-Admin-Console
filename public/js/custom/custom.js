@@ -87,7 +87,49 @@ var App = angular.module('app', ['angularUtils.directives.dirPagination']);
 		 };
 		 
 		 
+		 $scope.Adddpt= function(){
+			
+			 if ($('#adddpts').parsley().validate()) {
+		 
+
+         $('#adddpts').ajaxForm(function(options) {
+             var items = JSON.parse(options);
+			 ids=items.storeid;
+			
+              var s = items.msg;
+             $('html, body').animate({
+                 scrollTop: $(".adddpts").offset().top - 100
+             }, 'fast');
+             $(".adddpts").show();
+             $(".adddpts").html('<p class="alert alert-success">' + s + '</p>');
+			 
+             
+             setTimeout(function() {
+                 $(".adddpts").hide(); $('#addbanner')[0].reset();
+             }, 2000);
+            post_data  ={"store_id":ids};
+		    link="/listdepartments";
 		
+	
+			var promise = WebService.send_data( link,post_data);
+			promise.then(function(response){  
+			    $scope.listdepartments=response;
+			});
+         });
+		  
+     }
+		 };
+		  $scope.listdepartments= function(id){
+			   
+			 post_data  ={"store_id":id};
+		    link="/listdepartments";
+		
+	
+			var promise = WebService.send_data( link,post_data);
+			promise.then(function(response){  
+			    $scope.listdepartments=response;
+			});
+		 };
   $scope.bannerCreated= function(){
     if ($('#editbanner').parsley().validate()) {
    

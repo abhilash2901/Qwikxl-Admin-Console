@@ -537,6 +537,56 @@ function Edistore() {
     }
 }
 */
+function editdepartments(elm) {
+    var id = $(elm).data("id");
+    jQuery.ajax({
+        type: 'POST',
+        url: base_url + '/departmentedit',
+        dataType: 'json',
+        data: {
+            'id': id
+        },
+        success: function (res) {
+           
+
+            var title = res.name;
+            var imagess = res.image;
+            var panid = res.id;
+            
+            $('#dptname').val(title);
+            //$('#imaged').val(imaged);
+            $('#dptssid').val(panid);
+			if(imagess){
+			$(".imageshowdpt").html('<img src=' + base_url + '/' + imagess + ' width="50" height="50px">');
+			}
+           
+        }
+    });
+
+
+}
+function dptCreated() {
+ 
+    if ($('#editdpts').parsley().validate()) {
+   
+
+         $('#editdpts').ajaxForm(function(options) {
+             var items = JSON.parse(options);
+              var s = items.msg;
+			   imagess=items.img;
+             $('html, body').animate({
+                 scrollTop: $(".uploaddpt").offset().top - 100
+             }, 'fast');
+             $(".uploaddpt").show();
+             $(".uploaddpt").html('<p class="alert alert-success">' + s + '</p>');
+             $(".imageshowdptss").html('<img src=' + base_url + '/' + imagess + ' width="50" height="50px">');
+             setTimeout(function() {
+                 $(".uploaddpt").hide();location.reload();
+             }, 2000);
+
+         });
+	}
+ }
 function editdept() {
     if ($('#dept').parsley().validate()) {
         var form = $('#dept').serializeArray();

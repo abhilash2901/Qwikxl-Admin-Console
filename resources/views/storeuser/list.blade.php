@@ -278,76 +278,87 @@
 			</ul>
 			<div class="tab-content">
            <div id="sumesh1" class="tab-pane active sumesh1">
-            <div class="dptsucess"></div>
-            <div class="ibox-content">
-			<?php 
-			$i=1;
-			   if($dept){
-				   
-				   ?>
-				  <form class="form-horizontal" id="dept" >
-<input type="hidden" placeholder="Department 1" class="form-control" name="store_id" value="@{{detailsstores.id}}">
-                    <?php $i=1;?>
-					
-                    @foreach ($dept as $dps)
-                    <div class="form-group " id="add_dpt"><label class="col-lg-2 control-label">Dept {{$i}}</label>
-
-                        <div class="col-lg-8"><input type="text" placeholder="Department 1"  value ="<?php echo $dps->name;?>" class="form-control" name="name[]" required> 
-						<input type="hidden" placeholder="Department 1"  value ="<?php echo $dps->id;?>" class="form-control" name="id[]" required> 
-                         
-                        </div>@permission('delete-departments')<a data-toggle="modal" data-target="#Deletedpt" onclick="GetDptid(this)" data-id="<?php echo $dps->id;?>"><span class="" ><img src="{{ asset('img/remove-icon.png')}}">
-                    </span></a>@endpermission
-                    </div><?php ++$i; ?>
-					@endforeach
-					
-                    <div class="input_fields_wrap">
-                    </div>
-
-                    <div class="hr-line-dashed"></div>
-					@permission('edit-departments')
-                    <div class="form-group">
-                        <div class="col-sm-4 col-sm-offset-2">
-                            <button class="btn btn-white" id="add" type="button">Add </button>
-
-                            <button class="btn btn-primary" type="button" onClick="editdept();">Save</button>
-                        </div>
-                    </div>
-					@endpermission
-
-                </form>
-				<?php
-			   }else{
-				   
-			   ?>
-			  
-			    @permission('add-departments')
-                <form class="form-horizontal ff" id="dept" >
-<input type="hidden" placeholder="Department 1" class="form-control" name="store_id" value="@{{detailsstores.id}}">
-
-                    <div class="form-group " id="add_dpt"><label class="col-lg-2 control-label">Dept 1</label>
-
-                        <div class="col-lg-8"><input type="text" placeholder="Department 1" class="form-control" name="name[]" required> 
+           
+            <div class="panel-body">
+							
+							<br>
+						       <div class="adddpts" tabindex="1"></div>
+								<div class="">
+									<form role="form" class="form-horizontal ng-pristine ng-valid" id="adddpts" method="POST" action="{{ url('adddepts')}}">
+										<div class="form-group">
+											<label class="col-sm-2 control-label">Department name</label>
+											<div class="col-sm-6">
+												<input class="form-control" type="text" required name="name">
+												<input class="form-control stores_id" type="hidden"  name="store_id" value="<?php echo Session::get('store_userid')?>">
+											</div>
+										</div>
+										<div class="form-group"><label class="col-sm-2 control-label">Upload image</label>
+											<div class="col-sm-6">
+												<div class="fileinput fileinput-new" data-provides="fileinput">
+													
+													<input type="file"  name="image">
+										
+								
+												</div>
+											</div> 
+										</div>
+										
+										<div class="form-group">
+											<div class="col-sm-8">
+											   <button type="submit" class="btn btn-primary pull-right" ng-click="Adddpt()">Add New </button>
+												
+											</div>
+										</div>
+																
+									</form>
+									
+								</div>
+								
+								
 						
-                        </div>
-                    </div>
-                    <div class="input_fields_wrap">
-                    </div>
-
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group">
-                        <div class="col-sm-4 col-sm-offset-2">
-                            <button class="btn btn-white" id="add" type="button">Add </button>
-
-                            <button class="btn btn-primary" type="button" onClick="dept();">Save</button>
-                        </div>
-                    </div>
-
-                </form>
-				 @endpermission
-				<?php
-				}?>
-				<input type="hidden" value="<?php echo $i-1;?>" class="dpti">
-            </div>
+							
+							
+							
+							<br>
+							
+							<div class="ibox-title">
+								<h5>Edit or Remove Departments</h5>
+								
+							</div>
+							<div class="ibox-content" style="display: block;" >
+                                
+								<table class="table" ng-init="listdepartments('<?php echo Session::get('store_userid')?>');">
+									<thead>
+									<tr>
+										<th>#</th>
+										<th>Departments</th>
+										<th>image</th>
+										<th>Action</th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr ng-show="listdepartments.length==0" colspan="4"><td>No Departments</td></tr>
+									<tr dir-paginate="list in listdepartments | itemsPerPage:7">
+										<td>@{{$index + 1}}</td>
+										<td> 
+							             <span ng-show="list.image"><img src="@{{list.image}}" width="50" height="50"></span></td> <!-- Image -->
+										<td>@{{list.name}}</td>
+										<td>
+											<a href="#" data-id="@{{list.id}}" onClick="editdepartments(this);" class="btn btn-primary" data-toggle="modal" data-target="#myDepartments">Edit </a>
+											 @permission('delete-departments')<a data-toggle="modal" class="btn btn-danger" data-target="#Deletedpt" onclick="GetDptid(this)" data-id="@{{list.id}}">Delete
+                   </a>@endpermission
+									</tr>
+									
+									</tbody>
+								</table>
+                               <dir-pagination-controls 
+			boundary-links="true" 
+			direction-links="true" >
+			</dir-pagination-controls>
+							</div>
+							
+							
+						</div>
         </div>
 		
 		
@@ -359,7 +370,7 @@
 								<div class="">
 									<form role="form" class="form-horizontal ng-pristine ng-valid" id="addbanner" method="POST" action="{{ url('savebanner')}}">
 										<div class="form-group">
-											<label class="col-sm-2 control-label">Ad Name</label>
+											<label class="col-sm-2 control-label">Add Name</label>
 											<div class="col-sm-6">
 												<input class="form-control" type="text" required name="title">
 												<input class="form-control stores_id" type="hidden"  name="store_id" value="<?php echo Session::get('store_userid')?>">
@@ -404,7 +415,7 @@
 									<tr>
 										<th>#</th>
 										<th>Banner</th>
-										<th>Ad title</th>
+										<th>Title</th>
 										<th>Action</th>
 									</tr>
 									</thead>
@@ -691,6 +702,71 @@
                                 <div class="col-lg-offset-2 col-lg-8">
                                   
                        <button type="submit" class="btn btn-primary pull-left" Onclick="bannerCreated()">Edit Banner</button>
+                                </div>
+                            </div>
+                     </form> 
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        </div>
+        </div><div class="modal fade" id="myDepartments" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+      <div class="modal-content">
+            <div class="modal-body">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Edit Departments</h5>
+
+
+                    </div>
+                    <div class="ibox-content">
+                        <div class="uploaddpt"></div>
+                        
+                        
+                        
+                        
+                        <form class="form-horizontal" id="editdpts" method="POST" action="{{ url('dptsupdate')}}">                      
+                            <div class="form-group"><label class="col-lg-2 control-label">Tittle</label>
+                                <div class="col-lg-8">
+                                    <input type="text"  name ="name" class="form-control"  required id="dptname">
+                                    <input type="hidden"  name ="id" class="form-control" required id="dptssid">
+
+                                </div>
+                            </div>
+                            
+                            <div class="form-group"><label class="col-lg-2 control-label">Image</label>
+
+                                <div class="col-lg-8" id="">
+                                    
+                                     <div class="imageshowdpt"></div>
+                                       </div>
+          
+                            </div> 
+                         
+                                  
+                            <div class="form-group"><label class="col-sm-2 control-label">Upload Image</label>
+                                <div class="col-lg-4">  
+                                    <input type="file" name="image" >
+                                    <span class="help-block m-b-none"></span>
+
+                                </div>
+          
+                            </div> 
+                      
+                                     
+                                     
+                                     
+                             
+
+
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-8">
+                                  
+                       <button type="submit" class="btn btn-primary pull-left" Onclick="dptCreated()">Edit </button>
                                 </div>
                             </div>
                      </form> 

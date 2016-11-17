@@ -20,7 +20,16 @@ use Hash;
 class SubCate
     {
         
-        public function getCategories($id,$type){
+        public function getCategories_listing($id){
+			
+
+            $categories=\App\Category::where('parent_id',0)->where("store_id", $id)->get();//united
+
+            $categories=$this->addRelation($categories);
+
+            return $categories;
+
+        } public function getCategories($id,$type){
 			
 
             $categories=\App\Category::where('parent_id',0)->where("store_id", $id)->where("type", $type)->get();//united
@@ -108,8 +117,17 @@ class Products extends Controller {
                 ->get();
 				
         $dept = DB::table('departments')->where('store_id', '=', $ids)->get();
+		 $subcate=new SubCate;
+        try {
+
+		  $categories=$subcate->getCategories_listing($ids);
+		  
+        } catch (Exception $e) {
+            
+            //no parent category found
+        }
           
-        return view('products.listproduct', ['dept' => $dept]);
+        return view('products.listproduct', ['dept' => $dept,'category' =>  $categories]);
     }
 
     public function listingproducts() {
@@ -171,7 +189,7 @@ class Products extends Controller {
 
     public function updateproduct(Request $request) {
         $input = $request->all();
-        $input['image'] = '';
+       // $input['image'] = '';
         if (Input::file()) {
 
             $image = Input::file('image');
@@ -190,7 +208,12 @@ class Products extends Controller {
         }
 
         $id = $input['id'];
-
+         if($input['image']){
+			 $input['image']=$input['image'];
+		 }else{
+			 $res=Product::where("id", $id)->get();
+			 $input['image']=$res[0]->image;
+		 }
         $product['category_id'] = $input['category_id'];
         $product['unique_id'] = $input['unique_id'];
         $product['name'] = $input['name'];

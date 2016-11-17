@@ -217,6 +217,12 @@ class Categorys extends Controller {
 				$input['image'] = 'upload/categories/' . $fileName;
 				$pic=$input['image'];
 			}
+	 if($input['image']){
+	    $input['image']=$input['image'];
+	   }else{
+	    $categy=Category::where("id", $id)->get();
+	    $input['image']=$categy[0]->image;
+	   }
         Category::where("id", $id)->update($input);
         print_r(json_encode(array('status' => 'success', 'msg' => 'Store Updated Succesfully','pic'=>$pic)));
     }

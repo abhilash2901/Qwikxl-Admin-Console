@@ -366,7 +366,8 @@ class StoreController extends Controller {
 				$extension = $image->getClientOriginalExtension();
 				// RENAME THE UPLOAD WITH RANDOM NUMBER 
 				$fileName = rand(11111, 99999) . '.' . $extension;
-				$destinationPath = public_path('upload/departments');
+				//$destinationPath = public_path('upload/departments');
+                                $destinationPath = 'upload/departments';
                 $thumb_img = Image::make($image->getRealPath())->resize(1000, 450);
                 $thumb_img->save($destinationPath.'/'.$fileName,80);
 				//$image->move($path, $fileName);

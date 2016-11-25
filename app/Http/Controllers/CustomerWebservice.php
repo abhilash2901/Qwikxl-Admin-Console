@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Response;
 use App\User;
 use App\Customer;
+
 use App\Role;
 use App\Departments;
 use DB;
@@ -78,7 +79,9 @@ class CustomerWebservice extends Controller {
 	 public function customerDetails(Request $request) {
 		 $input = $request->all();
 		
-		 $customer=Customer::where('email', '=', $input['email'])->get();
+		 $customer=Customer::leftJoin('customer_shipping_address', 'customer_shipping_address.customer_id', '=', 'customers.id')
+		        ->select('customers.*','customer_shipping_address.shipping_name','customer_shipping_address.shipping_address','customer_shipping_address.shipping_mobile')
+			   ->where('customers.email', '=', $input['email'])->get();
 		
 		 $data = array("customerDetails"=>$customer);
 		 print_r(json_encode($data));
@@ -95,14 +98,18 @@ class CustomerWebservice extends Controller {
 		// 'zipcode'=>$input->zipcode, 
 		 'address'=>$input->address,
 		 'country'=>$input->country
-		 );
-		 $customer=Customer::where('email', '=', $input->email)->get();
+		 ); 
+		  $customer=Customer::where('email', '=', $input->email)->get();
+		
+		
+		  
 		 if(count($customer)>0){
 			 $user = Customer::where('email', '=', $input->email);
 			// $id =$users[0]->id;
 			 //$users = Customer::find($id);
              $user->update($inputdetails);
-			  $data = array("Status"=>'Updation Successful' ,"Mobile"=>$customer[0]->mobile); 
+			 
+			  $data = array("Status"=>'Updation Successful' ,"Mobile"=>$input->mobile); 
 		 }
 		 else{
 			  $data = array("Status"=>'Email ID Not Exist'); 

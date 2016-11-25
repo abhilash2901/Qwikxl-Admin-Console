@@ -142,6 +142,8 @@ class Users extends Controller {
     public function logout() {
         setcookie('user_id', '', time() - (30 * 86400), "/");
         setcookie('user_type', '', time() - (30 * 86400), "/");
+		//Auth::logout(); // log the user out of our application
+    //return Redirect::to('/');
     }
 
 }

@@ -68,6 +68,9 @@ class Stores extends Controller {
 		
         $input = $request->all();
        $id =$input['id'];
+	   
+	   $res = Store::where("mail",$input['mail'])->where('id','!=', $id)->get();
+        if(count($res)==0){
        if(isset($input['mcity']))
        {
         $cityinsert=array(["name"=>$input['mcity'],"state_id"=>$input['state']]);
@@ -118,9 +121,13 @@ class Stores extends Controller {
 				   "logo"=>$input['image']
         );
         Store::where("id", $id)->update($item);
-   $row =Store::where("id", $id)->get();
+        $row =Store::where("id", $id)->get();
         //$item = Item::find($id);
-        print_r(json_encode(array('status' => 'success', 'msg' => 'Store Updated Succesfully','logo'=>$row[0]->logo)));
+        print_r(json_encode(array('status' => 'success','class' => 'alert alert-success', 'msg' => 'Store Updated Succesfully','logo'=>$row[0]->logo)));
+		}else{
+			print_r(json_encode(array('status' => 'failed','class' => 'alert alert-warning', 'msg' => 'Email ID Exist')));
+		
+		}
     }
 
     public function changepass(Request $request) {
@@ -152,13 +159,19 @@ class Stores extends Controller {
         $type = $request->input('type');
         $email = $request->input('email');
         $contactnumber = $request->input('contactnumber');
+		 $res = User::where("email",$email)->where('id', '!=',  $id)->get();
+		
+        if(count($res)==0){
+			DB::update('update users set name = ?,firstname = ? ,lastname =? ,type = ?, email = ?, contactnumber = ? where id = ?', [$name, $firstname, $lastname, $type, $email, $contactnumber, $id]);
+            print_r(json_encode(array('status' => 'success', 'class' => 'alert alert-success','msg' => 'Profile Updated Succesfully')));
+		}else{
+			print_r(json_encode(array('status' => 'failed', 'class' => 'alert alert-danger','msg' => 'Email ID Exist')));
+		}
 
-
-        DB::update('update users set name = ?,firstname = ? ,lastname =? ,type = ?, email = ?, contactnumber = ? where id = ?', [$name, $firstname, $lastname, $type, $email, $contactnumber, $id]);
-
+       
 
         //return redirect()->back();
-        print_r(json_encode(array('status' => 'success', 'msg' => 'Profile Updated Succesfully')));
+        
         //return redirect()->back()->with('message','Operation Successful !');
     }
 	public function deletestore(Request $request) {

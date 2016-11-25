@@ -22,7 +22,7 @@ if(Session::get('login_type')==1){
        <p>@if (Auth::guest())
            
              <p>Login in. To see it in action.</p>
-				<a href="{{ url('/')}}">Login</a>
+				<a href="{{ url('/login')}}">Login</a>
           @else				
 			
 		    @endif

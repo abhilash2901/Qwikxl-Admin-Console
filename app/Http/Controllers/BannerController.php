@@ -78,6 +78,7 @@ class BannerController  extends Controller {
 		 if (Input::file('image')) {
 
 				$image = Input::file('image');
+
 				$filename = time() . '.' . $image->getClientOriginalExtension();
 				$name = Input::file('image')->getClientOriginalName();
 				$extension = $image->getClientOriginalExtension();

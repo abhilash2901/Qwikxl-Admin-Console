@@ -146,17 +146,19 @@
 					
 					</div>
             </div>
-			
+			<div class="form-group" style="text-align:center"><label class="col-lg-2 control-label" ></label><div class="col-lg-2">  <input type="text" id="category" name="category_id" value="<?php echo $data->categories_id; ?>" required style='display:none'></div></div>
                 <div class="form-group"><label class="col-lg-2 control-label" >Price</label>
 
                     <div class="col-lg-8">
-                        <input  type="text" name="price"  placeholder="Price" value="{{$data->price}}" required class="form-control">							
+                        <input  type="text" name="price"  placeholder="Price" value="{{$data->price}}" required class="form-control" data-parsley-trigger="keyup" 
+    data-parsley-type="number"  data-parsley-pattern="^[0-8]*\.[0-9]{2}$">							
 
                     </div>
                 </div> <div class="form-group"><label class="col-lg-2 control-label" >Quantity</label>
 
                     <div class="col-lg-8">
-                        <input  type="text" name="quantity"  placeholder="Quantity" value="{{$data->quantity}}" required class="form-control">							
+                        <input  type="text" name="quantity"  placeholder="Quantity" value="{{$data->quantity}}" required class="form-control" data-parsley-trigger="keyup" 
+    data-parsley-type="digits" maxlength="11">							
 
                     </div>
                 </div>
@@ -170,7 +172,7 @@
                 <div class="form-group"><label class="col-lg-2 control-label">Image</label>
 
                     <div class="col-lg-4">  
-                        <input type="file" name="image"><span
+                        <input type="file" name="image" accept="image/*"><span
                             class="help-block m-b-none"></span>
 
                     </div>
@@ -188,7 +190,7 @@
                     <input type="hidden" name="id" value="<?php echo $data->id; ?>">
 					<input type="hidden" id="producttype" value="product">
 
-                    <input type="hidden" id="category" name="category_id" value="<?php echo $data->categories_id; ?>">
+                  
 
                     <div class="form-group">
                         <div class="col-lg-offset-2 col-lg-8">

@@ -49,15 +49,15 @@
 	{!! Form::model($user, ['method' => 'POST','class'=>'form-horizontal profile']) !!}
 	
                         
-						<div class="form-group"><label class="col-lg-2 control-label">Firstname</label>
+						<div class="form-group"><label class="col-lg-2 control-label">First Name</label>
 
-                            <div class="col-lg-8">    {!! Form::text('firstname', null, array('placeholder' => 'Firstname','class' => 'form-control','required'=>'','data-parsley-pattern'=>"^[a-zA-Z ]+$")) !!} <span
+                            <div class="col-lg-8">    {!! Form::text('firstname', null, array('placeholder' => 'First Name','class' => 'form-control','required'=>'','data-parsley-pattern'=>"^[a-zA-Z ]+$")) !!} <span
                                     class="help-block m-b-none"></span>
                             </div>
                         </div>
-						<div class="form-group"><label class="col-lg-2 control-label">Lastname</label>
+						<div class="form-group"><label class="col-lg-2 control-label">Last Name</label>
 
-                            <div class="col-lg-8">    {!! Form::text('lastname', null, array('placeholder' => 'Lastname','class' => 'form-control','required'=>'','data-parsley-pattern'=>"^[a-zA-Z ]+$")) !!} <span
+                            <div class="col-lg-8">    {!! Form::text('lastname', null, array('placeholder' => 'Last Name','class' => 'form-control','required'=>'','data-parsley-pattern'=>"^[a-zA-Z ]+$")) !!} <span
                                     class="help-block m-b-none"></span>
                             </div>
                         </div>
@@ -71,13 +71,15 @@
                         <input type="hidden" name="id" value="{{$user->id}}">
                         <div class="form-group"><label class="col-lg-2 control-label">Email</label>
 
-                            <div class="col-lg-8">{!! Form::text('email', null, array('placeholder' => 'Email','class' => 'form-control','required'=>'')) !!}
-                            </div>
+                            <div class="col-lg-8">
+							<input type="email" class="form-control" name="email" placeholder= 'Email' value="<?php echo $user->email;?>" required>
+				
+							</div>
                         </div>
                          <div class="form-group"><label class="col-lg-2 control-label" >Contact no</label>
                             <input type="hidden" value="{{$user->type}}" name="type">
                             <div class="col-lg-8">
-                	   {!! Form::text('contactnumber', null, array('placeholder' => 'contactnumber','class' => 'form-control')) !!} 
+                	   {!! Form::text('contactnumber', null, array('placeholder' => 'Contact Number','class' => 'form-control','data-parsley-trigger'=>'keyup','data-parsley-minlength'=>'4', 'data-parsley-type'=>'digits','required'=>'')) !!} 
                 	
                             </div>
                         </div> 
@@ -108,7 +110,7 @@
 
                     
                 </div>
-                <div class="ibox-content">
+                <div class="ibox-content" style="margin-bottom: -53px;">
 				 <div class="changepasres"></div>
                     <form class="form-horizontal " id="changepass">
                        

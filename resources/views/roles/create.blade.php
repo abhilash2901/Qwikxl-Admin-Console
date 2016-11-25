@@ -30,21 +30,12 @@
         </div>
         <div class="ibox-content">
 
-            @if (count($errors) > 0)
-            <div class="alert alert-danger">
-                <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
-            {!! Form::open(array('route' => 'roles.store','class'=>'form-horizontal','method'=>'POST')) !!}
+          <div class="role_update"></div>
+            {!! Form::open(array('class'=>'form-horizontal','id'=>'role_update','method'=>'POST')) !!}
         <div class="form-group"><label class="col-lg-2 control-label">Type</label>
 
-                <div class="col-lg-8">  
-                    <input type="radio" value="0" name="type"  onchange="Permissiontype(this)" > System 
+                <div class="col-lg-2">  
+                    <input type="radio" value="0" name="type" required onchange="Permissiontype(this)" > System 
                     <input type="radio" value="1" name="type"  onchange="Permissiontype(this)"> Store
                     <span
                         class="help-block m-b-none"></span>
@@ -52,7 +43,7 @@
             </div>
             <div class="form-group"><label class="col-lg-2 control-label">Name</label>
 
-                <div class="col-lg-8">   {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!} <span
+                <div class="col-lg-8">   {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control','required'=>'','data-parsley-trigger'=>"keyup",'data-parsley-pattern'=>"^[a-zA-Z ]+$")) !!} <span
                         class="help-block m-b-none"></span>
                 </div>
             </div>
@@ -84,7 +75,7 @@
 
             <div class="form-group">
                 <div class="col-lg-offset-2 col-lg-8">
-                    <button type="btn btn-md btn-primary" class="btn btn-primary" >Submit</button>
+                    <button type="button" class="btn btn-primary" onClick="AddRoles()" >Submit</button>
 
                 </div>
             </div>

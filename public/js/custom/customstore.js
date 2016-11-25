@@ -45,15 +45,23 @@ App.filter('selectedTags', function() {
                      $("#alls").val('all').trigger("change");
                  }, 500); setTimeout(function() {
                      $("#status").val('0').trigger("change");
+					 $("#statuss").val('0').trigger("change");
                  }, 500);
 	 $scope.storeusersid=function(id){
 		 
 		 $scope.storeuserid=id;
 	    }; 
 		 $scope.tags = [];
+		
 	 $scope.selectetype= function(type){
-		// alert(type);
+		 //alert(type);
 		$scope.tags = [];
+		if(type == 'all'){
+			// alert("h");
+			 $scope.department='';
+				 $scope.category='';
+				 
+		 }
 		 if(type !='all'){
 			 if(type==1){
 				 $("#dpt").click();
@@ -87,7 +95,7 @@ App.filter('selectedTags', function() {
 				var s =response.users;
 				//alert(s.logo);
 				if(s.logo){
-				 $(".imageshows").html('<img src=' + base_url + '/' + s.logo + ' width="50%" height="100px">');
+				 $(".imageshows").html('<img src=' + base_url + '/' + s.logo + ' width="100" height="auto">');
 			 }
 				$(".country").val($scope.detailsstores.country).trigger("change");
 				
@@ -135,6 +143,7 @@ App.filter('selectedTags', function() {
 	      
 		};
 		$scope.listingOrder= function(){
+			
 			 post_data  ={};
 		    link="/getOrders";
 		
@@ -232,7 +241,8 @@ App.filter('selectedTags', function() {
 			promise.then(function(response){  
 			    $scope.listbanner=response;
 			});
-		 };$scope.listdepartments= function(id){
+		 };
+		 $scope.listdepartments= function(id){
 			   
 			 post_data  ={"store_id":id};
 		    link="/listdepartments";
@@ -250,16 +260,16 @@ App.filter('selectedTags', function() {
 
          $('#addbanner').ajaxForm(function(options) {
              var items = JSON.parse(options);
-			 ids=items.id;
+			 
 			
               var s = items.msg;
              $('html, body').animate({
                  scrollTop: $(".uploadsucess").offset().top - 100
              }, 'fast');
              $(".uploadsucess").show();
-             $(".uploadsucess").html('<p class="alert alert-success">' + s + '</p>');
-			 
-             
+             $(".uploadsucess").html('<p class="' +  items.class+ '">' + s + '</p>');
+			 if(items.status=='success'){
+             ids=items.id;
              setTimeout(function() {
                  $(".uploadsucess").hide(); $('#addbanner')[0].reset();
              }, 2000);
@@ -271,6 +281,7 @@ App.filter('selectedTags', function() {
 			promise.then(function(response){  
 			    $scope.listbanner=response;
 			});
+			 }
          });
 		  
      }
@@ -282,32 +293,94 @@ App.filter('selectedTags', function() {
 
          $('#adddpts').ajaxForm(function(options) {
              var items = JSON.parse(options);
-			 ids=items.storeid;
+			 
 			
               var s = items.msg;
              $('html, body').animate({
                  scrollTop: $(".adddpts").offset().top - 100
              }, 'fast');
              $(".adddpts").show();
-             $(".adddpts").html('<p class="alert alert-success">' + s + '</p>');
-			 
-             
-             setTimeout(function() {
-                 $(".adddpts").hide(); $('#addbanner')[0].reset();
-             }, 2000);
-            post_data  ={"store_id":ids};
-		    link="/listdepartments";
-		
-	
-			var promise = WebService.send_data( link,post_data);
-			promise.then(function(response){  
-			    $scope.listdepartments=response;
-			});
-         });
+             $(".adddpts").html('<p class="' + items.class + '">' + s + '</p>');
+			 if( items.status=='success'){
+					 ids=items.storeid;
+					 setTimeout(function() {
+						 $(".adddpts").hide(); $('#addbanner')[0].reset();
+					 }, 2000);
+					post_data  ={"store_id":ids};
+					link="/listdepartments";
+				
+			
+					var promise = WebService.send_data( link,post_data);
+					promise.then(function(response){  
+						$scope.listdepartments=response;
+					});
+			    }
+           });
 		  
      }
 		 };
 		 
+		 $scope.deptChange= function(){
+			// alert($scope.department);
+			$scope.categorys='';
+			 if($scope.department!='0'){
+			  post_data  ={"id":$scope.department};
+					link="/changedpt";
+				
+			
+					var promise = WebService.send_data( link,post_data);
+					promise.then(function(response){  
+						$scope.s=response;
+						if(response.length>0){
+					  var active ='';
+					  var active1 ='';
+					 var newOption ="<ul class='category'>";
+					 $(response).each(function() {
+                          if(this.subCategory.length==0){
+							  var active ="active";
+						  }
+                         newOption += '<li class='+active+'><a  onClick="getCategorys(this)" data-id="'+this.categoryname+'">'+this.categoryname+'</a><ul>';
+                         $(this.subCategory).each(function() {
+							   if(this.subCategory.length==0){
+							     var active1 ="active";
+						       }
+							   newOption +='<li  class='+active1+'><a  onClick="getCategorys(this)" data-id="'+this.categoryname+'">'+this.categoryname+'</a><ul>';  
+					            $(this.subCategory).each(function() {
+									if(this.subCategory.length==0){
+							          var active2 ="active";
+						            }
+									newOption +='<li  class='+active2+'><a  onClick="getCategorys(this)" data-id="'+this.categoryname+'">'+this.categoryname+'</a><ul>';  
+					               $(this.subCategory).each(function() {
+								
+									 newOption +='<li><a  onClick="getCategorys(this)" data-id="'+this.categoryname+'">'+this.categoryname+'</a> </li>';  
+						           });
+								   newOption +='</ul></li>';
+							   });
+								newOption +='</ul></li>';
+						   });
+						   newOption +='</ul></li>';
+					 });
+					 newOption +='</ul>';
+					 $(".sss").html(newOption);
+					 $('.tree li').each(function() {
+						 if ($(this).children('ul').length > 0) {
+							 $(this).addClass('parent');
+						 }
+					 });
+						}
+						else{
+					
+					 $(".sss").html('<p>No Categories Found</p>');
+				 }
+				});
+			 }else{
+				 $scope.categorys='';
+			 }
+            };			 
+		 $scope.setCategory= function(categoryname){
+			 $scope.setCategorys=setCategory;
+			 
+		 };
 		 $scope.Changedate= function(){
 			 
 			 

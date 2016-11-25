@@ -64,6 +64,7 @@ class Handler extends ExceptionHandler
             return response()->view('errors.missing', [], 404);
         }
 
-        return parent::render($request, $e);
+     return parent::render($request, $e);
+		 //return redirect()->guest('login');
     }
 }

@@ -60,12 +60,12 @@
 
 
                         <h2 class="ng-cloak">
-                            @{{liststores.length}} results found for: <span class="text-navy ng-cloak">“@{{serach_term}} @{{serach_term1}} @{{serach_terms}}”</span>
+                            @{{(liststores | filter: serach_term | filter: serach_term1 | filter:serach_terms ).length}} results found for: <span class="text-navy ng-cloak">“@{{serach_term}} @{{serach_term1}} @{{serach_terms}} ”</span>
                         </h2>
                         <small>Request time (0.23 seconds)</small>
 
                         <div ng-show="liststores.length == 0"> No Stores</div>
-                        <div ng-repeat="list in liststores| filter: serach_term | filter: serach_term1 | filter:serach_terms ">
+                        <div ng-repeat="list in liststores | filter: serach_term | filter: serach_term1 | filter:serach_terms ">
                             <div class="hr-line-dashed"></div>
                             <div class="search-result">
                                 <h3><a ng-click="Selectestore(list.id)" class="ng-cloak">@{{list.name}} | Store ID : @{{list.unique_id}} </a></h3>

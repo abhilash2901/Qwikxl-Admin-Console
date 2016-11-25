@@ -43,18 +43,19 @@
             <div class="col-sm-3" >
                 <div class="form-group">
                     <label class="control-label" for="status">Order Status</label>
-                    <select name="status" id="statusff" class="form-control" ng-model="status" >
+                    <select name="status" id="status" class="form-control" ng-model="status" >
 					    <option  value="0">All</option>
                         <option ng-repeat="status in getstatus" value="@{{status.status}}" >@{{status.status}}</option>
                        
                     </select>
                 </div>
             </div>
+			
 			<div class="col-sm-3" >
                 <div class="form-group">
                     <label class="control-label" for="status">Transaction Status</label>
-                    <select name="status" id="statusd" class="form-control" ng-model="statust" >
-					   <option value="0">All</option>
+                    <select name="status" id="statuss" class="form-control" ng-model="statust" >
+					   <option value="0" >All</option>
                         <option  value="succeeded" >succeeded</option>
 						<option  value="paid" >paid</option>
 						<option  value="pending" >pending</option>
@@ -127,7 +128,7 @@
                     </thead>
                     <tbody>
 					  <tr ng-show="getOrders.length==0" colspan="4"><td>No Orders</td></tr>
-					  <tr dir-paginate="order in getOrders | filter: dateRangeFilter('createddate', from, to) |itemsPerPage:10 | filter:orderid | filter:status | filter:statust  ">
+					  <tr dir-paginate="order in getOrders | filter: dateRangeFilter('createddate', from, to) | filter:orderid | filter:status | filter:statust  |itemsPerPage:10 ">
 					  <td>@{{$index + 1}}</td>
 					      
 						  
@@ -140,10 +141,10 @@
 						  <td>  
 								
 								@permission('edit-order')
-								 <a class="btn btn-primary" href="{{ url('/editorder/ ')}}@{{order.order_id}}" >Edit</a>
+								 <a class="btn btn-primary btn-sm" href="{{ url('/editorder/ ')}}@{{order.order_id}}" >Edit</a>
 								@endpermission 
 								@permission('delete-order')
-								<a style="margin-left: 3px;" class="btn btn-danger" onClick="TakeId(this)" data-id="@{{order.order_id}}" data-toggle="modal" data-target="#DeleteModal" >Delete</a></td>
+								<a style="margin-left: 3px;" class="btn btn-danger btn-sm" onClick="TakeId(this)" data-id="@{{order.order_id}}" data-toggle="modal" data-target="#DeleteModal" >Delete</a></td>
                                 @endpermission 
 						   </td>
 					  </tr>

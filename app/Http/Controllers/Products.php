@@ -214,6 +214,7 @@ class Products extends Controller {
 			 $res=Product::where("id", $id)->get();
 			 $input['image']=$res[0]->image;
 		 }
+		
         $product['category_id'] = $input['category_id'];
         $product['unique_id'] = $input['unique_id'];
         $product['name'] = $input['name'];

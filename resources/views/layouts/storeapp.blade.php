@@ -2,6 +2,12 @@
 <html>
 
 <head>
+ <?php echo
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+header('Content-Type: text/html');
+    ?>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -75,7 +81,7 @@
             <ul side-navigation class="nav metismenu sidebar-menu" id="side-menu">
                 <li class="nav-header">
 
-                    <div class="profile-element" uib-dropdown>
+                    <div class="profile-element" uib-dropdown><a href="{{ url('storeprofile')}}">
                         <img alt="image" class="img-circle" src="{{ asset('img/profile_small.jpg')}}" />
                         <a uib-dropdown-toggle href>
                             <span class="clear">
@@ -84,7 +90,7 @@
                                     </span>
                             <span class=" block m-t-xs" align="center">profile</span>
                             </span>
-                        </a>
+                        </a> </a>
 
                     </div>
                     <div class="logo-element">
@@ -126,15 +132,14 @@
                     
 					 <ul class="nav nav-second-level collapse treeview-menu">
                         @permission('editstore-details')
-                        <li ng-class="{active: $state.includes('mailbox')}">
-                         <a href="{{ url('storelistss')}}"><i class="fa fa-cog"></i><span class="nav-label ng-binding">Store</span></a>
-
-                      </li>
+      
+					  <li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('storelistss')}}">Store</a></li>
+                     
                         @endpermission @permission('store-profile')
-                        <li ng-class="{active: $state.includes('mailbox')}">
-                         <a href="{{ url('storeprofile')}}"><i class="glyphicon glyphicon-user"></i><span class="nav-label ng-binding">Profile</span></a>
-
-                       </li>
+                       
+					   
+					  <li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('storeprofile')}}">Profile</a></li>
+                     
                         @endpermission 
                     </ul>
                 </li>
@@ -142,31 +147,28 @@
                     <a ui-sref="#"><i class="fa fa-th-large"></i> <span class="nav-label">CATALOG</span><span class="fa arrow"></span></a>
                    <ul class="nav nav-second-level collapse treeview-menu" >
 					 @permission('list-category')
-                        <li ng-class="{active: $state.includes('mailbox')}">
-                    <a href="{{ url('categorylist')}}"><i class="fa fa-cog"></i><span class="nav-label ng-binding">Categories </span></a>
-
-                </li>
+          
+				 <li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('categorylist')}}">Categories</a></li>
+                     
                  @endpermission
 				 @permission('add-category')
-                        <li ng-class="{active: $state.includes('mailbox')}">
-                    <a href="{{ url('categorys')}}"><i class="fa fa-cog"></i><span class="nav-label ng-binding">Add Category </span></a>
-
-                </li>
+        
+				<li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('categorys')}}">Add Category</a></li>
+                  
                  @endpermission @permission('list-product')
-                <li ng-class="{active: $state.includes('mailbox')}">
-                    <a href="{{ url('listproduct')}}"><i class="fa fa-cog"></i><span class="nav-label ng-binding">Inventory </span></a>
-
-                </li> @endpermission 
+      
+				<li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('listproduct')}}">Inventory</a></li>
+                  
+				@endpermission 
 				@permission('add-product')
-                <li ng-class="{active: $state.includes('mailbox')}">
-                    <a href="{{ url('addproduct')}}"><i class="fa fa-cog"></i><span class="nav-label ng-binding">Add Inventory </span></a>
-
-                </li> @endpermission 
+               
+				<li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('addproduct')}}">Add Inventory </a></li>
+                  
+				@endpermission 
 				@permission('import')
-				<li ng-class="{active: $state.includes('mailbox')}">
-                    <a href="{{ url('import')}}"><i class="fa fa-cog"></i><span class="nav-label ng-binding">Import </span></a>
-
-                </li> 
+		
+				<li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('import')}}">Import </a></li>
+                  
 				@endpermission 
                     </ul>
                 </li>
@@ -176,12 +178,12 @@
                     <a ui-sref="#"><i class="fa fa-th-large"></i> <span class="nav-label">ORDERS</span><span class="fa arrow"></span></a>
                    <ul class="nav nav-second-level collapse treeview-menu" >
 					
-                        <li ng-class="{active: $state.includes('mailbox')}">
-                    <a href="{{ url('listOrders')}}"><i class="fa fa-cog"></i><span class="nav-label ng-binding">Orders </span></a>
-
-                </li> 
+         
+				<li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('listOrders')}}">Orders</a>
+                        </li>
                  
                     </ul>
+					
                 </li>
 				@endpermission 
         </div>
@@ -195,6 +197,8 @@
         <div class="row border-bottom">
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                 <div class="navbar-header">
+				 <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
                     <li uib-dropdown>

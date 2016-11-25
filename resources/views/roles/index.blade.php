@@ -28,16 +28,52 @@
 
     </div>
 </div>
-<div class="row">
+<div class="wrapper wrapper-content animated fadeInRight ecommerce" ng-app="app" ng-controller='search'>
+    <div class="ibox-content m-b-sm border-bottom" >
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group" >
+                    <label class="control-label" for="product_name">Type</label>
+					
+					<select  class="form-control" name="type" id="type" ng-model="system" >
+					    <option value="" >All</option> 
+						<option value="System" >System</option> 
+						<option value="Store" >Store</option>
+                     </select>
+                       </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <label class="control-label" for="price">Role Name</label>
+                    <input type="text" id="namee" name="namee" value="" class="form-control" ng-model="rolename">
+                </div>
+            </div>
+			
+            
+			
+			
+			
+			
+                
+            <!--div class="col-sm-2">
+                <div class="form-group">
+                    <label class="control-label" for="quantity">Category</label>
+                    <input type="text" id="category" ng-model="categorys" placeholder="Category" class="form-control" ng-change="changeCategory();">
+                </div>
+            </div-->
 
-    <div class="ibox float-e-margins">
-        <div class="ibox-title">
-            <h5>Roles </h5>            
-        </div>		
+        </div>
+       
+    </div>
+<div class="row" >
+    <div class="col-lg-12">
+    <div class="ibox " ng-init="listRoles()">
+        		
         <div class="ibox-content">
 		   @permission('role-create')
-            <a href="{{ route('roles.create') }}" class="btn btn-primary">Add roles</a>
+            <a href="{{ route('roles.create') }}" class="btn btn-primary">Add Roles</a>
 			@endpermission
+		
             <table class="table table-bordered topspace">
                 <thead>
                     <tr>
@@ -53,36 +89,42 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($roles as $key => $role)
-                    <tr>
-                        <td>{{ ++$i }}</td>
-                        <td>{{ $role->display_name }}</td>
-                        <td>{{ $role->description }}</td>
+                   
+                    <tr dir-paginate="roles in listingroles  | filter:rolename |filter:system | itemsPerPage:5" >
+                        <td>@{{ $index + 1 }}</td>
+                        <td>@{{ roles.display_name }}</td>
+                        <td>@{{ roles.description }}</td>
                         <td>
+						<div style="float: left;margin-right: 3px;">
                             @permission('role-edit')    
 
-                            <a href="{{ route('roles.edit',$role->id) }}"> <button class="btn-warning btn btn-sm"><i class="fa fa-wrench"></i> Edit</button></a>
+                            <a href="{{ url('rolesedit')}}/@{{roles.id}}" > <button class="btn-warning btn btn-sm"><i class="fa fa-wrench"></i> Edit</button></a>
                             @endpermission
+							</div>
                             @permission('role-delete')
-                            <?php
-                            if ($role->name != 'admin' && $role->display_name != 'Store Admin') {
-                                ?>
+                            
+								<div ng-show="roles.name !='admin' && roles.display_name !='Store Admin'">
                                
-								<a  class="btn btn-danger" data-toggle="modal" data-target="#Deleterole"  onClick="Takeid(this)" data-id="<?php echo $role->id;?>">
+								<a  class="btn btn-danger btn-sm" data-toggle="modal" data-target="#Deleterole"  onClick="Takeid(this)" data-id="@{{ roles.id }}">
 								Delete</a>
-                                <?php
-                            }
-                            ?>			
+								</div>
+                                		
                             @endpermission
                         </td>
                     </tr>
-                    @endforeach
+                   
                 </tbody>
             </table>
-            {!! $roles->render() !!}
+			
+            <dir-pagination-controls 
+			boundary-links="true" 
+			direction-links="true" >
+			</dir-pagination-controls>
+			
+			
 
         </div>
-    </div>
+    </div> </div>
 
 <div class="modal fade" id="Deleterole" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -107,7 +149,7 @@
     </div>
   </div>
 </div>
-</div>
+</div></div>
 
 
 

@@ -161,7 +161,7 @@
             </div><div class="form-group "><label class="col-lg-2 control-label">Image</label>
 				
 					<div class="col-lg-4">  
-					   <input type="file" name="image">
+					   <input type="file" name="image" accept="image/*">
 					   <span class="help-block m-b-none"></span>
 					</div>
 					<div class="col-lg-4" style="text-align:center">  

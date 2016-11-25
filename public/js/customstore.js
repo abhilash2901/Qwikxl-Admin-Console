@@ -248,16 +248,18 @@
                  scrollTop: $(".changepasres").offset().top - 100
              }, 'fast');
              $(".changepasres").show();
-             $(".changepasres").html('<p class="alert alert-success">' + s + '</p>');
+             $(".changepasres").html('<p class="'+items.class+'">' + s + '</p>');
 			 if(items.image){
 				 $(".imageshow").html('<img src=' + base_url + '/' + items.image + ' width="50%" height="50px">');
 			 }
-              
-
-              setTimeout(function() {
+              if(items.status=='success'){
+				  setTimeout(function() {
                         $(".changepasres").hide();location.reload();
                         //window.location.replace(base_url + "/editstore");
                     }, 1500);
+			  }
+
+              
 
          });
      }
@@ -551,6 +553,15 @@ function dept() {
 $(elm).parent().toggleClass('active');
          $(elm).parent().children('ul').slideToggle('fast');
  }
+function getCategorys(elm) {
+     $(".category li a").removeClass("red");
+     $(elm).addClass("red");
+     var id = $(elm).data("id");
+     $("#category").val(id);
+	 $("#category").change();
+$(elm).parent().toggleClass('active');
+         $(elm).parent().children('ul').slideToggle('fast');
+ }
 
  /*function Catogoryadd() {
      if ($('#Catogoryadd').parsley().validate()) {
@@ -591,25 +602,26 @@ $(elm).parent().toggleClass('active');
          $('#Catogoryadd').ajaxForm(function(options) {
              var items = JSON.parse(options);
              var s = items.msg;
-                if (items.pic) {
+                if (items.status == 'success') {
+					  if (items.pic) {
 
                  $(".imageshow").html('<img src=' + base_url + '/' + items.pic + ' width="69%" height="100px">');
+                 }
+                     
+                     //location.reload(); 
+
                  }
               $(".dptsucess").show();
                  $('html, body').animate({
                      scrollTop: $(".dptsucess").offset().top - 100
                  }, 'fast');
 				 
-                 $(".dptsucess").html('<p class="alert alert-success">' + items.msg + '</p>');
+                 $(".dptsucess").html('<p class="' + items.class + '">' + items.msg + '</p>');
                  setTimeout(function() {
                      $(".dptsucess").hide();
-                     location.reload();
+                     location.reload();$('#Catogoryadd')[0].reset();
                  }, 2000);
-                 if (items.status == 'success') {
-                     $('#Catogoryadd')[0].reset();
-                     //location.reload(); 
-
-                 }
+                
          });
      }
  }
@@ -865,11 +877,12 @@ function Catogoryedit() {
              dataType: 'json',
              data: form,
              success: function(res) {
-
+				 $(".profilesucess").show();
+                    $(".profilesucess").html('<p class="' + res.class + '">' + res.msg + '</p>');
                  if (res.status == 'success') {
                      // $('#dept')[0].reset();
                      //location.reload(); 
-                     $(".profilesucess").html('<p class="alert alert-success">' + res.msg + '</p>');
+                    
                      setTimeout(function() {
                          $(".profilesucess").hide();
                      }, 1000);
@@ -1328,11 +1341,14 @@ function Deletedpt() {
                  scrollTop: $(".uploaddpt").offset().top - 100
              }, 'fast');
              $(".uploaddpt").show();
-             $(".uploaddpt").html('<p class="alert alert-success">' + s + '</p>');
-             $(".imageshowdptss").html('<img src=' + base_url + '/' + imagess + ' width="50" height="50px">');
-             setTimeout(function() {
+             $(".uploaddpt").html('<p class=" '+items.class + '">' + s + '</p>');
+			 if(items.status=='success'){
+				  $(".imageshowdptss").html('<img src=' + base_url + '/' + imagess + ' width="50" height="50px">');
+                     setTimeout(function() {
                  $(".uploaddpt").hide();location.reload();
-             }, 2000);
+             }, 2000); 
+			 }
+            
 
          });
 	}

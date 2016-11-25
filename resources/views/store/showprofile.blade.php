@@ -67,7 +67,7 @@
             <div class="form-group"><label class="col-lg-2 control-label" >Contact no</label>
 
                 <div class="col-lg-8">
-                    <label>   {!! Form::text('contactnumber', null, array('placeholder' => 'contactnumber','class' => 'form-control')) !!} </label>
+                    <label>   {!! Form::text('contactnumber', null, array('placeholder' => 'contactnumber','class' => 'form-control','data-parsley-trigger'=>'keyup','data-parsley-minlength'=>'4', 'data-parsley-type'=>'digits','required'=>'')) !!} </label>
 
                 </div>
             </div> 

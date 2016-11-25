@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+@if (Auth::guest())
+	
+				
+			
+		    
 <div class="middle-box text-center loginscreen  animated fadeInDown">
     <div>
         <div>
@@ -38,8 +43,11 @@
         <p class="m-t"> <small>Inspinia we app framework base on Bootstrap 3 &copy; 2014</small> </p>
     </div>
 </div> 
-
-
+@else
+	<script type="text/javascript">
+    window.location = base_url+"/notfound";//here double curly bracket
+</script>
+@endif
 @endsection
 
 

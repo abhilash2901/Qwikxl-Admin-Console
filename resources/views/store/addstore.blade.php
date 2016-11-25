@@ -33,7 +33,7 @@
                 </div>
                
                 <div class="ibox-content">
-                    <div class="row">
+                    <div class="">
                         <div class="updatemessage" tabindex='1'></div>
                         <form class="form-horizontal" id="store" method="POST" action="{{ url('storecreate')}}">
                             <div class="form-group"><label class="col-sm-2 control-label">Store ID</label>
@@ -169,13 +169,15 @@
                                 <div class="col-md-4"><input name="zip" data-parsley-trigger="keyup" data-parsley-minlength="3" data-parsley-type="digits" required type="text" placeholder="30350"
                                                              class="form-control" id="valid"></div>
                             </div>
-							  <div class="form-group"><label class="col-sm-2 control-label">latitude</label>
+							  <div class="form-group"><label class="col-sm-2 control-label">Latitude</label>
                                 <div class="col-md-4"><input name="latitude" type="text" 
-                                                             class="form-control" id="valid"></div>
+                                                             class="form-control"  data-parsley-validation-threshold="1" data-parsley-trigger="keyup" 
+    data-parsley-type="integer"></div>
                             </div>
-                              <div class="form-group"><label class="col-sm-2 control-label">longitude</label>
+                              <div class="form-group"><label class="col-sm-2 control-label">Longitude</label>
                                 <div class="col-md-4"><input name="longitude"  type="text" 
-                                                             class="form-control" id="valid"></div>
+                                                             class="form-control"  data-parsley-validation-threshold="1" data-parsley-trigger="keyup" 
+    data-parsley-type="integer"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
@@ -194,14 +196,14 @@
                             <div class="hr-line-dashed"></div>
                             <div class="form-group"><label class="col-sm-2 control-label">Store website</label>
 
-                                <div class="col-sm-8"><input type="text" placeholder="www.redstore.com" class="form-control" name="website"  ></div>
+                                <div class="col-sm-8"><input type="text" data-parsley-validation-threshold="1" data-parsley-type="url" placeholder="www.redstore.com" class="form-control" name="website"  ></div>
                             </div>
                                   <div class="hr-line-dashed"></div>
            
                             <div class="form-group"><label class="col-sm-2 control-label">Upload logo</label>
                                 <div class="col-sm-6">
                                     <div class="fileinput fileinput-new" data-provides="fileinput">
-                                        <input type="file"  name="image">
+                                        <input type="file"  name="image" accept="image/*">
                                     </div>
                                 </div> 
                             </div>
@@ -259,6 +261,7 @@
                 </div>
             </div>
         </div>
+		 <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <h5>Store Departments</h5>
@@ -287,7 +290,7 @@
 
                 </form>
             </div>
-        </div>
+        </div></div>
     </div>
 
     <!-- Modal -->

@@ -42,6 +42,7 @@ class OrderWebservice extends Controller {
 			$pick_type = htmlspecialchars($input->pick_type);
 			$delivery_phone = htmlspecialchars($input->phone);
 			$total = htmlspecialchars($input->total);
+			
 			//$rewardPoint = htmlspecialchars($input['rewardPoint']);
 			//$rewardPoint = (double)$rewardPoint;
 			$grand_total = htmlspecialchars($input->grand_total);
@@ -90,6 +91,7 @@ $customer = \Stripe\Customer::create(array(
 				'pick_type'=>$pick_type,
 				'delivery_phone'=>$delivery_phone,
 				'total'=>$total,
+				
 				'status'=>trim($status,'"'),
 				'createddate'=>$createddate,
 				
@@ -215,7 +217,7 @@ $customer = \Stripe\Customer::create(array(
 			join('order_status_histories', 'order_status_histories.order_id', '=', 'orders.id')
 			->join('order_status', 'order_status.id', '=', 'order_status_histories.status_id')
 			
-			->select('order_status.status as orderstatus')
+			->select('order_status.status as orderstatus','orders.createddate')
 			->where('orders.id', $inputs['orderid'])
 			->where('order_status_histories.current_status_flag', 1)
 			
@@ -224,7 +226,7 @@ $customer = \Stripe\Customer::create(array(
 		 // print_r($nums);
 		 // echo count($nums);
            if(count($num)>0){
-			   $data =array('orderDetails'=>$num ,'Status'=>'Success','Total'=>$nums[0]->total,'orderstatus'=>$status[0]->orderstatus);
+			   $data =array('orderDetails'=>$num ,'Status'=>'Success','Total'=>$nums[0]->total,'orderDate'=>$status[0]->createddate,'orderstatus'=>$status[0]->orderstatus);
 		   }else{
 			   $data =array('Status'=>'No Record found !' );
 			   

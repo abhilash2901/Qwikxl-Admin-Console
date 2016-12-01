@@ -115,7 +115,7 @@ class OrdersController extends Controller {
 			->leftjoin('order_status', 'order_status.id', '=', 'order_status_histories.status_id')
 			
 			
-		    ->select('order_status.status as o','orders.createddate',DB::raw('sum((orderdetails.price))  AS price'),DB::raw('sum(orderdetails.quantity) AS quantity'),'customers.firstname','orders.unique_id','orders.transaction_id','orders.pick_type','customers.lastname','customers.mobile', 'orders.id as order_id', 'products.name', 'orders.status' ,'orders.grand_total')
+		    ->select('order_status.status as o','orders.createddate','orders.total AS price',DB::raw('sum(orderdetails.quantity) AS quantity'),'customers.firstname','orders.unique_id','orders.transaction_id','orders.pick_type','customers.lastname','customers.mobile', 'orders.id as order_id', 'products.name', 'orders.status' ,'orders.grand_total')
 			->where('productinventories.store_id', $ids)
 			->where('order_status_histories.current_status_flag', 1)
 			->where('order_status_histories.status_id', 1)
@@ -237,8 +237,8 @@ public function getassignedOrders(Request $request) {
 		    ->select('table1.firstname as assigned_touser','order_status_histories.date_time','order_status_histories.created_at as osh_created','table2.firstname as assigned_byuser','table2.lastname as assigned_byuserlast','order_status.status as o','orders.createddate',DB::raw('sum((orderdetails.price))  AS price'),DB::raw('sum(orderdetails.quantity) AS quantity'),'customers.firstname','orders.unique_id','orders.transaction_id','orders.pick_type','customers.lastname','customers.mobile', 'orders.id as order_id', 'products.name', 'orders.status' ,'orders.grand_total')
 			->where('productinventories.store_id', $ids)
 			->where('order_status_histories.current_status_flag', 1)
-			->where('order_status_histories.status_id', $input['status'])
-			->where('order_status_histories.status_id', $input['status1'])
+			->Where('order_status_histories.status_id', $input['status'])
+			->orWhere('order_status_histories.status_id', $input['status1'])
 			
 		
 			->groupBy('orders.id')

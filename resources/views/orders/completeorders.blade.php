@@ -74,6 +74,7 @@
                         </tr>
                         </thead>
                         <tbody>
+						
 						<tr ng-show="getassingedOrders.length==0"><td colspan="5">No Orders</td></tr>
                         <tr dir-paginate=" new in getassingedOrders | filter:orderid | filter:customerphone | itemsPerPage:10">
                             <td>

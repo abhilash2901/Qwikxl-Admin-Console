@@ -197,7 +197,7 @@ App.filter('selectedTags', function() {
 				//alert(JSON.stringify($scope.getassingedOrders));
 			});
 		 };
-		 $scope.listingassignedOrder= function(status,status1){
+		 $scope.listingcompletedOrder= function(status,status1){
 			
 			  post_data  ={'status':status,'status1':status1};
 		    link="/getcompletedOrderss";

@@ -151,7 +151,7 @@
 
                     <div class="col-lg-8">
                         <input  type="text" name="price"  placeholder="Price" value="{{$data->price}}" required class="form-control" data-parsley-trigger="keyup" 
-    data-parsley-type="number"  data-parsley-pattern="^[0-8]*\.[0-9]{2}$">							
+    data-parsley-type="number" min="50.01" data-parsley-pattern="^\d{0,6}(\.\d{1,2})?$">							
 
                     </div>
                 </div> <div class="form-group"><label class="col-lg-2 control-label" >Quantity</label>

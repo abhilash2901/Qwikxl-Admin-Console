@@ -10,6 +10,6 @@ class Store extends Model
 
 {
 
-    public $fillable = ['unique_id','name', 'corporateidentifier','address','address2','city','state','zip','phone','mail','website'];
+    public $fillable = ['unique_id','name', 'corporateidentifier','address','address2','city','state','zip','phone','mail','website','opening_time','closing_time'];
 
 }

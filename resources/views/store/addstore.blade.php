@@ -172,13 +172,28 @@
 							  <div class="form-group"><label class="col-sm-2 control-label">Latitude</label>
                                 <div class="col-md-4"><input name="latitude" type="text" 
                                                              class="form-control"  data-parsley-validation-threshold="1" data-parsley-trigger="keyup" 
-    data-parsley-type="integer"></div>
+    data-parsley-type="number"></div>
                             </div>
                               <div class="form-group"><label class="col-sm-2 control-label">Longitude</label>
                                 <div class="col-md-4"><input name="longitude"  type="text" 
                                                              class="form-control"  data-parsley-validation-threshold="1" data-parsley-trigger="keyup" 
-    data-parsley-type="integer"></div>
+    data-parsley-type="number"></div>
                             </div>
+							<div class="form-group"><label class="col-sm-2 control-label">Store Opening Time</label>
+                            <div class="col-md-4"><div class="input-group clockpicker" data-autoclose="true">
+                                <input type="text" class="form-control" name="opening_time" readonly>
+                                <span class="input-group-addon">
+                                    <span class="fa fa-clock-o"></span>
+                                </span>
+                            </div></div>
+                        </div><div class="form-group"><label class="col-sm-2 control-label">Store Closing Time</label>
+                            <div class="col-md-4"><div class="input-group clockpicker" data-autoclose="true">
+                                <input type="text" class="form-control" name="closing_time" readonly>
+                                <span class="input-group-addon">
+                                    <span class="fa fa-clock-o"></span>
+                                </span>
+                            </div></div>
+                        </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Phone</label>

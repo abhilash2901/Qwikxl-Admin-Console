@@ -103,7 +103,7 @@
 							</div>
                             @permission('role-delete')
                             
-								<div ng-show="roles.name !='admin' && roles.display_name !='Store Admin'">
+								<div ng-show="roles.name !='admin' && roles.display_name !='Store Admin'&& roles.display_name !='Store User'">
                                
 								<a  class="btn btn-danger btn-sm" data-toggle="modal" data-target="#Deleterole"  onClick="Takeid(this)" data-id="@{{ roles.id }}">
 								Delete</a>

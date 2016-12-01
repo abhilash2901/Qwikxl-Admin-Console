@@ -67,7 +67,7 @@ class StoreController extends Controller {
 
     public function storedetails(Request $request) {
         $input = $request->all();
-       
+     
          $stores = DB::table('stores')
              ->leftJoin('countries','stores.country','=','countries.id')
              ->leftJoin('states','stores.state','=','states.id')
@@ -195,6 +195,8 @@ class StoreController extends Controller {
                 "website" => $input['website'],
 				"latitude" => $input['latitude'],
                 "longitude" => $input['longitude'],
+				"opening_time" => $input['opening_time'],
+                "closing_time" => $input['closing_time'],
 				   "logo"=>$input['image']
         ]);
 
@@ -305,7 +307,7 @@ class StoreController extends Controller {
 			
 			
 
-				   DB::update('update stores set name = ? ,corporateidentifier = ? ,address = ? ,address2 = ? ,country = ?,city = ?,state = ? ,zip = ?,latitude=?,longitude=?,phone = ?,mail = ?,website = ?,logo = ? where id = ?', [$input['name'], $input['corporateidentifier'], $input['address'], $input['address2'], $input['country'],$input['city'], $input['state'], $input['zip'],$input['latitude'],$input['longitude'], $input['phone'], $input['mail'], $input['website'],$input['image'], $id]);
+				   DB::update('update stores set name = ? ,corporateidentifier = ? ,address = ? ,address2 = ? ,country = ?,city = ?,state = ? ,zip = ?,latitude=?,longitude=?,opening_time=?,closing_time=?,phone = ?,mail = ?,website = ?,logo = ? where id = ?', [$input['name'], $input['corporateidentifier'], $input['address'], $input['address2'], $input['country'],$input['city'], $input['state'], $input['zip'],$input['latitude'],$input['longitude'],$input['opening_time'],$input['closing_time'], $input['phone'], $input['mail'], $input['website'],$input['image'], $id]);
 	  
 			/* $id = $input['id'];
 			  $user = Store::find($id);

@@ -73,7 +73,7 @@
             <div class="ibox">
                 <div class="ibox-content">
 
-                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15"  ng-init="listproducts()">
+                    <table class="table table-stripped toggle-arrow-tiny" data-page-size="15"  ng-init="listproducts()">
                         <thead>
                             <tr>
 

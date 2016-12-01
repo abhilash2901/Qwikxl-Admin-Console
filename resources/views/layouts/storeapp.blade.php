@@ -42,6 +42,7 @@ header('Content-Type: text/html');
     <link href="{{ asset('css/select2.min.css')}}" rel="stylesheet">
     <!-- Font awesome -->
     <link href="{{ asset('font-awesome/css/font-awesome.css')}}" rel="stylesheet">
+	 <link href="{{ asset('css/plugins/clockpicker/clockpicker.css')}}" rel="stylesheet">
     <!-- footable -->
     <link href="{{ asset('css/plugins/footable/footable.core.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('css/parsley.css')}}" rel="stylesheet" type="text/css" />
@@ -172,20 +173,33 @@ header('Content-Type: text/html');
 				@endpermission 
                     </ul>
                 </li>
-				
-				@permission('order-list')
 				<li ng-class="{active: $state.includes('pages')}"  class="treeview">
                     <a ui-sref="#"><i class="fa fa-th-large"></i> <span class="nav-label">ORDERS</span><span class="fa arrow"></span></a>
                    <ul class="nav nav-second-level collapse treeview-menu" >
-					
-         
-				<li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('listOrders')}}">Orders</a>
-                        </li>
-                 
+					 @permission('order-list')
+          
+				 <li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('listOrders')}}">Orders</a></li>
+                     
+                 @endpermission
+				
+                 @permission('new-order-list')
+				<li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('neworders')}}">New orders</a></li>
+                   @endpermission
+				   @permission('assigned-orders') 
+                <li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('assignedorders')}}">Assigned orders</a></li>
+                   @endpermission 
+				   @permission('complete-orders')
+                <li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('completeorders')}}">Completed orders</a></li>
+                   @endpermission 
+				   @permission('fulfillment-center')
+                <li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('fullfillmentorders')}}">Fulfillment Center</a></li>
+                   @endpermission
+                
+      
+				
                     </ul>
-					
                 </li>
-				@endpermission 
+				
         </div>
     </nav>
     @endif
@@ -324,7 +338,7 @@ header('Content-Type: text/html');
     <!-- MetsiMenu -->
     <script src="{!! asset('js/plugins/metisMenu/jquery.metisMenu.js') !!}"></script>
 	
-
+ <script src="{!! asset('js/plugins/clockpicker/clockpicker.js') !!}"></script>
     <!-- SlimScroll -->
     <script src="{!! asset('js/plugins/slimscroll/jquery.slimscroll.min.js') !!}"></script>
 
@@ -348,9 +362,13 @@ header('Content-Type: text/html');
     <script src="{!! asset('js/directives.js') !!}"></script>
     <script src="{!! asset('js/controllers.js') !!}"></script>
 	<script src="{!! asset('js/plugins/datapicker/bootstrap-datepicker.js') !!}"></script>
+	<script src="{!! asset('js/plugins/footable/footable.all.min.js') !!}"></script>
+	<script src="{!! asset('js/plugins/footable/angular-footable.js') !!}"></script>
 	
   <script>
   $(document).ready(function(){
+	    $('.footable').footable();
+            $('.footable2').footable();
 	 // $('#datetimepicker').datetimepicker('setStartDate', '2012-01-01');
       $('.date').datepicker({
 		  dateFormat: 'dd-MMM-yyyy' ,
@@ -366,8 +384,10 @@ header('Content-Type: text/html');
      //this option for allowing user to select from year range
         }); 
 	});
+	 $('.clockpicker').clockpicker();
   });
  </script>
+ 
 </body>
 
 </html>

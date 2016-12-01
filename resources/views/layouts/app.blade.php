@@ -40,6 +40,7 @@ header('Content-Type: text/html');
 	<link href="{{ asset('css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap-confirm-delete.css')}}" rel="stylesheet">
     <link href="{{ asset('css/select2.min.css')}}" rel="stylesheet">
+	 <link href="{{ asset('css/plugins/clockpicker/clockpicker.css')}}" rel="stylesheet">
     <!-- Font awesome -->
     <link href="{{ asset('font-awesome/css/font-awesome.css')}}" rel="stylesheet">
     <!-- footable -->
@@ -260,7 +261,7 @@ header('Content-Type: text/html');
     <script src="{!! asset('js/custom/service.js') !!}"></script>
     <script src="{!! asset('js/angular-translate/angular-translate.min.js') !!}"></script>
 
-
+<script src="{!! asset('js/plugins/clockpicker/clockpicker.js') !!}"></script>
     <!-- MetsiMenu -->
     <script src="{!! asset('js/plugins/metisMenu/jquery.metisMenu.js') !!}"></script>
 
@@ -287,7 +288,12 @@ header('Content-Type: text/html');
     <script src="{!! asset('js/directives.js') !!}"></script>
     <script src="{!! asset('js/controllers.js') !!}"></script>
 	<script src="{!! asset('js/controllers.js') !!}"></script>
-
+<script>
+  $(document).ready(function(){
+	  
+	 $('.clockpicker').clockpicker();
+  });
+ </script>
 </body>
 
 </html>

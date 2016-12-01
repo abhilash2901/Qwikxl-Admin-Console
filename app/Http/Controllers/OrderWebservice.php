@@ -116,7 +116,7 @@ $customer = \Stripe\Customer::create(array(
 				$inputss=array(
 					  'order_id'=>$order_id,
 					  
-					  'status_id'=>3,
+					  'status_id'=>1,
 					  'current_status_flag'=>1
 					 );
 				foreach ($input->cart as $item)
@@ -222,7 +222,7 @@ $customer = \Stripe\Customer::create(array(
 			->where('order_status_histories.current_status_flag', 1)
 			
 			->get();
-			$nums = Orderdetail::selectRaw('sum(quantity*price)as total')->where('orderid', $inputs['orderid'])->get();
+			$nums = Orderdetail::selectRaw('sum(price)as total')->where('orderid', $inputs['orderid'])->get();
 		 // print_r($nums);
 		 // echo count($nums);
            if(count($num)>0){

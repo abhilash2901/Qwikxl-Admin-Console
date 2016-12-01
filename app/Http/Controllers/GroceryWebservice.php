@@ -144,8 +144,46 @@ class GroceryWebservice extends Controller {
     public function distanceList(Request $request) {
 		$input = $request->all();
 		
+	   
 		
-		$store = Store::get();
+		
+	   date_default_timezone_set('Asia/Calcutta');
+		
+	    if($input['time']=='ontheway'){
+			 
+			 $s=date("d/m/Y h:i:s a", time()); 
+			 $time=date('H:i ', strtotime($s));
+		}else{
+			
+			 $time= date('H:i', strtotime($input['time']));
+			
+		}
+	//echo $time;exit;
+
+		if($input['latitude']!='' && $input['longitude'] !=''){
+			$latitude = $input["latitude"];
+		   $longitude = $input["longitude"];
+			$distance = 10;
+			$R = 6378.1;
+ 		    $brng = 1.57;
+ 		   $conv_fac = 0.621371;
+    	   $ds = $distance;
+		   $d = $ds/$conv_fac;
+	 		$lat1 = deg2rad($latitude);
+	 		$lon1 = deg2rad($longitude);
+	 
+	 		$lat2 = asin(sin($lat1)*cos($d/$R) + cos($lat1)*sin($d/$R)*cos($brng)); 
+	 		$lon2 = $lon1 + atan2(sin($brng)*sin($d/$R)*cos($lat1),cos($d/$R)-sin($lat1)*sin($lat2));
+	 		  $new_lat = rad2deg ($lat2);
+	 		   $new_long = rad2deg($lon2);
+			
+			$store = Store::where('latitude', '<=',$new_lat )->where('latitude', '>=',$input['latitude'] )->where('longitude','<=' , $new_long )->where('longitude','>=' , $input['longitude'] )->where('opening_time', '<=', $time)
+    ->where('closing_time', '>=', $time)->get();
+		}else{
+			$store = Store::where('latitude', 'like', '%' . $input['latitude'] . '%')->where('longitude', 'like', '%' . $input['longitude'] . '%')->where('opening_time', '<=', $time)
+    ->where('closing_time', '>=', $time)->get();
+		}
+		
 		
         if(count($store)>0){
 			$data = array("Status"=>'true',"StoreDetails"=>$store); 

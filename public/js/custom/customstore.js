@@ -155,6 +155,63 @@ App.filter('selectedTags', function() {
 				$scope.getstatus=response.statuss;
 			});
 		 };
+		 $scope.listingnewOrder= function(){
+			
+			 post_data  ={};
+		    link="/getnewOrderss";
+		
+	
+			var promise = WebService.send_data( link,post_data);
+			promise.then(function(response){  
+			    $scope.getnewOrders=response.orders;
+				console.log($scope.getnewOrders);
+				//$scope.getstatus=response.statuss;
+				//alert(JSON.stringify($scope.getnewOrders));
+			});
+		 }; 
+		 $scope.listingfulfilmentOrder= function(){
+			
+			 post_data  ={};
+		    link="/getfulfilmentOrderss";
+		
+	
+			var promise = WebService.send_data( link,post_data);
+			promise.then(function(response){  
+			    $scope.getfullfilmentOrders=response.orders;
+				console.log($scope.getnewOrders);
+				//$scope.getstatus=response.statuss;
+				//alert(JSON.stringify($scope.getfullfilmentOrders));
+			});
+		 };
+		 $scope.listingassignedOrder= function(status){
+			
+			  post_data  ={'status':status};
+		    link="/getassignedOrderss";
+		
+	
+			var promise = WebService.send_data( link,post_data);
+			promise.then(function(response){  
+			    $scope.getassingedOrders=response.orders;
+				console.log($scope.getnewOrders);
+				//$scope.getstatus=response.statuss;
+				//alert(JSON.stringify($scope.getassingedOrders));
+			});
+		 };
+		 $scope.listingassignedOrder= function(status,status1){
+			
+			  post_data  ={'status':status,'status1':status1};
+		    link="/getcompletedOrderss";
+		
+	
+			var promise = WebService.send_data( link,post_data);
+			promise.then(function(response){  
+			    $scope.getassingedOrders=response.orders;
+				console.log($scope.getnewOrders);
+				//$scope.getstatus=response.statuss;
+				//alert(JSON.stringify($scope.getassingedOrders));
+			});
+		 };
+		 
 		 $scope.customerList= function(){
 			 post_data  ={};
 		    link="/customerlist";
@@ -182,6 +239,21 @@ App.filter('selectedTags', function() {
 			 
 			 post_data  ={'id':id};
 		    link="/getsingleorder";
+		
+	
+			var promise = WebService.send_data( link,post_data);
+			promise.then(function(response){  
+			    $scope.getsingleorder=response.single;
+				$scope.getitemlist=response.itemlist;
+				$scope.statuss=response.statuss;
+				$scope.total=response.total;
+				$scope.baseurl=base_url;
+			});
+		 };
+		 $scope.Getneworder= function(id){
+			 
+			 post_data  ={'id':id};
+		    link="/getviewneworder";
 		
 	
 			var promise = WebService.send_data( link,post_data);

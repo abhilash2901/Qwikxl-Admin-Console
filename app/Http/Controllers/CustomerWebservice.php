@@ -64,7 +64,7 @@ class CustomerWebservice extends Controller {
 		 'country_code'=>$input->country_code,
 		 'mobile'=>$input->mobile,
 		// 'zipcode'=>$input->zipcode, 
-		// 'address'=>$input->address,
+		'address'=>$input->address,
 		 'country'=>$input->country,
 		 'password'=>$input->password
 		 );

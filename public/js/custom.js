@@ -86,6 +86,8 @@ $(document).ready(function() {
                 var website = res[0].website;
                 var latitude = res[0].latitude;
                 var longitude = res[0].longitude;
+				var opened = res[0].opening_time;
+				var closedd = res[0].closing_time;
                 $('#latitude').val(latitude);
                 $('#longitude').val(longitude);
                 $('#store_id').val(res[0].id);
@@ -96,6 +98,8 @@ $(document).ready(function() {
                 $('#saddress').val(saddress);
                 $('#snumber').val(snumber);
                 $('#saddress2').val(saddress2);
+				$('#opening_time').val(opened);
+                $('#closing_time').val(closedd);
                 //$("#role_id").val(role_id);
 				if(res[0].logo){
 					$(".imageshow").html('<img src=' + base_url + '/' + res[0].logo + ' width="50%" height="50px">');

@@ -126,9 +126,14 @@ Route::post('storeprofiles', ['as' => 'store.update', 'uses' => 'Stores@updates'
 Route::post('state', 'StoreController@state');
 Route::post('city', 'StoreController@city');
 Route::post('createcity','StoreController@insertcity');
-Route::get('listOrders', ['uses' => 'OrdersController@listOrders', 'middleware' => ['permission:order-list']]);
+Route::get('listOrders', ['uses' => 'OrdersController@listOrders']);
 Route::get('listcustomer','OrdersController@listCustomer');
 Route::post('getOrders','OrdersController@getOrders');
+Route::post('getnewOrderss','OrdersController@getnewOrders');
+Route::post('getfulfilmentOrderss','OrdersController@getfulfilmentOrders');
+Route::post('getassignedOrderss','OrdersController@getassignedOrders');
+Route::post('getcompletedOrderss','OrdersController@getcompletedOrders');
+
 Route::post('deleteOrder',['uses' => 'OrdersController@deleteOrder', 'middleware' => ['permission:delete-order']]);
 Route::post('customerlist','OrdersController@CustomerList');
 Route::post('savebanner','BannerController@savebanner');
@@ -140,6 +145,14 @@ Route::post('getsingleorder','OrdersController@getsingleorder');
 Route::get('editorder/{id}',['uses' => 'OrdersController@editOrder', 'middleware' => ['permission:edit-order']]);
 Route::post('customupdate','OrdersController@customupdate');
 Route::post('updatestatus','OrdersController@updatestatus');
+Route::post('updatestatususer','OrdersController@updatestatususer');
+Route::get('neworders', ['uses' => 'OrdersController@neworders', 'middleware' => ['permission:new-order-list']]);
+Route::get('assignedorders', ['uses' => 'OrdersController@assignedorders', 'middleware' => ['permission:assigned-orders']]);
+Route::get('completeorders', ['uses' =>'OrdersController@completeorders', 'middleware' => ['permission:complete-orders']]);
+Route::get('fullfillmentorders',['uses' =>'OrdersController@fullfillmentorders', 'middleware' => ['permission:fulfillment-center']]);
+Route::get('viewneworder/{id}','OrdersController@viewneworder');
+Route::get('viewassignedorder/{id}','OrdersController@viewassignedorder');
+Route::get('viewfulfillmentorder/{id}','OrdersController@viewfulfillmentorder');
 
 //webservices 
 //2

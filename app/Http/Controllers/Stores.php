@@ -118,6 +118,8 @@ class Stores extends Controller {
                 "website" => $input['website'],
 				"latitude" => $input['latitude'],
                 "longitude" => $input['longitude'],
+				"opening_time" => $input['opening_time'],
+                "closing_time" => $input['closing_time'],
 				   "logo"=>$input['image']
         );
         Store::where("id", $id)->update($item);

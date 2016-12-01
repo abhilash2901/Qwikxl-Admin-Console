@@ -1231,6 +1231,41 @@ function Deletedpt() {
             }
         });
     }
+  }function SavenewOrderstatus() {
+    if ($('#updatestatus').parsley().validate()) {
+        var form = $('#updatestatus').serializeArray();
+        jQuery.ajax({
+            type: 'POST',
+            url: base_url + '/updatestatususer',
+
+            dataType: 'json',
+            data: form,
+            success: function(res) {
+                $(".custmstatus").show();
+               
+               
+                    $('html, body').animate({
+                        scrollTop: $(".custmstatus").offset().top - 100
+                    }, 'fast');
+                    $(".custmstatus").html('<p class="' + res.class + '">' + res.msg + '</p>');
+					setTimeout(function() {
+                     $(".custmstatus").hide();
+                    // location.reload();
+                 }, 2000);
+
+                post_data  ={'id': res.id};
+		    link="/getsingleorder";
+		
+	
+			var promise = WebService.send_data( link,post_data);
+			promise.then(function(response){  
+			    $scope.getsingleorder=response.single;
+				$scope.getitemlist=response.itemlist;
+			});
+
+            }
+        });
+    }
   }
  
   	function AddBanner() {

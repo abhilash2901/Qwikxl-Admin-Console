@@ -74,7 +74,7 @@
             <div class="form-group">
                 <div class="col-lg-offset-2 col-lg-8">
                     <?php
-                    if ($role->name != 'admin' && $role->display_name != 'Store Admin') {
+                    if ($role->name != 'admin' && $role->display_name != 'Store Admin'&& $role->display_name != 'Store User') {
                         ?>
                         <button type="submit" class="btn btn-primary" style="display:none">Submit</button> 
 						<button type="button" class="btn btn-primary" onClick="Roleupdate()" >Submit</button>

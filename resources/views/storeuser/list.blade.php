@@ -686,7 +686,7 @@
                                 <div class="col-lg-8">
                                     <input type="text"  name ="title" class="form-control"  required id="title">
                                     <input type="hidden"  name ="id" class="form-control" required id="panid">
-
+                                   		
                                 </div>
                             </div>
                             
@@ -751,7 +751,8 @@
                                 <div class="col-lg-8">
                                     <input type="text"  name ="name" class="form-control"  required id="dptname">
                                     <input type="hidden"  name ="id" class="form-control" required id="dptssid">
-
+<input class="form-control stores_id" type="hidden"  name="store_id" value="<?php echo Session::get('store_userid')?>">
+									
                                 </div>
                             </div>
                             

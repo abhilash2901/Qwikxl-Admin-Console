@@ -185,7 +185,7 @@ class GroceryWebservice extends Controller {
                                 ) + sin( radians($latitude) ) *
                                 sin( radians( latitude ) ) )
                               ) AS distance"))->where('opening_time', '<=', $time)
-    ->where('closing_time', '>=', $time)->orderBy("distance")->get();
+    ->where('closing_time', '>=', $time)->having("distance", "<=", "30")->orderBy("distance")->get();
 			//$store = Store::where('latitude', '<=',$new_lat )->where('latitude', '>=',$input['latitude'] )->where('longitude','<=' , $new_long )->where('longitude','>=' , $input['longitude'] )->where('opening_time', '<=', $time)
     //->where('closing_time', '>=', $time)->get();
 		}else{

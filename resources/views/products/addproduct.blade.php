@@ -157,7 +157,8 @@
                 <div class="form-group"><label class="col-lg-2 control-label" >Price</label>
 
                     <div class="col-lg-8">
-                        {!! Form::text('price', null, array('placeholder' => '50.01','class' => 'form-control','required' => '' , 'data-parsley-type' => 'number','data-parsley-trigger' => 'keyup',"min"=>"50.01" ,'data-parsley-pattern'=>"^\d{0,6}(\.\d{1,2})?$")) !!}
+					<!--"min"=>"00.54"-->
+                        {!! Form::text('price', null, array('placeholder' => '50.01','class' => 'form-control','required' => '' , 'data-parsley-type' => 'number','data-parsley-trigger' => 'keyup' ,'data-parsley-pattern'=>"^\d{0,6}(\.\d{1,2})?$")) !!}
 
                     </div>
                 </div> <div class="form-group"><label class="col-lg-2 control-label" >Quantity</label>

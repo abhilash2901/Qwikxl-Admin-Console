@@ -50,6 +50,12 @@ class OrderWebservice extends Controller {
 			$status_init = "processing";
 			
 			$createddate = date("d-M-Y H:i a");
+			
+			if(0.54 > $total){
+	            $data = array("Status"=>"Transaction Failed. The Amount must be Minimum $0.54","Orderid"=>"null"); 
+				print_r(json_encode($data));
+		            exit;
+            }else{
 			\Stripe\Stripe::setApiKey("sk_test_WemfYo9pOD8TjkwerI1XNhxo");
 			
 				
@@ -62,6 +68,7 @@ class OrderWebservice extends Controller {
 "cvc" => "314"  )));
 var_dump($t->id);
 exit;*/
+
 $customer = \Stripe\Customer::create(array(
   "description" => $username,
   "source" => $stripe_token));
@@ -69,12 +76,13 @@ $customer = \Stripe\Customer::create(array(
 			
 			$charge = \Stripe\Charge::create(array(
 				'customer' => $customer->id,
-				'amount'   => intval($total),
+				'amount'   => $total*100,
 				'currency' => 'usd'
 			));
 			
 			
 			$status = json_encode($charge ->status);
+			
 			if($status != '"succeeded"') {
 				//echo '{"status":"Transaction Failed","Orderid":"null"}';
 				//exit;
@@ -186,6 +194,7 @@ $customer = \Stripe\Customer::create(array(
 		$data = array("Status"=>$e->getMessage(),"Orderid"=>null); 
 		print_r(json_encode($data));
 		exit;
+		}
 	}
 	
 	 }

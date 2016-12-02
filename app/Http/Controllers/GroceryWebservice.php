@@ -11,6 +11,7 @@ use App\Category;
 use App\Departments;
 use DB;
 use Session;
+use DEGREES;
 
 use App\Product;
 use App\Banner;
@@ -176,12 +177,22 @@ class GroceryWebservice extends Controller {
 	 		$lon2 = $lon1 + atan2(sin($brng)*sin($d/$R)*cos($lat1),cos($d/$R)-sin($lat1)*sin($lat2));
 	 		  $new_lat = rad2deg ($lat2);
 	 		   $new_long = rad2deg($lon2);
-			
-			$store = Store::where('latitude', '<=',$new_lat )->where('latitude', '>=',$input['latitude'] )->where('longitude','<=' , $new_long )->where('longitude','>=' , $input['longitude'] )->where('opening_time', '<=', $time)
-    ->where('closing_time', '>=', $time)->get();
+			$store=Store::select(
+                    DB::raw("id,name,unique_id,corporateidentifier,address,address2,zip,phone,mail,website,opening_time,closing_time,logo,latitude , longitude ,
+                              ( 3959 * acos( cos( radians($latitude) ) *
+                                cos( radians( latitude ) )
+                                * cos( radians( longitude ) - radians($longitude)
+                                ) + sin( radians($latitude) ) *
+                                sin( radians( latitude ) ) )
+                              ) AS distance"))->where('opening_time', '<=', $time)
+    ->where('closing_time', '>=', $time)->orderBy("distance")->get();
+			//$store = Store::where('latitude', '<=',$new_lat )->where('latitude', '>=',$input['latitude'] )->where('longitude','<=' , $new_long )->where('longitude','>=' , $input['longitude'] )->where('opening_time', '<=', $time)
+    //->where('closing_time', '>=', $time)->get();
 		}else{
 			$store = Store::where('latitude', 'like', '%' . $input['latitude'] . '%')->where('longitude', 'like', '%' . $input['longitude'] . '%')->where('opening_time', '<=', $time)
     ->where('closing_time', '>=', $time)->get();
+	//$store=Store::select('id','name','latitude','longitude' ,111.045 * DEGREES(ACOS(COS(RADIANS('0.244799')) * COS(RADIANS('latitude')) * COS(RADIANS('longitude') - RADIANS('0.244799')) + SIN(RADIANS('51.891648')) * SIN(RADIANS('latitude')))))->where('opening_time', '<=', $time)
+    //->where('closing_time', '>=', $time)->get();
 		}
 		
 		

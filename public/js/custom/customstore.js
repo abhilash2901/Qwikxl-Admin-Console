@@ -329,8 +329,9 @@ App.filter('selectedTags', function() {
 			
 			 if ($('#addbanner').parsley().validate()) {
 		 
-
+             $scope.isDisabled=true;
          $('#addbanner').ajaxForm(function(options) {
+			  $scope.isDisabled=false;
              var items = JSON.parse(options);
 			 
 			

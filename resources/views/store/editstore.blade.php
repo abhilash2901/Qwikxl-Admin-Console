@@ -783,7 +783,8 @@
                                 <div class="col-lg-8">
                                     <input type="text"  name ="name" class="form-control"  required id="dptname">
                                     <input type="hidden"  name ="id" class="form-control" required id="dptssid">
-
+<input class="form-control stores_id" type="hidden"  name="store_id" value="<?php echo $store_id; ?>">
+											
                                 </div>
                             </div>
                             

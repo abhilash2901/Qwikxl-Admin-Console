@@ -388,7 +388,7 @@ class StoreController extends Controller {
         print_r(json_encode($result[0]));
     } public function adddepts(Request $request) {
         $input = $request->all();
-		$res = DB::table('departments')->where("name",$input['name'])->get();
+		$res = DB::table('departments')->where("name",$input['name'])->where("store_id",$input['store_id'])->get();
 		
         if(count($res)==0){
             if (Input::file('image')) {
@@ -415,7 +415,8 @@ class StoreController extends Controller {
 		}
     }public function dptsupdate(Request $request) {
         $input = $request->all();
-		$res = DB::table('departments')->where("name",$input['name'])->where('id','!=',$input['id'])->get();
+		
+		$res = DB::table('departments')->where("name",$input['name'])->where("store_id",$input['store_id'])->where('id','!=',$input['id'])->get();
 		
         if(count($res)==0){
             if (Input::file('image')) {

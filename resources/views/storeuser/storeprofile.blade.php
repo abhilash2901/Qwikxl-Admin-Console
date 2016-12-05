@@ -103,7 +103,7 @@
                                 </div>
                                 <div class="form-group"><label class="col-sm-2 control-label">Change Password</label>
 
-                                    <div class="col-lg-8"><input type="password" placeholder="Password" id="cpassed" name="changepass" class="form-control" required="">
+                                    <div class="col-lg-8"><input type="password" placeholder="Password" id="cpassed" name="changepass" class="form-control" data-parsley-minlength="1"  data-parsley-required-message="Please enter your new password." data-parsley-pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$" data-parsley-pattern-message="Your password must  contain  Minimum 8 characters at least  (1) lowercase letter (1) uppercase letter 1 Number and 1 Special Character:." data-parsley-required>
                                         <input type="hidden" placeholder="Password"  name="id" class="form-control" value="<?php echo $user->id; ?>">
                                     </div>
                                 </div>

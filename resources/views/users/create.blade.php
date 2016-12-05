@@ -72,7 +72,7 @@
 					<div class="form-group"><label class="col-lg-2 control-label" >Password</label>
 
                             <div class="col-lg-8">
-                	{!! Form::password('password', array('placeholder' => 'Password','class' => 'form-control','id' => 'cpassed','required'=>'','data-parsley-minlength'=>'6')) !!}
+                	{!! Form::password('password', array('placeholder' => 'Password','class' => 'form-control','id' => 'cpassed','data-parsley-minlength'=>"1" , 'data-parsley-required-message'=>"Please enter your new password.", 'data-parsley-pattern'=>"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$" ,'data-parsley-pattern-message'=>"Your password must contain Minimum 8 characters at least  (1) lowercase letter (1) uppercase letter 1 Number and 1 Special Character:." ,'data-parsley-required')) !!}
                 	
                             </div>
                         </div> <div class="form-group"><label class="col-lg-2 control-label" >Confirm Password</label>

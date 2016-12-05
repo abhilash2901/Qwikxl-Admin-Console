@@ -1,3 +1,4 @@
+<?php //var_dump(\Session::all()); ?>
 @extends('layouts.app')
 
 @section('content')
@@ -5,7 +6,7 @@
 	
 				
 			
-		    
+		
 <div class="middle-box text-center loginscreen  animated fadeInDown">
     <div>
         <div>
@@ -18,7 +19,7 @@
        
         <form class="m-t"  role="form" method="POST"  method="POST" action="{{ url('/login') }}">
 		   {{ csrf_field() }}
-            <div class="form-group">
+            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                 <input type="email" class="form-control" placeholder="Username" name="email" value="{{ old('email') }}">
 				 @if ($errors->has('email'))
                                     <span class="help-block">
@@ -26,7 +27,7 @@
                                     </span>
                 @endif
             </div>
-            <div class="form-group">
+            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                 <input type="password" class="form-control" placeholder="Password" name="password">
 				 @if ($errors->has('password'))
                                     <span class="help-block">

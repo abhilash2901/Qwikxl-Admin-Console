@@ -39,7 +39,7 @@
             <button class="btn btn-primary block full-width m-b"  type="submit">
                 Login
             </button>
-                     <a ui-sref="forgot_password"><small>Forgot password?</small></a>
+                     <a href="{{ url('/password/reset') }}"><small>Forgot password?</small></a>
         </form>
         <p class="m-t"> <small>Inspinia we app framework base on Bootstrap 3 &copy; 2014</small> </p>
     </div>

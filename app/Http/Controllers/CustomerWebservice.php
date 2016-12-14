@@ -121,7 +121,7 @@ class CustomerWebservice extends Controller {
 	 public function updateCreditCardff(Request $request) {
 		 $input = $request->all();
 		 $inputs =array(
-				'creditcardno,' =>$input['creditcardno'],
+				'creditcardno' =>$input['creditcardno'],
 				'month' =>$input['month'],
 				'year' =>$input['year'],
 				'cvv' =>$input['cvv'],
@@ -332,7 +332,12 @@ class CustomerWebservice extends Controller {
 			 ini_set('max_execution_time', 123456);
 			 $input = $request->all();
 			
-			 
+			 $password=mt_rand(100000,999999);
+			 $inputs =array(
+				'password' =>$password
+				);
+			 $user = Customer::where('email', '=', $input['email']);
+				 $user->update($inputs);
 			 $customer=Customer::where('email', '=', $input['email'])->get();
 			 if(count($customer)>0){
 				  $emails =  $request->input('email');

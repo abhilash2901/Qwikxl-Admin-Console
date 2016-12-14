@@ -342,7 +342,7 @@ class CustomerWebservice extends Controller {
 			 if(count($customer)>0){
 				  $emails =  $request->input('email');
 				  Mail::send('email.welcome', ['custname' => $customer[0]->firstname, 'password' => $customer[0]->password], function ($message) use($emails){
-						$message->from('us@example.com', 'Laravel');
+						$message->from('us@example.com', 'QwikXL');
 
 						$message->to($emails);
 						$message->subject("Your QwikXL Password Information");

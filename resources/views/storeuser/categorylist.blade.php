@@ -174,6 +174,7 @@
 							No Categories
 						</div></div>
 					</div>
+					
 					<div class="inbox-table-row" dir-paginate="subCate in listcategory | filter:department |  filter:category |selectedTags:tags | itemsPerPage:7 ">
 						<div class="" >
 							<div class="s_col_1">
@@ -188,12 +189,13 @@
 							<div class="s_col_1">
 
 								@permission('edit-category') 					
-
-								<a class="btn btn-primary btn-sm" href="{{ url('/editcategory/ ')}}@{{subCate.id}}">Edit</a>
+                                {{ Form::open(array('url' => 'editcategory','class' => 'pull-left')) }}<input type="hidden" name="id" value="@{{subCate.id}}"> <input type="submit" class="btn btn-primary btn-sm" value="Edit"></form>
+							
+								<!--a class="btn btn-primary btn-sm" href="{{ url('/editcategory/ ')}}@{{subCate.id}}">Edit</a-->
 
 								@endpermission
 						        @permission('delete-category') 
-								<a style="margin-left: 3px;" class="btn btn-danger btn-sm" onClick="TakeId(this)"  data-toggle="modal" data-target="#DeleteModal" data-id="@{{ firstNestedSub.id }}">Delete</a>
+								<a style="margin-left: 3px;" class="btn btn-danger btn-sm" onClick="TakeId(this)"  data-toggle="modal" data-target="#DeleteModal" data-id="@{{subCate.id}}">Delete</a>
 								 @endpermission
 							</div>
 							
@@ -212,8 +214,9 @@
 							</div>
 							<div class="s_col_1">
 								  @permission('edit-category')  								
-
-								<a class="btn btn-primary btn-sm" href="{{ url('/editcategory/ ')}}@{{firstNestedSub.id}}">Edit</a>
+                                   {{ Form::open(array('url' => 'editcategory','class' => 'pull-left')) }}<input type="hidden" name="id" value="@{{firstNestedSub.id}}"> <input type="submit" class="btn btn-primary btn-sm" value="Edit"></form>
+							
+								<!--a class="btn btn-primary btn-sm" href="{{ url('/editcategory/ ')}}@{{firstNestedSub.id}}">Edit</a-->
 
 								@endpermission
 						        @permission('delete-category') 
@@ -237,8 +240,9 @@
 							</div>
 							<div class="s_col_1">
 								@permission('edit-category')  								
-
-								<a class="btn btn-primary btn-sm" href="{{ url('/editcategory/ ')}}@{{secondNestedSub.id}}">Edit</a>
+                                {{ Form::open(array('url' => 'editcategory','class' => 'pull-left')) }}<input type="hidden" name="id" value="@{{secondNestedSub.id}}"> <input type="submit" class="btn btn-primary btn-sm" value="Edit"></form>
+							
+								<!--a class="btn btn-primary btn-sm" href="{{ url('/editcategory/ ')}}@{{secondNestedSub.id}}">Edit</a-->
 
 								@endpermission
 						        @permission('delete-category') 
@@ -260,8 +264,9 @@
 							</div>
 							<div class="s_col_1">
 								@permission('edit-category')  								
-
-								<a class="btn btn-primary btn-sm" href="{{ url('/editcategory/ ')}}@{{thirdNestedSub.id}}">Edit</a>
+                                {{ Form::open(array('url' => 'editcategory','class' => 'pull-left')) }}<input type="hidden" name="id" value="@{{thirdNestedSub.id}}"> <input type="submit" class="btn btn-primary btn-sm" value="Edit"></form>
+							
+								<!--a class="btn btn-primary btn-sm" href="{{ url('/editcategory/ ')}}@{{thirdNestedSub.id}}">Edit</a-->
 
 								@endpermission
 						        @permission('delete-category') 

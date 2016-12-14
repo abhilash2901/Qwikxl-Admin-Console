@@ -152,14 +152,14 @@ class GroceryWebservice extends Controller {
 		
 	    if($input['time']=='ontheway'){
 			 
-			 $s=date("d/m/Y h:i:s a", time()); 
-			 $time=date('H:i ', strtotime($s));
+			 $s=date("H:i", time()); 
+			 $time=date("H:i", time()); 
 		}else{
 			
 			 $time= date('H:i', strtotime($input['time']));
 			
 		}
-	//echo $time;exit;
+	//echo $s;exit;
 
 		if($input['latitude']!='' && $input['longitude'] !=''){
 			$latitude = $input["latitude"];

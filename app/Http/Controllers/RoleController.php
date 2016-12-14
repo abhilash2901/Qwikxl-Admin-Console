@@ -104,7 +104,9 @@ class RoleController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id) {
+    public function edit(Request $request) {
+         $input = $request->all();
+		 $id=$input['id'];
         $role = Role::find($id);
         $permission = Permission::where('permissiontype', 0)->get();
 		$permissionstore = Permission::where('permissiontype', 1)->get();

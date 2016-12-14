@@ -102,7 +102,7 @@ header('Content-Type: text/html');
 
                 @permission('profile-view')
                 <li ng-class="{active: $state.includes('mailbox')}" class="treeview">
-                    <a href="{{ url('/profile/ ')}}{{Auth::user()->id}}"><i class="	glyphicon glyphicon-user"></i><span class="nav-label ng-binding">PROFILE</span></a>
+                    <a href="{{ url('/profile/ ')}}{{Crypt::encrypt(Auth::user()->id)}}"><i class="	glyphicon glyphicon-user"></i><span class="nav-label ng-binding">PROFILE</span></a>
 
                 </li>
                 @endpermission @permission('role-list')
@@ -249,7 +249,9 @@ header('Content-Type: text/html');
     </div>
 
 
-     <script src="{!! asset('js/angular/angular.js') !!}"></script>
+  
+	 <script src="{!! asset('js/angular/angular.js') !!}"></script>
+	 
     <script src="{!! asset('js/dirPagination.js') !!}"></script>
    
 

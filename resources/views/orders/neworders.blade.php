@@ -100,7 +100,9 @@
                             </td>
                             <td class="text-right">
                                 <div class="btn-group">
-                                   <a href="{{ url('/viewneworder/ ')}}@{{new.order_id}}" > <button class="btn-white btn btn-sm">View Order</button></a>
+								   {{ Form::open(array('url' => 'viewneworder','class' => 'pull-left')) }}<input type="hidden" name="id" value="@{{new.order_id}}"> <input type="submit" class="btn btn-primary btn-sm" value="View Order"></form>
+								
+                                   <!--a href="{{ url('/viewneworder/ ')}}@{{new.order_id}}"> <button class="btn-white btn btn-sm">View Order</button></a-->
                                     
                                 </div>
                             </td>

@@ -101,8 +101,10 @@
                                 <td>@{{product.departments}}</td> 
                                 <td>@{{product.categoryname}}</td>
                                 <td class="text-right">
-								@permission('edit-product')    
-								<a class="btn btn-primary btn-sm" href="{{ url('/editproduct/ ')}}@{{product.id}}" >Edit</a>
+								@permission('edit-product') 
+                                {{ Form::open(array('url' => 'editproduct','class' => 'pull-left')) }}<input type="hidden" name="id" value="@{{product.id}}"> <input type="submit" class="btn btn-primary btn-sm" value="Edit"></form>
+															
+								<!--a class="btn btn-primary btn-sm" href="{{ url('/editproduct/ ')}}@{{product.id}}" >Edit</a-->
 								@endpermission
 								@permission('delete-product')   
 								<a style="margin-left: 3px;" class="btn btn-danger btn-sm" onClick="TakeId(this)" data-id="@{{product.id}}" data-toggle="modal" data-target="#DeleteModal" >Delete</a></td>

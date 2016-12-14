@@ -97,8 +97,9 @@
                         <td>
 						<div style="float: left;margin-right: 3px;">
                             @permission('role-edit')    
-
-                            <a href="{{ url('rolesedit')}}/@{{roles.id}}" > <button class="btn-warning btn btn-sm"><i class="fa fa-wrench"></i> Edit</button></a>
+                             {{ Form::open(array('url' => 'rolesedit')) }}<input type="hidden" name="id" value="@{{roles.id}}"> <input type="submit" class="btn btn-primary btn-sm" value="Edit"></form>
+							
+                            <!--a href="{{ url('rolesedit')}}/@{{roles.id}}" > <button class="btn-warning btn btn-sm"><i class="fa fa-wrench"></i> Edit</button></a-->
                             @endpermission
 							</div>
                             @permission('role-delete')

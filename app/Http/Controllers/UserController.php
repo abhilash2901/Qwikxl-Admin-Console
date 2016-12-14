@@ -12,6 +12,7 @@ use App\Departments;
 use DB;
 use Session;
 use Hash;
+use \Crypt;
 
 class UserController extends Controller {
 
@@ -102,6 +103,10 @@ class UserController extends Controller {
         return json_encode(array('roles' => $res, 'stores' => $stores));
     }
 
+    public function test(Request $request) {
+		 $input = $request->all();
+		 var_dump($input);
+	}
     public function store(Request $request) {
         
 
@@ -139,6 +144,7 @@ class UserController extends Controller {
     }
 
     public function showprofile($id) {
+		$id =Crypt::decrypt($id);
         $user = User::find($id);
         return view('users.showprofile', compact('user'));
     }
@@ -149,7 +155,9 @@ class UserController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id) {
+    public function edit(Request $request) {
+		  $input = $request->all();
+		 $id=$input['id'];
         $user = User::find($id);
 		$users  = DB::table('users')
                 ->join('role_user', 'users.id', '=', 'role_user.user_id')

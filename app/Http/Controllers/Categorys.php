@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Input;
 use Image;
 use App\User;
 use App\Role;
+use App\Product;
+use App\Productinventory;
 use App\Store;
 use App\Category;
 use App\Departments;
@@ -173,8 +175,9 @@ class Categorys extends Controller {
         
     }
 
-    public function editcategory($id) {
-        //$input = $request->all();
+    public function editcategory(Request $request) {
+        $input = $request->all();
+		 $id=$input['id'];
         //var_dump($id);
         $ids = Session::get('store_userid');
 		$subcate=new SubCate;
@@ -241,7 +244,19 @@ class Categorys extends Controller {
         if (count($categories) > 0) {
             print_r(json_encode(array('status' => 'Failed', 'msg' => 'Parent Exist Please Delete The parent')));
         } else {
-            Category::where('id', $input)->delete();
+			$product =Product::where('category_id',$input['id'])->get();
+			
+			if(count($product)>0){
+				foreach($product as $prdct){
+				
+					Productinventory::where('product_id',$prdct->id)->delete();
+				}
+				exit;
+				//Productinventory::where('product_id',$product[0]->id)->delete();
+			}
+			$product =Product::where('category_id',$input['id'])->delete();
+			
+            Category::where('id', $input['id'])->delete();
             print_r(json_encode(array('status' => 'success', 'msg' => 'Deleted Succesfully')));
         }
     }

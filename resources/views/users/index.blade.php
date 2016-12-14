@@ -121,9 +121,11 @@
                         </td>
                         <td>
 						     <div style="float: left;margin-right: 3px;">
-							 
+							
 							 @permission('users-edit')
-                               <a class="btn btn-primary btn-sm" href="{{ url('usersedit')}}/@{{users.id}}">Edit</a>
+							 {{ Form::open(array('url' => 'usersedit')) }}<input type="hidden" name="id" value="@{{users.id}}"> <input type="submit" class="btn btn-primary btn-sm" value="Edit"></form>
+							
+                               <!--a class="btn btn-primary btn-sm" href="{{ url('usersedit')}}/@{{users.id}}">Edit</a-->
 							   @endpermission
                               </div>
                               <div ng-show="users.rolesname!=''"  ng-init="types=<?php echo Session::get('roletype');?>"> 

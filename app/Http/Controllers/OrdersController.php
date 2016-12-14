@@ -150,7 +150,7 @@ class OrdersController extends Controller {
             
 		    
 			->get();
-			$status =Status::get();
+			$status =Status::where('id','!=', 5)->get();
 			print_r(json_encode(array('orders'=>$nums,'statuss'=>$status)));
     }public function getfulfilmentOrders(Request $request) {
 		 $ids = Session::get('store_userid');
@@ -253,8 +253,10 @@ public function getassignedOrders(Request $request) {
 			print_r(json_encode(array('orders'=>$nums,'statuss'=>$status)));
     }
 
-	    public function viewneworder($id) {
-			$status =Status::where('id','!=','1')->get();
+	    public function viewneworder(Request $request) {
+			$input = $request->all();
+			$id = $input['id'];
+			$status =Status::where('id','!=','1')->where('id','!=','5')->get();
 			$storeuser =User::join('role_user', 'role_user.user_id', '=', 'users.id')
 			             ->join('roles', 'role_user.role_id', '=', 'roles.id')
 						  ->select('users.*')
@@ -263,7 +265,7 @@ public function getassignedOrders(Request $request) {
 						
 			return view('orders.viewneworder',['id' => $id,'status' => $status,'storeuser' => $storeuser]);
 		}  public function viewfulfillmentorder($id) {
-			$status =Status::where('id','!=','1')->where('id','!=','4')->get();
+			$status =Status::where('id','!=','1')->where('id','!=','4')->where('id','!=','5')->get();
 			$storeuser =User::join('role_user', 'role_user.user_id', '=', 'users.id')
 			             ->join('roles', 'role_user.role_id', '=', 'roles.id')
 						  ->select('users.*')
@@ -278,8 +280,10 @@ public function getassignedOrders(Request $request) {
 			->orderBy('order_status_histories.id', 'desc')->get();			
 			return view('orders.viewfulfillmentorder',['id' => $id,'status' => $status,'assigned_to' => $currentstatus[0]->userid,'currentstatus' => $currentstatus[0]->id,'storeuser' => $storeuser]);
 		} 
-		public function viewassignedorder($id) {
-			$status =Status::where('id','!=','1')->get();
+		public function viewassignedorder(Request $request) {
+			$input = $request->all();
+			$id = $input['id'];
+			$status =Status::where('id','!=','1')->where('id','!=','5')->get();
 			$storeuser =User::join('role_user', 'role_user.user_id', '=', 'users.id')
 			             ->join('roles', 'role_user.role_id', '=', 'roles.id')
 						  ->select('users.*')

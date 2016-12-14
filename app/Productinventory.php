@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use DB;
 
 
-class productinventory extends Model
+class Productinventory extends Model
 {
 	
      protected $table = 'productinventories';

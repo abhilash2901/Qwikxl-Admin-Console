@@ -141,14 +141,14 @@ class Stores extends Controller {
 
         if (count($ress) == 1) {
 
-            if (Hash::check($request->input('currentpass'), $ress->password)) {
+            //if (Hash::check($request->input('currentpass'), $ress->password)) {
                 $user = User::find($id);
 
                 $user->update($input);
                 print_r(json_encode(array('status' => 'success', 'msg' => 'Password Changed Succesfully')));
-            } else {
-                print_r(json_encode(array('status' => 'failed', 'msg' => 'Current Password is incorrect ')));
-            }
+            //} else {
+              //  print_r(json_encode(array('status' => 'failed', 'msg' => 'Current Password is incorrect ')));
+            //}
         }
     }
 

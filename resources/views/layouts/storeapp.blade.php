@@ -19,7 +19,7 @@ header('Content-Type: text/html');
     <script src="{!! asset('js/plugins/jquery-ui/jquery-ui.js') !!}"></script>
     <script src="{!! asset('js/parsley.min.js') !!}"></script>
     <script src="{!! asset('js/bootstrap/bootstrap.min.js') !!}"></script>
-
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
     <script type="text/javascript">
         $.ajaxSetup({
             headers: {
@@ -84,14 +84,14 @@ header('Content-Type: text/html');
 
                     <div class="profile-element" uib-dropdown><a href="{{ url('storeprofile')}}">
                         <img alt="image" class="img-circle" src="{{ asset('img/profile_small.jpg')}}" />
-                        <a uib-dropdown-toggle href>
+                        <a  href="{{ url('storeprofile')}}">
                             <span class="clear">
-                                    <span class="block m-t-xs" align="center">
-                                        <strong class="font-bold"> {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</strong>
-                                    </span>
-                            <span class=" block m-t-xs" align="center">profile</span>
+                                    <span class="block m-t-xs" align="center" style="text-align:center">
+                                        <strong class="font-bold"> {{ Auth::user()->firstname }} </strong>
+                                    </span></a>  <a  >
+                            <span class=" block m-t-xs" align="center">{{Session::get('storename')}} & {{Session::get('storeuniqid')}} </span>
                             </span>
-                        </a> </a>
+                        </a>
 
                     </div>
                     <div class="logo-element">
@@ -127,54 +127,9 @@ header('Content-Type: text/html');
                     <a href="{{ url('listproduct')}}"><i class="fa fa-cog"></i><span class="nav-label ng-binding">Product List</span></a>
 
                 </li>-->
-
-                 <li ng-class="{active: $state.includes('pages')}" class="treeview">
-                    <a ui-sref="#"><i class="fa fa-th-large"></i> <span class="nav-label">STORE SETTINGS</span><span class="fa arrow"></span></a>
-                    
-					 <ul class="nav nav-second-level collapse treeview-menu">
-                        @permission('editstore-details')
-      
-					  <li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('storelistss')}}">Store</a></li>
-                     
-                        @endpermission @permission('store-profile')
-                       
-					   
-					  <li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('storeprofile')}}">Profile</a></li>
-                     
-                        @endpermission 
-                    </ul>
-                </li>
-				<li ng-class="{active: $state.includes('pages')}"  class="treeview">
-                    <a ui-sref="#"><i class="fa fa-th-large"></i> <span class="nav-label">CATALOG</span><span class="fa arrow"></span></a>
-                   <ul class="nav nav-second-level collapse treeview-menu" >
-					 @permission('list-category')
-          
-				 <li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('categorylist')}}">Categories</a></li>
-                     
-                 @endpermission
-				 @permission('add-category')
-        
-				<li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('categorys')}}">Add Category</a></li>
-                  
-                 @endpermission @permission('list-product')
-      
-				<li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('listproduct')}}">Inventory</a></li>
-                  
-				@endpermission 
-				@permission('add-product')
-               
-				<li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('addproduct')}}">Add Inventory </a></li>
-                  
-				@endpermission 
-				@permission('import')
-		
-				<li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('import')}}">Import </a></li>
-                  
-				@endpermission 
-                    </ul>
-                </li>
-				<li ng-class="{active: $state.includes('pages')}"  class="treeview">
-                    <a ui-sref="#"><i class="fa fa-th-large"></i> <span class="nav-label">ORDERS</span><span class="fa arrow"></span></a>
+                  <li ng-class="{active: $state.includes('pages')}"  class="treeview">
+                    <a ui-sref="#"><i class="fa fa-shopping-basket" aria-hidden="true"></i>
+ <span class="nav-label">ORDERS</span><span class="fa arrow"></span></a>
                    <ul class="nav nav-second-level collapse treeview-menu" >
 					 @permission('order-list')
           
@@ -199,6 +154,55 @@ header('Content-Type: text/html');
 				
                     </ul>
                 </li>
+                 <li ng-class="{active: $state.includes('pages')}" class="treeview">
+                    <a ui-sref="#"><i class="fa fa-sliders"></i> <span class="nav-label">MANAGE STORE</span><span class="fa arrow"></span></a>
+                    
+					 <ul class="nav nav-second-level collapse treeview-menu">
+                        @permission('editstore-details')
+      
+					  <li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('storelistss')}}">Store Settings</a></li>
+                     
+                        @endpermission @permission('store-profile')
+                       
+					   
+					  <li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('storeprofile')}}">Profile</a></li>
+                     
+                        @endpermission 
+                    </ul>
+                </li>
+				<li ng-class="{active: $state.includes('pages')}"  class="treeview">
+                    <a ui-sref="#"><i class="fa fa-pencil-square-o"></i> <span class="nav-label">INVENTORY</span><span class="fa arrow"></span></a>
+                   <ul class="nav nav-second-level collapse treeview-menu" >
+				   @permission('list-product')
+      
+				<li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('listproduct')}}">Store Inventory</a></li>
+                  
+				@endpermission 
+				@permission('add-product')
+               
+				<li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('addproduct')}}">Add Inventory </a></li>
+                  
+				@endpermission 
+				 
+					 @permission('list-category')
+          
+				 <li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('categorylist')}}">Categories</a></li>
+                     
+                 @endpermission
+				     @permission('add-category')
+        
+				<li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('categorys')}}">Add Categories</a></li>
+                  
+                 @endpermission 
+				 
+				@permission('import')
+		
+				<li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('import')}}">Import Inventory </a></li>
+                  
+				@endpermission 
+                    </ul>
+                </li>
+				
 				
         </div>
     </nav>

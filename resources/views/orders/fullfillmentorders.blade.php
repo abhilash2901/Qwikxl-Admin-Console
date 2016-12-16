@@ -48,7 +48,7 @@
         <div class="col-lg-12">
             <div class="ibox">
                 <div class="ibox-title">
-                    <h5 class="text-navy">@{{getfullfilmentOrders.length}} Orders (total number of  orders)</h5>
+                    <h5 class="text-navy">@{{getfullfilmentOrders.length}} Orders </h5>
                    
                 </div>
                 <div class="ibox-content">

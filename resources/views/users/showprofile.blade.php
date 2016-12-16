@@ -79,8 +79,8 @@
                          <div class="form-group"><label class="col-lg-2 control-label" >Contact no</label>
                             <input type="hidden" value="{{$user->type}}" name="type">
                             <div class="col-lg-8">
-                	   {!! Form::text('contactnumber', null, array('placeholder' => 'Contact Number','class' => 'form-control','data-parsley-trigger'=>'keyup','data-parsley-minlength'=>'4', 'data-parsley-type'=>'digits','required'=>'')) !!} 
-                	
+                	   {!! Form::text('contactnumber', null, array('placeholder' => '(123) 123-1234','class' => 'form-control','data-parsley-trigger'=>'keyup','data-parsley-pattern'=>'^(\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$', 'required'=>'')) !!} 
+                	   <span class="help-block">(999) 999-9999</span>
                             </div>
                         </div> 
                                           
@@ -105,7 +105,7 @@
       <div class="modal-content">
        <div class="modal-body">
     <div class="ibox float-e-margins">
-                <div class="ibox-title">
+                <div class="ibox-title" style="border-style: hidden solid none;">
                     <h5>Change Password</h5>
 
                     
@@ -114,11 +114,11 @@
 				 <div class="changepasres"></div>
                     <form class="form-horizontal " id="changepass">
                        
-						<div class="form-group"><label class="col-lg-2 control-label">Current Password</label>
+						<!--div class="form-group"><label class="col-lg-2 control-label">Current Password</label>
 
                             <div class="col-lg-8"><input type="password" placeholder="Password"  id="psdd" name="currentpass" class="form-control" required="">
                             </div>
-                        </div>
+                        </div-->
 					<div class="form-group"><label class="col-sm-2 control-label">Change Password</label>
 
                             <div class="col-lg-8"><input type="password" placeholder="Password" id="cpassed" name="changepass" class="form-control" data-parsley-minlength="1"  data-parsley-required-message="Please enter your new password." data-parsley-pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$" data-parsley-pattern-message="Your password must contain Minimum 8 characters at least  (1) lowercase letter (1) uppercase letter 1 Number and 1 Special Character:." data-parsley-required>

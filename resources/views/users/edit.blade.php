@@ -46,15 +46,16 @@
                         </div>
 						<div class="form-group"><label class="col-lg-2 control-label">Last Name</label>
 
-                            <div class="col-lg-8">   {!! Form::text('lastname', null, array('placeholder' => 'Last Name','class' => 'form-control','required'=>'','data-parsley-trigger'=>"keyup",'data-parsley-pattern'=>"^[a-zA-Z ]+$")) !!} <span
-                                    class="help-block m-b-none"></span>
+                            <div class="col-lg-8">   {!! Form::text('lastname', null, array('placeholder' => '(123) 123-1234','class' => 'form-control','required'=>'','data-parsley-trigger'=>"keyup",'data-parsley-pattern'=>"^[a-zA-Z ]+$")) !!} 
+							<span class="help-block">(999) 999-9999</span>
+                                   
                             </div>
                         </div>
 						
 						<div class="form-group"><label class="col-lg-2 control-label">Contact Number</label>
 
                             <div class="col-lg-8">   {!! Form::text('contactnumber', null, array('placeholder' => 'Contact Number','class' => 'form-control',"data-parsley-validation-threshold"=>"1" ,"data-parsley-trigger"=>"keyup" ,
-    'data-parsley-type'=>"digits",'data-parsley-minlength'=>'4')) !!} <span
+    'data-parsley-pattern'=>'^(\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$')) !!} <span
                                     class="help-block m-b-none"></span>
                             </div>
                         </div>

@@ -50,7 +50,7 @@
         <div class="col-lg-12">
             <div class="ibox">
 			<div class="ibox-title">
-                    <h5 class="text-navy">@{{getassingedOrders.length}} (total number of  orders) Assigned Orders </h5>
+                    <h5 class="text-navy">@{{getassingedOrders.length}} Assigned Orders </h5>
                    
                 </div>
                 <div class="ibox-content">

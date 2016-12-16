@@ -80,14 +80,14 @@ header('Content-Type: text/html');
             <ul side-navigation class="nav metismenu sidebar-menu" id="side-menu">
                 <li class="nav-header">
                    
-                    <div class="profile-element" uib-dropdown> <a href="{{ url('/profile/ ')}}{{Auth::user()->id}}">
+                    <div class="profile-element" uib-dropdown> <a href="{{ url('/profile/ ')}}{{Crypt::encrypt(Auth::user()->id)}}">
                         <img alt="image" class="img-circle" src="{{ asset('img/profile_small.jpg')}}" />
-                        <a uib-dropdown-toggle href>
+                        <a href="{{ url('/profile/ ')}}{{Crypt::encrypt(Auth::user()->id)}}">
                             <span class="clear">
                                     <span class="block m-t-xs" align="center">
                                         <strong class="font-bold"> {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</strong>
                                     </span>
-                            <span class=" block m-t-xs" align="center">profile</span>
+                            <!--span class=" block m-t-xs" align="center">profile</span-->
                             </span>
                         </a>
 </a>
@@ -96,27 +96,6 @@ header('Content-Type: text/html');
                         IN+
                     </div>
                 </li>
-
-
-
-
-                @permission('profile-view')
-                <li ng-class="{active: $state.includes('mailbox')}" class="treeview">
-                    <a href="{{ url('/profile/ ')}}{{Crypt::encrypt(Auth::user()->id)}}"><i class="	glyphicon glyphicon-user"></i><span class="nav-label ng-binding">PROFILE</span></a>
-
-                </li>
-                @endpermission @permission('role-list')
-                <li ng-class="{active: $state.includes('mailbox')}">
-                    <a href="{{ url('/roles')}}"><i class="fa fa-cog"></i><span class="nav-label ng-binding">USER ROLES</span></a>
-
-                </li>
-                @endpermission @permission('users-list')
-                <li ng-class="{active: $state.includes('mailbox')}">
-                    <a href="{{ url('/users')}}"><i class="fa fa-database"></i><span class="nav-label ng-binding">USERS</span></a>
-
-                </li>
-                @endpermission
-
 
                 <li ng-class="{active: $state.includes('pages')}">
                     <a ui-sref="#"><i class="fa fa-th-large"></i> <span class="nav-label">STORE</span><span class="fa arrow"></span></a>
@@ -130,6 +109,27 @@ header('Content-Type: text/html');
                         @endpermission
                     </ul>
                 </li>
+
+
+                @permission('profile-view')
+                <!--li ng-class="{active: $state.includes('mailbox')}" class="treeview">
+                    <a href="{{ url('/profile/ ')}}{{Crypt::encrypt(Auth::user()->id)}}"><i class="	glyphicon glyphicon-user"></i><span class="nav-label ng-binding">PROFILE</span></a>
+
+                </li-->
+                @endpermission @permission('role-list')
+                <li ng-class="{active: $state.includes('mailbox')}">
+                    <a href="{{ url('/roles')}}"><i class="fa fa-cog"></i><span class="nav-label ng-binding">USER ROLES</span></a>
+
+                </li>
+                @endpermission @permission('users-list')
+                <li ng-class="{active: $state.includes('mailbox')}">
+                    <a href="{{ url('/users')}}"><i class="fa fa-database"></i><span class="nav-label ng-binding">USERS</span></a>
+
+                </li>
+                @endpermission
+
+
+                
 
 
         </div>

@@ -258,14 +258,14 @@ class UserController extends Controller {
         //$count = DB::table('users')->where('id',$id)->where('password',$password)->get();
         if (count($ress) == 1) {
             //Hash::check(Input::get('admin_password'), $validate_admin->password))
-            if (Hash::check($request->input('currentpass'), $ress->password)) {
+           // if (Hash::check($request->input('currentpass'), $ress->password)) {
                 $user = User::find($id);
 
                 $user->update($input);
                 print_r(json_encode(array('status' => 'success', 'msg' => 'Password Changed Succesfully')));
-            } else {
-                print_r(json_encode(array('status' => 'failed', 'msg' => 'Current Password is incorrect ')));
-            }
+           // } else {
+              //  print_r(json_encode(array('status' => 'failed', 'msg' => 'Current Password is incorrect ')));
+            //}
         }
     }
 

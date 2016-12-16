@@ -173,8 +173,8 @@
                             <label class="col-sm-2 control-label">Phone</label>
 
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" data-parsley-trigger="keyup" data-parsley-minlength="4" data-parsley-type="digits" required placeholder="" name="phone" id="phone" value="@{{detailsstores.phone}}" >
-                                <!--span class="help-block">(999) 999-9999</span-->
+                                <input type="text" class="form-control" data-parsley-trigger="keyup" data-parsley-pattern='^(\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$' required placeholder="" name="phone" id="phone" value="@{{detailsstores.phone}}" >
+                                <span class="help-block">(999) 999-9999</span>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>

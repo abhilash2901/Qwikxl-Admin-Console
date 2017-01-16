@@ -320,6 +320,7 @@ public function failedorderplacing($type,$e ,$transactionid,$input) {
 		 ->select('orders.id', 'orders.createddate','orders.unique_id')
 		 ->where('orders.username',$inputs['userid'])
 		 ->where('order_status_histories.status_id','!=','5')
+		 ->groupby('orders.id')
 		 ->orderBy('orders.id','DESC')->get();
 		  //print_r($num);
 		 // echo count($num);

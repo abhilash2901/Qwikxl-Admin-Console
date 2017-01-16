@@ -53,13 +53,12 @@ class OrderWebservice extends Controller {
 			
 			$array = json_decode(json_encode($input->cart), true);
 			
-
 			if (in_array('', array_column($array, 'item_id')) || in_array('NULL', array_column($array, 'item_id'))) {
 				// There are null values.
 				$data = array("Status"=>"Ordering Failed","Orderid"=>null,"unique_id"=>null, "transaction_id"=>null,'message'=>'Item is NULL'); 
 					print_r(json_encode($data));
 			}else{
-			exit;
+			
 			if(0.54 > $total){
 	            $data = array("Status"=>"Transaction Failed. The Amount must be Minimum $0.54","Orderid"=>"null"); 
 				print_r(json_encode($data));

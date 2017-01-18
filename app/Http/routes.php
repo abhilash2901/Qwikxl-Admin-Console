@@ -23,15 +23,19 @@ Route::group(['middleware' => ['auth']], function() {
 Route::get('/home', 'HomeController@index');
 //Route::resource('users','UserController');
 Route::get('users',['as'=>'users.index','uses'=>'UserController@index','middleware' => ['permission:users-list']]);
+Route::post('listingusersadmin',['uses'=>'UserController@listingusers','middleware' => ['permission:users-list']]);
 Route::get('users/create',['as'=>'users.create','uses'=>'UserController@create','middleware' => ['permission:users-create']]);
 Route::post('users/create',['as'=>'users.store','uses'=>'UserController@store','middleware' => ['permission:users-create']]);
+Route::post('userscreate',['uses'=>'UserController@store','middleware' => ['permission:users-create']]);
 Route::get('users/{id}',['as'=>'users.show','uses'=>'UserController@show']);
 Route::get('users/{id}/edit',['as'=>'users.edit','uses'=>'UserController@edit','middleware' => ['permission:users-edit']]);
+Route::post('usersedit',['as'=>'users.edit','uses'=>'UserController@edit','middleware' => ['permission:users-edit']]);
 Route::delete('users/{id}',['as'=>'users.destroy','uses'=>'UserController@destroy','middleware' => ['permission:users-delete']]);
 
 Route::patch('users/{id}',['as'=>'users.update','uses'=>'UserController@update','middleware' => ['permission:users-edit']]);
 	
-
+Route::patch('usersupdate',['uses'=>'UserController@update','middleware' => ['permission:users-edit']]);
+	
 
 Route::get('stores', 'UserController@storess');
 Route::post('type', 'UserController@getroles');
@@ -62,11 +66,14 @@ Route::post('selectstore', 'StoreController@selectstores' );
 Route::post('updatesprofile', ['uses'=>'RoleController@updates','middleware' => ['permission:profile-view']] );
 Route::post('addstore/create', ['as'=>'store.create','uses'=>'StoreController@create'] );
 
+    Route::post('listingroles',['uses'=>'RoleController@listingroles','middleware' => ['permission:role-list']]);
 	Route::get('roles',['as'=>'roles.index','uses'=>'RoleController@index','middleware' => ['permission:role-list|role-create|role-edit|role-delete']]);
 	Route::get('roles/create',['as'=>'roles.create','uses'=>'RoleController@create','middleware' => ['permission:role-create']]);
-	Route::post('roles/create',['as'=>'roles.store','uses'=>'RoleController@store','middleware' => ['permission:role-create']]);
+	Route::post('roles/create',['as'=>'roles.store','uses'=>'RoleController@store','middleware' => ['permission:role-create']]);	
+	Route::post('rolescreate',['uses'=>'RoleController@store','middleware' => ['permission:role-create']]);
 	Route::get('roles/{id}',['as'=>'roles.show','uses'=>'RoleController@show']);
 	Route::get('roles/{id}/edit',['as'=>'roles.edit','uses'=>'RoleController@edit','middleware' => ['permission:role-edit']]);
+	Route::post('rolesedit',['as'=>'roles.edit','uses'=>'RoleController@edit','middleware' => ['permission:role-edit']]);
 	Route::patch('roles/{id}',['as'=>'roles.update','uses'=>'RoleController@update','middleware' => ['permission:role-edit']]);
 	
 	Route::delete('roles/{id}',['as'=>'roles.destroy','uses'=>'RoleController@destroy','middleware' => ['permission:role-delete']]);
@@ -88,7 +95,7 @@ Route::post('liststoresuser', 'Stores@liststoresuser');
 Route::get('storelistss', ['uses'=> 'Stores@storelists','middleware' => ['permission:store-profile']]);
 Route::get('categorys',  ['uses'=> 'Categorys@index' ,'middleware' => ['permission:add-category']]);
 Route::get('categorylist',  ['uses'=> 'Categorys@categorylist' ,'middleware' => ['permission:list-category']]);
-Route::get('editcategory/{id}',  ['uses'=> 'Categorys@editcategory' ,'middleware' => ['permission:edit-category']]);
+Route::post('editcategory',  ['uses'=> 'Categorys@editcategory' ,'middleware' => ['permission:edit-category']]);
 Route::post('editscategorylist', 'Categorys@editscategorylist');
 Route::post('deletecategory', ['uses'=> 'Categorys@deletecategory' ,'middleware' => ['permission:delete-category']]);
 Route::get('addproduct',  ['uses'=> 'Products@index' ,'middleware' => ['permission:add-product']]);
@@ -96,7 +103,7 @@ Route::get('listproduct', ['uses'=> 'Products@listproduct' ,'middleware' => ['pe
 Route::post('saveproduct', ['uses'=> 'Products@saveproduct' ,'middleware' => ['permission:add-product']]);
 Route::post('updateproduct', ['uses'=> 'Products@updateproduct' ,'middleware' => ['permission:edit-product']]);
 Route::post('removepic', 'Products@removepic');
-Route::get('editproduct/{id}', ['uses'=> 'Products@editproduct' ,'middleware' => ['permission:edit-product']]);
+Route::post('editproduct', ['uses'=> 'Products@editproduct' ,'middleware' => ['permission:edit-product']]);
 Route::post('deleteproduct', ['uses'=> 'Products@deleteproduct','middleware' => ['permission:delete-product']]);
 Route::post('selectcategory', 'Categorys@selectcategory');
 Route::post('getdepatments', 'Products@getdepatments');
@@ -119,9 +126,14 @@ Route::post('storeprofiles', ['as' => 'store.update', 'uses' => 'Stores@updates'
 Route::post('state', 'StoreController@state');
 Route::post('city', 'StoreController@city');
 Route::post('createcity','StoreController@insertcity');
-Route::get('listOrders', ['uses' => 'OrdersController@listOrders', 'middleware' => ['permission:order-list']]);
+Route::get('listOrders', ['uses' => 'OrdersController@listOrders']);
 Route::get('listcustomer','OrdersController@listCustomer');
 Route::post('getOrders','OrdersController@getOrders');
+Route::post('getnewOrderss','OrdersController@getnewOrders');
+Route::post('getfulfilmentOrderss','OrdersController@getfulfilmentOrders');
+Route::post('getassignedOrderss','OrdersController@getassignedOrders');
+Route::post('getcompletedOrderss','OrdersController@getcompletedOrders');
+
 Route::post('deleteOrder',['uses' => 'OrdersController@deleteOrder', 'middleware' => ['permission:delete-order']]);
 Route::post('customerlist','OrdersController@CustomerList');
 Route::post('savebanner','BannerController@savebanner');
@@ -133,7 +145,15 @@ Route::post('getsingleorder','OrdersController@getsingleorder');
 Route::get('editorder/{id}',['uses' => 'OrdersController@editOrder', 'middleware' => ['permission:edit-order']]);
 Route::post('customupdate','OrdersController@customupdate');
 Route::post('updatestatus','OrdersController@updatestatus');
-
+Route::post('updatestatususer','OrdersController@updatestatususer');
+Route::get('neworders', ['uses' => 'OrdersController@neworders', 'middleware' => ['permission:new-order-list']]);
+Route::get('assignedorders', ['uses' => 'OrdersController@assignedorders', 'middleware' => ['permission:assigned-orders']]);
+Route::get('completeorders', ['uses' =>'OrdersController@completeorders', 'middleware' => ['permission:complete-orders']]);
+Route::get('fullfillmentorders',['uses' =>'OrdersController@fullfillmentorders', 'middleware' => ['permission:fulfillment-center']]);
+Route::post('viewneworder','OrdersController@viewneworder');
+Route::post('viewassignedorder','OrdersController@viewassignedorder');
+Route::get('viewfulfillmentorder/{id}','OrdersController@viewfulfillmentorder');
+Route::post('sss', 'UserController@test');
 //webservices 
 //2
 
@@ -182,4 +202,5 @@ Route::post('saveOrderDetails', 'OrderWebservice@saveOrderDetails');
 Route::post('orderDetails', 'OrderWebservice@orderDetails');
 /*18. Getting the order details by the order id*/
 Route::post('orderData', 'OrderWebservice@orderData');
+Route::post('getCreditCarddetails', 'CustomerWebservice@getCreditCarddetails');
 

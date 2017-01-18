@@ -47,7 +47,7 @@
                 </div>
                 @endif
                 <div class="ibox-content">
-                    <div class="row">
+                    <div class="">
                         <div class="changepasres" tabindex='1'></div>
                         <form class="form-horizontal" id="store" method="POST" action="{{ url('storeedit')}}">
                             <div class="form-group"><label class="col-sm-2 control-label">Store ID</label>
@@ -160,20 +160,37 @@
                                 <div class="col-md-4"><input name="zip" id="zip" data-parsley-trigger="keyup" data-parsley-minlength="3"  data-parsley-type="digits" required type="text" placeholder="30350"
                                                              class="form-control"></div>
                             </div>
-							  <div class="form-group"><label class="col-sm-2 control-label">latitude</label>
+							  <div class="form-group"><label class="col-sm-2 control-label">Latitude</label>
                                 <div class="col-md-4"><input name="latitude" id="latitude"   type="text" 
-                                                             class="form-control"></div>
+                                                             class="form-control" data-parsley-validation-threshold="1" data-parsley-trigger="keyup" 
+    data-parsley-type="number"></div>
                             </div>
-                               <div class="form-group"><label class="col-sm-2 control-label">longitude</label>
+                               <div class="form-group"><label class="col-sm-2 control-label">Longitude</label>
                                 <div class="col-md-4"><input name="longitude" id="longitude"  type="text" 
-                                                             class="form-control"></div>
+                                                             class="form-control" data-parsley-validation-threshold="1" data-parsley-trigger="keyup" 
+    data-parsley-type="number"></div>
                             </div>
+							<div class="form-group"><label class="col-sm-2 control-label">Store Opening Time</label>
+                            <div class="col-md-4"><div class="input-group clockpicker" data-autoclose="true">
+                                <input type="text" class="form-control" name="opening_time" id="opening_time" readonly>
+                                <span class="input-group-addon">
+                                    <span class="fa fa-clock-o"></span>
+                                </span>
+                            </div></div>
+                        </div><div class="form-group"><label class="col-sm-2 control-label">Store Closing Time</label>
+                            <div class="col-md-4"><div class="input-group clockpicker" data-autoclose="true">
+                                <input type="text" class="form-control" name="closing_time" id="closing_time" readonly>
+                                <span class="input-group-addon">
+                                    <span class="fa fa-clock-o"></span>
+                                </span>
+                            </div></div>
+                        </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Phone</label>
 
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" data-parsley-trigger="keyup" data-parsley-minlength="4"  data-parsley-type="digits" required placeholder="" name="phone" id="phone" >
+                                    <input type="text" class="form-control" data-parsley-trigger="keyup" data-parsley-pattern='^(\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$' required placeholder="" name="phone" id="phone" >
                                     <span class="help-block">(999) 999-9999</span>
                                 </div>
                             </div>
@@ -185,7 +202,7 @@
                             <div class="hr-line-dashed"></div>
                             <div class="form-group"><label class="col-sm-2 control-label">Store website</label>
 
-                                <div class="col-sm-8"><input type="text" placeholder="www.redstore.com" class="form-control" name="website" id="website" ></div>
+                                <div class="col-sm-8"><input type="text" data-parsley-validation-threshold="1" data-parsley-type="url" placeholder="www.redstore.com" class="form-control" name="website" id="website" ></div>
                             </div>
                             <input type="hidden" name="id" id="ids" >
 
@@ -195,7 +212,7 @@
 							 <div class="form-group"><label class="col-sm-2 control-label">Upload logo</label>
                                 <div class="col-sm-6">
                                     <div class="fileinput fileinput-new" data-provides="fileinput" >
-                                        <input type="file"  name="image">
+                                        <input type="file"  name="image" accept="image/*">
                                     </div>
                                 </div> 
                             </div>
@@ -292,7 +309,7 @@
 
 
         </div>
-		
+		 <div class="col-lg-12">
         <div class="ibox float-e-margins" ng-app="app" ng-controller="search">
 		
 		   <div class="tabs-container"  >
@@ -319,7 +336,7 @@
 											<div class="col-sm-6">
 												<div class="fileinput fileinput-new" data-provides="fileinput">
 													
-													<input type="file"  name="image">
+													<input type="file"  name="image" accept="image/*">
 										
 								
 												</div>
@@ -354,8 +371,8 @@
 									<thead>
 									<tr>
 										<th>#</th>
+										<th>Image</th>
 										<th>Departments</th>
-										<th>image</th>
 										<th>Action</th>
 									</tr>
 									</thead>
@@ -367,8 +384,8 @@
 							             <span ng-show="list.image"><img src="@{{list.image}}" width="50" height="50"></span></td> <!-- Image -->
 										<td>@{{list.name}}</td>
 										<td>
-											<a href="#" data-id="@{{list.id}}" onClick="editdepartments(this);" class="btn btn-primary" data-toggle="modal" data-target="#myDepartments">Edit </a>
-											<a data-toggle="modal" class="btn btn-danger" data-target="#Deletedpt" onclick="GetDptid(this)" data-id="@{{list.id}}">Delete
+											<a href="#" data-id="@{{list.id}}" onClick="editdepartments(this);" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myDepartments">Edit </a>
+											<a data-toggle="modal" class="btn btn-danger btn-sm" data-target="#Deletedpt" onclick="GetDptid(this)" data-id="@{{list.id}}">Delete
                    </a>
 									</tr>
 									
@@ -403,7 +420,7 @@
 											<div class="col-sm-6">
 												<div class="fileinput fileinput-new" data-provides="fileinput">
 													
-													<input type="file" required name="image">
+													<input type="file" required name="image" accept="image/*">
 										
 								
 												</div>
@@ -412,7 +429,7 @@
 										
 										<div class="form-group">
 											<div class="col-sm-8">
-											   <button type="submit" class="btn btn-primary pull-right" ng-click="AddBanner()">Add New Banner</button>
+											   <button type="submit" class="btn btn-primary pull-right"  ng-disabled="isDisabled" ng-click="AddBanner()">Add New Banner</button>
 												
 											</div>
 										</div>
@@ -450,8 +467,8 @@
 							             <img src="@{{list.image}}" width="50" height="50"></td> <!-- Image -->
 										<td>@{{list.title}}</td>
 										<td>
-											<a href="#" data-id="@{{list.id}}" onClick="editbanner(this);" class="btn btn-primary" data-toggle="modal" data-target="#myBanner">Edit banner</a>
-											  <a  class="btn btn-danger" data-toggle="modal" data-target="#Deleteroles"  onClick="Takeid(this)" data-id="@{{list.id}}">
+											<a href="#" data-id="@{{list.id}}" onClick="editbanner(this);" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myBanner">Edit</a>
+											  <a  class="btn btn-danger btn-sm" data-toggle="modal" data-target="#Deleteroles"  onClick="Takeid(this)" data-id="@{{list.id}}">
         Delete</a></td>
 									</tr>
 									
@@ -476,6 +493,7 @@
 			
 			</div>
         </div>
+		</div>
 		</div>
     </div>
 
@@ -714,7 +732,7 @@
                                   
                             <div class="form-group"><label class="col-sm-2 control-label">Upload Banner</label>
                                 <div class="col-lg-4">  
-                                    <input type="file" name="image" >
+                                    <input type="file" name="image" accept="image/*">
                                     <span class="help-block m-b-none"></span>
 
                                 </div>
@@ -765,7 +783,8 @@
                                 <div class="col-lg-8">
                                     <input type="text"  name ="name" class="form-control"  required id="dptname">
                                     <input type="hidden"  name ="id" class="form-control" required id="dptssid">
-
+<input class="form-control stores_id" type="hidden"  name="store_id" value="<?php echo $store_id; ?>">
+											
                                 </div>
                             </div>
                             
@@ -781,7 +800,7 @@
                                   
                             <div class="form-group"><label class="col-sm-2 control-label">Upload Image</label>
                                 <div class="col-lg-4">  
-                                    <input type="file" name="image" >
+                                    <input type="file" name="image" accept="image/*">
                                     <span class="help-block m-b-none"></span>
 
                                 </div>

@@ -36,19 +36,27 @@
                     <input type="text" id="price" name="price" value="" placeholder="Stock ID" class="form-control" ng-model="unique">
                 </div>
             </div>
+			
             <div class="col-sm-4" >
                 <div class="form-group">
                     <label class="control-label" for="status">Department</label>
                     <!--select name="status" id="status" class="form-control" ng-model="department" onchange="departmntSearch(this)"--> 
-					<select name="status" id="status" class="form-control" ng-model="department" >
-                        <option value="0" selected="selected" >All Departments</option>
+					<select name="status" id="status" class="form-control" ng-model="department" ng-change="deptChange()">
+                        <option value="0"  >All Departments</option>
                         @foreach ($dept as $key => $user)
-                        <option value="{{$user->name}}" >{{$user->name}}</option>
+                        <option value="{{$user->id}}" >{{$user->name}}</option>
                         @endforeach
                     </select>
                 </div>
             </div>
-			<!--a data-toggle="modal" data-target="#myCategory">select Category</a-->
+			<div class="col-sm-2" >
+				<a class="btn btn-default" style="margin-top: 25px;" data-toggle="modal" data-target="#myCategory">select Category</a>
+			</div>
+			
+			
+			
+			<input type="text" id="category" ng-model="categorys" style="display:none">
+                
             <!--div class="col-sm-2">
                 <div class="form-group">
                     <label class="control-label" for="quantity">Category</label>
@@ -57,11 +65,7 @@
             </div-->
 
         </div>
-        <div class="text-right">
-            <button type="button" class="btn btn-w-m btn-primary" >
-                Search
-            </button>
-        </div>
+       
     </div>
 
     <div class="row">
@@ -69,7 +73,7 @@
             <div class="ibox">
                 <div class="ibox-content">
 
-                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15"  ng-init="listproducts()">
+                    <table class="table table-stripped toggle-arrow-tiny" data-page-size="15"  ng-init="listproducts()">
                         <thead>
                             <tr>
 
@@ -87,7 +91,7 @@
                         </thead>
                         <tbody>
                             <tr ng-show="listproducts.length == 0"><td colspan="8"> No Products</td></tr>
-                            <tr dir-paginate="product in listproducts| itemsPerPage:10 | filter:letter | filter:unique| filter:category | filter:department ">
+                            <tr dir-paginate="product in listproducts | filter:letter | filter:unique| filter:categorys | filter:department| itemsPerPage:10 ">
 
                                 <td>@{{product.name}}</td>
                                 <td>@{{product.unique_id}}</td>
@@ -97,11 +101,13 @@
                                 <td>@{{product.departments}}</td> 
                                 <td>@{{product.categoryname}}</td>
                                 <td class="text-right">
-								@permission('edit-product')    
-								<a class="btn btn-primary " href="{{ url('/editproduct/ ')}}@{{product.id}}" >Edit</a>
+								@permission('edit-product') 
+                                {{ Form::open(array('url' => 'editproduct','class' => 'pull-left')) }}<input type="hidden" name="id" value="@{{product.id}}"> <input type="submit" class="btn btn-primary btn-sm" value="Edit"></form>
+															
+								<!--a class="btn btn-primary btn-sm" href="{{ url('/editproduct/ ')}}@{{product.id}}" >Edit</a-->
 								@endpermission
 								@permission('delete-product')   
-								<a style="margin-left: 3px;" class="btn btn-danger" onClick="TakeId(this)" data-id="@{{product.id}}" data-toggle="modal" data-target="#DeleteModal" >Delete</a></td>
+								<a style="margin-left: 3px;" class="btn btn-danger btn-sm" onClick="TakeId(this)" data-id="@{{product.id}}" data-toggle="modal" data-target="#DeleteModal" >Delete</a></td>
                                 @endpermission
 							</tr>
 
@@ -155,7 +161,7 @@
 				
 					
 							<div class="tree sss">
-
+<p>NO Categories Please Select Departments</p>
  
 
 </div>			

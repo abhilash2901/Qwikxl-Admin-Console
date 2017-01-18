@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Response;
 use App\User;
 use App\Customer;
+use App\Creditcard;
+
 use App\Role;
 use App\Departments;
 use DB;
@@ -16,7 +18,7 @@ use App\Order;
 use App\Country;
 use App\Product;
 use App\Store;
-
+use Stripe\Stripe;
 use Mail;
 use Hash;
 
@@ -63,7 +65,7 @@ class CustomerWebservice extends Controller {
 		 'country_code'=>$input->country_code,
 		 'mobile'=>$input->mobile,
 		// 'zipcode'=>$input->zipcode, 
-		// 'address'=>$input->address,
+		'address'=>$input->address,
 		 'country'=>$input->country,
 		 'password'=>$input->password
 		 );
@@ -78,7 +80,9 @@ class CustomerWebservice extends Controller {
 	 public function customerDetails(Request $request) {
 		 $input = $request->all();
 		
-		 $customer=Customer::where('email', '=', $input['email'])->get();
+		 $customer=Customer::leftJoin('customer_shipping_address', 'customer_shipping_address.customer_id', '=', 'customers.id')
+		        ->select('customers.*','customer_shipping_address.shipping_name','customer_shipping_address.shipping_address','customer_shipping_address.shipping_mobile')
+			   ->where('customers.email', '=', $input['email'])->get();
 		
 		 $data = array("customerDetails"=>$customer);
 		 print_r(json_encode($data));
@@ -95,14 +99,18 @@ class CustomerWebservice extends Controller {
 		// 'zipcode'=>$input->zipcode, 
 		 'address'=>$input->address,
 		 'country'=>$input->country
-		 );
-		 $customer=Customer::where('email', '=', $input->email)->get();
+		 ); 
+		  $customer=Customer::where('email', '=', $input->email)->get();
+		
+		
+		  
 		 if(count($customer)>0){
 			 $user = Customer::where('email', '=', $input->email);
 			// $id =$users[0]->id;
 			 //$users = Customer::find($id);
              $user->update($inputdetails);
-			  $data = array("Status"=>'Updation Successful' ,"Mobile"=>$customer[0]->mobile); 
+			 
+			  $data = array("Status"=>'Updation Successful' ,"Mobile"=>$input->mobile); 
 		 }
 		 else{
 			  $data = array("Status"=>'Email ID Not Exist'); 
@@ -110,10 +118,10 @@ class CustomerWebservice extends Controller {
 		 
 		 print_r(json_encode($data));
 	 }
-	 public function updateCreditCard(Request $request) {
+	 public function updateCreditCardff(Request $request) {
 		 $input = $request->all();
 		 $inputs =array(
-				'creditcardno,' =>$input['creditcardno'],
+				'creditcardno' =>$input['creditcardno'],
 				'month' =>$input['month'],
 				'year' =>$input['year'],
 				'cvv' =>$input['cvv'],
@@ -133,7 +141,127 @@ class CustomerWebservice extends Controller {
 		 }
 		 
 		 print_r(json_encode($data));
-	    }
+	    } public function updateCreditCard(Request $request) {
+		 $input = $request->all();
+		
+		 $stripe_token = htmlspecialchars($input['Stripe_token']);
+		 $username = htmlspecialchars($input['username']);
+		 \Stripe\Stripe::setApiKey("sk_test_OdihBeOQOiWLAtT5AfxaedN2");
+		 try {
+			
+
+				
+				$customer=Creditcard::where('username', '=', $input['username'])->get();  
+		        if(count($customer)>0){
+					
+					$cu = \Stripe\Customer::retrieve($customer[0]->stripe_customer_id);
+                    $cu->email = $input['username'];
+					$cu->description = "Customer ";
+                    $cu->source = $stripe_token; // obtained with Stripe.js
+                    $cu->save();
+					$stripe_cstmid =$cu->id;
+					
+					$inputs =array(
+						'username' =>$input['username'],
+						'stripe_customer_id' =>$stripe_cstmid,
+						
+						'country' =>$input['country'],
+						'zipcode' =>$input['zipcode']
+						
+					
+					);
+				 $user = Creditcard::where('username', '=', $input['username']);
+				 $user->update($inputs);
+				  $data = array("Status"=>'Your Card has been saved Successfully' ); 
+		        }
+		        else{
+					$customer = \Stripe\Customer::create(array(
+				  "email" => $username,
+				  "source" => $stripe_token));
+				  //$d =  \Stripe\Customer::retrieve("cus_9jfhcOMjKrmDTP");
+				  //var_dump(json_encode($d));
+				  //exit;
+				  $stripe_cstmid =$customer->id;
+				  $inputs =array(
+						'username' =>$input['username'],
+						'stripe_customer_id' =>$stripe_cstmid,
+						
+						'country' =>$input['country'],
+						'zipcode' =>$input['zipcode']
+						
+					
+					);
+					 $customer=Creditcard::insert($inputs);
+					
+			        $data = array("Status"=>'Your Card has been saved Successfully' );
+		        }
+			
+			}
+			catch (\Stripe\Error\InvalidRequest $e) {
+				$body = $e->getJsonBody();
+				$err  = $body['error'];
+				  
+				$data = array("Status"=>$err['message']);
+				print_r(json_encode($data));
+				exit;	             
+
+			}catch (Exception $e) {
+				
+				$data = array("Status"=>$e->getMessage()); 
+					print_r(json_encode($data));
+			  
+			}
+		
+		 
+		 
+		 print_r(json_encode($data));
+	    }public function getCreditCarddetails(Request $request) {
+			$input = $request->all();
+			$customer=Creditcard::where('username', '=', $input['username'])->get(); 
+			
+            \Stripe\Stripe::setApiKey("sk_test_OdihBeOQOiWLAtT5AfxaedN2");
+		 try {
+			 if(count($customer)>0){
+			  $carddetails=  \Stripe\Customer::retrieve($customer[0]->stripe_customer_id);
+			  $data=json_encode($carddetails->sources->data);
+			  //var_dump(json_encode($carddetails));
+			  //exit;
+			  $card=json_decode($data);
+			 //var_dump($s[0]->brand);
+			  //exit;
+			  $details=array([
+			       'card_type' =>$card[0]->brand,
+				   'exp_month' =>$card[0]->exp_month,
+				   'exp_year' =>$card[0]->exp_year,
+				   'card_last4' =>$card[0]->last4,
+				   'stripe_customer_id' =>$customer[0]->stripe_customer_id
+				  
+		 ]);
+			  $data = array('Status'=>"Success","data"=>$details);
+				print_r(json_encode($data));
+			  }else{
+				$data = array("Message"=>"No cards added",'Status'=>"Failed");
+				print_r(json_encode($data));
+			}
+		    }
+			catch (\Stripe\Error\InvalidRequest $e) {
+				$body = $e->getJsonBody();
+				$err  = $body['error'];
+				  
+				$data = array("Message"=>$err['message'],'Status'=>"Failed");
+				print_r(json_encode($data));
+				exit;	             
+
+				}
+			catch (Exception $e) {
+				
+				$data = array("Status"=>$e->getMessage()); 
+					print_r(json_encode($data));
+			  
+			}	
+						
+		        
+		}
 	    public function updatePassword(Request $request) {
 			$input = $request->all();
 			$input['passwords'] = $input['password'];
@@ -203,16 +331,32 @@ class CustomerWebservice extends Controller {
 		 public function sentPassword(Request $request) {
 			 ini_set('max_execution_time', 123456);
 			 $input = $request->all();
-			 $data = ['foo' => 'bar'];
-			 
+			
+			 $password=mt_rand(100000,999999);
+			 $inputs =array(
+				'password' =>$password
+				);
+			 $user = Customer::where('email', '=', $input['email']);
+				 $user->update($inputs);
 			 $customer=Customer::where('email', '=', $input['email'])->get();
-			Mail::send('email.welcome', $data, function ($message) {
-				$message->from('us@example.com', 'Laravel');
+			 if(count($customer)>0){
+				  $emails =  $request->input('email');
+				  Mail::send('email.welcome', ['custname' => $customer[0]->firstname, 'password' => $customer[0]->password], function ($message) use($emails){
+						$message->from('us@example.com', 'QwikXL');
 
-				$message->to('shibila.b@spericorn.com');
-				$message->subject("Your QwikXL Password Information");
+						$message->to($emails);
+						$message->subject("Your QwikXL Password Information");
 
-			});
+			        }); 
+					$data = array("Status" => "Check Your Email"); 
+			        print_r(json_encode($data));
+			    }else{
+					$data = array("Status" => "Email Doesn't Exist"); 
+			        print_r(json_encode($data));
+				}
+			
+			
+			
 		}
 		public function getCountryList(Request $request) {
 			$country=Country::get();

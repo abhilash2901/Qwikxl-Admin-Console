@@ -21,14 +21,77 @@
 
     </div>
 </div>
-<div class="row">
+<div class="wrapper wrapper-content animated fadeInRight ecommerce" ng-app="app" ng-controller='search'>
+    <div class="ibox-content m-b-sm border-bottom" >
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group" >
+                    <label class="control-label" for="product_name">Type</label>
+					
+					<select  class="form-control" name="type" id="type" ng-model="system" >
+					    <option value="" >All</option>
+						<option value="System" >System</option> 
+						<option value="Store" >Store</option>
+                     </select>
+                       </div>
+            </div>
+            <div class="col-sm-2" ng-show="system =='Store'">
+                <div class="form-group">
+                    <label class="control-label" for="price">Store Name</label>
+                   
+					<select  class="form-control" name="type" id="type" ng-model="storename" >
+					<?php 
+					foreach($store as $row){?>
+					    <option value="<?php echo $row->id;?>" ><?php echo $row->name;?></option> 
+						<?php 
+					}
+					?>
+                     </select>
+                </div>
+            </div>
+			<div class="col-sm-2" >
+                <div class="form-group">
+                    <label class="control-label" for="price">Role Name</label>
+                    <input type="text" id="namee" name="namee" value="" class="form-control" ng-model="rolename">
+					<select  class="form-control" name="type" id="type" ng-model="rolename" style='display:none'>
+					<?php 
+					foreach($role as $row){?>
+					    <option value="<?php echo $row->name;?>" ><?php echo $row->name;?></option> 
+						<?php 
+					}
+					?>
+                     </select>
+                </div>
+            </div>
+			
+            
+			
+			
+			
+			
+                
+            <!--div class="col-sm-2">
+                <div class="form-group">
+                    <label class="control-label" for="quantity">Category</label>
+                    <input type="text" id="category" ng-model="categorys" placeholder="Category" class="form-control" ng-change="changeCategory();">
+                </div>
+            </div-->
 
-    <div class="ibox float-e-margins">
-        <div class="ibox-title">
-            <h5> users </h5>            
-        </div>		
+        </div>
+       
+    </div>
+
+
+
+<div class="row">
+<div class="col-lg-12">
+    <div class="ibox " ng-init="listUsers()">
+        	
         <div class="ibox-content">
-            <a href="{{ route('users.create') }}" class="btn btn-primary">Add users</a>
+		  @permission('users-create')
+            <a href="{{ route('users.create') }}" class="btn btn-primary">Add Users</a>
+			@endpermission
+             
             <table class="table table-bordered topspace">
                 <thead>
                     <tr>
@@ -46,51 +109,67 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($data as $key => $user)
-                    <tr>
-                        <td>{{ ++$i }}</td>
-                        <td>{{ $user->firstname }} {{ $user->lastname }}</td>
-                        <td>{{ $user->email }}</td>
-                        <td>
-                            @if(!empty($user->roles))
-                            @foreach($user->roles as $v)
-                            <label class="label label-success">{{ $v->display_name }}</label>
-                            @endforeach
-                            @endif
+                    
+                    <tr dir-paginate="users in listingusers |filter:system | filter:storename| filter:rolename | itemsPerPage:5 ">
+                        <td>@{{ $index +1 }}</td>
+                        <td>@{{ users.firstname }} @{{ users.lastname }}</td>
+                        <td>@{{  users.email }}</td>
+                        <td ng-show="users.rolesname!=''" >
+                           
+                            <label class="label label-success">@{{ users.displayname }}</label>
+                            
                         </td>
                         <td>
-                          
-                            <a class="btn btn-primary" href="{{ route('users.edit',$user->id) }}">Edit</a>
-                            @if(!empty($user->roles))
-                                @foreach($user->roles as $v)
-							     <?php 
-								$role= Session::get('roletype');
-								 if( $role=='admin' && $v->name !='admin' ){?>
-                                
-								<a  class="btn btn-danger" data-toggle="modal" data-target="#Deleteuser"  onClick="Takeid(this)" data-id="<?php echo $user->id;?>">
-								Delete</a>
-								<?php 
+						     <div style="float: left;margin-right: 3px;">
+							
+							 @permission('users-edit')
+							 {{ Form::open(array('url' => 'usersedit')) }}<input type="hidden" name="id" value="@{{users.id}}"> <input type="submit" class="btn btn-primary btn-sm" value="Edit"></form>
+							
+                               <!--a class="btn btn-primary btn-sm" href="{{ url('usersedit')}}/@{{users.id}}">Edit</a-->
+							   @endpermission
+                              </div>
+                              <div ng-show="users.rolesname!=''"  ng-init="types=<?php echo Session::get('roletype');?>"> 
+							  <!--?php 
+							  $class=''
+								$roless= Session::get('roletype');
+								 if( $roless=='admin' ){
+									 $class ='hide';
 								 } 
-								 ?>
-								
-								@endforeach
-                                @endif
-								@if(count($user->roles)==0)
-									<a  class="btn btn-danger" data-toggle="modal" data-target="#Deleteuser"  onClick="Takeid(this)" data-id="<?php echo $user->id;?>">
+								 ?-->
+							  <div ng-show="users.rolesname !='admin' && types =='admin'" >
+                               
+							     
+                                @permission('users-delete')
+								<a  class="btn btn-danger btn-sm" data-toggle="modal" data-target="#Deleteuser"  onClick="Takeid(this)" data-id="@{{users.id}}">
 								Delete</a>
-								@endif
+								@endpermission
+								
+								
+								
+								</div></div>
+								 <div ng-show="users.rolesname!=''">
+								
+									 @permission('users-delete')
+									<a  class="btn btn-danger btn-sm" data-toggle="modal" data-target="#Deleteuser"  onClick="Takeid(this)" data-id="@{{users.id}}">
+								Delete</a>
+								    @endpermission
+									</div>
+								
                         </td>
                     </tr>
-                    @endforeach
+                   
 
 
                 </tbody>
             </table>
-            {!! $data->render() !!}
+            <dir-pagination-controls 
+			boundary-links="true" 
+			direction-links="true" >
+			</dir-pagination-controls>
 
         </div>
-    </div>
-</div>
+    </div> </div>
+</div></div>
 
 <div class="modal fade" id="Deleteuser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">

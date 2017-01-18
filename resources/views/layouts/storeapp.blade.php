@@ -2,6 +2,12 @@
 <html>
 
 <head>
+ <?php echo
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+header('Content-Type: text/html');
+    ?>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,7 +19,7 @@
     <script src="{!! asset('js/plugins/jquery-ui/jquery-ui.js') !!}"></script>
     <script src="{!! asset('js/parsley.min.js') !!}"></script>
     <script src="{!! asset('js/bootstrap/bootstrap.min.js') !!}"></script>
-
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
     <script type="text/javascript">
         $.ajaxSetup({
             headers: {
@@ -36,6 +42,7 @@
     <link href="{{ asset('css/select2.min.css')}}" rel="stylesheet">
     <!-- Font awesome -->
     <link href="{{ asset('font-awesome/css/font-awesome.css')}}" rel="stylesheet">
+	 <link href="{{ asset('css/plugins/clockpicker/clockpicker.css')}}" rel="stylesheet">
     <!-- footable -->
     <link href="{{ asset('css/plugins/footable/footable.core.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('css/parsley.css')}}" rel="stylesheet" type="text/css" />
@@ -75,14 +82,14 @@
             <ul side-navigation class="nav metismenu sidebar-menu" id="side-menu">
                 <li class="nav-header">
 
-                    <div class="profile-element" uib-dropdown>
+                    <div class="profile-element" uib-dropdown><a href="{{ url('storeprofile')}}">
                         <img alt="image" class="img-circle" src="{{ asset('img/profile_small.jpg')}}" />
-                        <a uib-dropdown-toggle href>
+                        <a  href="{{ url('storeprofile')}}">
                             <span class="clear">
-                                    <span class="block m-t-xs" align="center">
-                                        <strong class="font-bold"> {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</strong>
-                                    </span>
-                            <span class=" block m-t-xs" align="center">profile</span>
+                                    <span class="block m-t-xs" align="center" style="text-align:center">
+                                        <strong class="font-bold"> {{ Auth::user()->firstname }} </strong>
+                                    </span></a>  <a  >
+                            <span class=" block m-t-xs" align="center">{{Session::get('storename')}} & {{Session::get('storeuniqid')}} </span>
                             </span>
                         </a>
 
@@ -120,70 +127,83 @@
                     <a href="{{ url('listproduct')}}"><i class="fa fa-cog"></i><span class="nav-label ng-binding">Product List</span></a>
 
                 </li>-->
-
+                  <li ng-class="{active: $state.includes('pages')}"  class="treeview">
+                    <a ui-sref="#"><i class="fa fa-shopping-basket" aria-hidden="true"></i>
+ <span class="nav-label">ORDERS</span><span class="fa arrow"></span></a>
+                   <ul class="nav nav-second-level collapse treeview-menu" >
+					 @permission('order-list')
+          
+				 <li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('listOrders')}}">Orders</a></li>
+                     
+                 @endpermission
+				
+                 @permission('new-order-list')
+				<li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('neworders')}}">New orders</a></li>
+                   @endpermission
+				   @permission('assigned-orders') 
+                <li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('assignedorders')}}">Assigned orders</a></li>
+                   @endpermission 
+				   @permission('complete-orders')
+                <li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('completeorders')}}">Completed orders</a></li>
+                   @endpermission 
+				   @permission('fulfillment-center')
+                <li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('fullfillmentorders')}}">Fulfillment Center</a></li>
+                   @endpermission
+                
+      
+				
+                    </ul>
+                </li>
                  <li ng-class="{active: $state.includes('pages')}" class="treeview">
-                    <a ui-sref="#"><i class="fa fa-th-large"></i> <span class="nav-label">STORE SETTINGS</span><span class="fa arrow"></span></a>
+                    <a ui-sref="#"><i class="fa fa-sliders"></i> <span class="nav-label">MANAGE STORE</span><span class="fa arrow"></span></a>
                     
 					 <ul class="nav nav-second-level collapse treeview-menu">
                         @permission('editstore-details')
-                        <li ng-class="{active: $state.includes('mailbox')}">
-                         <a href="{{ url('storelistss')}}"><i class="fa fa-cog"></i><span class="nav-label ng-binding">Store</span></a>
-
-                      </li>
+      
+					  <li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('storelistss')}}">Store Settings</a></li>
+                     
                         @endpermission @permission('store-profile')
-                        <li ng-class="{active: $state.includes('mailbox')}">
-                         <a href="{{ url('storeprofile')}}"><i class="glyphicon glyphicon-user"></i><span class="nav-label ng-binding">Profile</span></a>
-
-                       </li>
+                       
+					   
+					  <li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('storeprofile')}}">Profile</a></li>
+                     
                         @endpermission 
                     </ul>
                 </li>
 				<li ng-class="{active: $state.includes('pages')}"  class="treeview">
-                    <a ui-sref="#"><i class="fa fa-th-large"></i> <span class="nav-label">CATALOG</span><span class="fa arrow"></span></a>
+                    <a ui-sref="#"><i class="fa fa-pencil-square-o"></i> <span class="nav-label">INVENTORY</span><span class="fa arrow"></span></a>
                    <ul class="nav nav-second-level collapse treeview-menu" >
-					 @permission('list-category')
-                        <li ng-class="{active: $state.includes('mailbox')}">
-                    <a href="{{ url('categorylist')}}"><i class="fa fa-cog"></i><span class="nav-label ng-binding">Categories </span></a>
-
-                </li>
-                 @endpermission
-				 @permission('add-category')
-                        <li ng-class="{active: $state.includes('mailbox')}">
-                    <a href="{{ url('categorys')}}"><i class="fa fa-cog"></i><span class="nav-label ng-binding">Add Category </span></a>
-
-                </li>
-                 @endpermission @permission('list-product')
-                <li ng-class="{active: $state.includes('mailbox')}">
-                    <a href="{{ url('listproduct')}}"><i class="fa fa-cog"></i><span class="nav-label ng-binding">Inventory </span></a>
-
-                </li> @endpermission 
+				   @permission('list-product')
+      
+				<li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('listproduct')}}">Store Inventory</a></li>
+                  
+				@endpermission 
 				@permission('add-product')
-                <li ng-class="{active: $state.includes('mailbox')}">
-                    <a href="{{ url('addproduct')}}"><i class="fa fa-cog"></i><span class="nav-label ng-binding">Add Inventory </span></a>
-
-                </li> @endpermission 
+               
+				<li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('addproduct')}}">Add Inventory </a></li>
+                  
+				@endpermission 
+				 
+					 @permission('list-category')
+          
+				 <li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('categorylist')}}">Categories</a></li>
+                     
+                 @endpermission
+				     @permission('add-category')
+        
+				<li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('categorys')}}">Add Categories</a></li>
+                  
+                 @endpermission 
+				 
 				@permission('import')
-				<li ng-class="{active: $state.includes('mailbox')}">
-                    <a href="{{ url('import')}}"><i class="fa fa-cog"></i><span class="nav-label ng-binding">Import </span></a>
-
-                </li> 
+		
+				<li ui-sref-active="active" ng-class="{in: $state.includes('pages')}"><a href="{{ url('import')}}">Import Inventory </a></li>
+                  
 				@endpermission 
                     </ul>
                 </li>
 				
-				@permission('order-list')
-				<li ng-class="{active: $state.includes('pages')}"  class="treeview">
-                    <a ui-sref="#"><i class="fa fa-th-large"></i> <span class="nav-label">ORDERS</span><span class="fa arrow"></span></a>
-                   <ul class="nav nav-second-level collapse treeview-menu" >
-					
-                        <li ng-class="{active: $state.includes('mailbox')}">
-                    <a href="{{ url('listOrders')}}"><i class="fa fa-cog"></i><span class="nav-label ng-binding">Orders </span></a>
-
-                </li> 
-                 
-                    </ul>
-                </li>
-				@endpermission 
+				
         </div>
     </nav>
     @endif
@@ -195,6 +215,8 @@
         <div class="row border-bottom">
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                 <div class="navbar-header">
+				 <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
                     <li uib-dropdown>
@@ -320,7 +342,7 @@
     <!-- MetsiMenu -->
     <script src="{!! asset('js/plugins/metisMenu/jquery.metisMenu.js') !!}"></script>
 	
-
+ <script src="{!! asset('js/plugins/clockpicker/clockpicker.js') !!}"></script>
     <!-- SlimScroll -->
     <script src="{!! asset('js/plugins/slimscroll/jquery.slimscroll.min.js') !!}"></script>
 
@@ -344,9 +366,13 @@
     <script src="{!! asset('js/directives.js') !!}"></script>
     <script src="{!! asset('js/controllers.js') !!}"></script>
 	<script src="{!! asset('js/plugins/datapicker/bootstrap-datepicker.js') !!}"></script>
+	<script src="{!! asset('js/plugins/footable/footable.all.min.js') !!}"></script>
+	<script src="{!! asset('js/plugins/footable/angular-footable.js') !!}"></script>
 	
   <script>
   $(document).ready(function(){
+	    $('.footable').footable();
+            $('.footable2').footable();
 	 // $('#datetimepicker').datetimepicker('setStartDate', '2012-01-01');
       $('.date').datepicker({
 		  dateFormat: 'dd-MMM-yyyy' ,
@@ -362,8 +388,10 @@
      //this option for allowing user to select from year range
         }); 
 	});
+	 $('.clockpicker').clockpicker();
   });
  </script>
+ 
 </body>
 
 </html>

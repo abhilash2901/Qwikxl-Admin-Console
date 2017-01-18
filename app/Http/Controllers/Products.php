@@ -145,7 +145,9 @@ class Products extends Controller {
 		
     }
 
-    public function editproduct($id) {
+    public function editproduct(Request $request) {
+        $input = $request->all();
+        $id = $input['id'];
         $ids = Session::get('store_userid');
 
         $dept = DB::table('departments')->where('store_id', '=', $ids)->where('type', '=', 0)->get();
@@ -214,6 +216,7 @@ class Products extends Controller {
 			 $res=Product::where("id", $id)->get();
 			 $input['image']=$res[0]->image;
 		 }
+		
         $product['category_id'] = $input['category_id'];
         $product['unique_id'] = $input['unique_id'];
         $product['name'] = $input['name'];

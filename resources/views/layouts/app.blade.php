@@ -2,6 +2,12 @@
 <html>
 
 <head>
+ <?php echo
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+header('Content-Type: text/html');
+    ?>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -34,6 +40,7 @@
 	<link href="{{ asset('css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap-confirm-delete.css')}}" rel="stylesheet">
     <link href="{{ asset('css/select2.min.css')}}" rel="stylesheet">
+	 <link href="{{ asset('css/plugins/clockpicker/clockpicker.css')}}" rel="stylesheet">
     <!-- Font awesome -->
     <link href="{{ asset('font-awesome/css/font-awesome.css')}}" rel="stylesheet">
     <!-- footable -->
@@ -72,44 +79,23 @@
         <div class="sidebar-collapse">
             <ul side-navigation class="nav metismenu sidebar-menu" id="side-menu">
                 <li class="nav-header">
-
-                    <div class="profile-element" uib-dropdown>
+                   
+                    <div class="profile-element" uib-dropdown> <a href="{{ url('/profile/ ')}}{{Crypt::encrypt(Auth::user()->id)}}">
                         <img alt="image" class="img-circle" src="{{ asset('img/profile_small.jpg')}}" />
-                        <a uib-dropdown-toggle href>
+                        <a href="{{ url('/profile/ ')}}{{Crypt::encrypt(Auth::user()->id)}}">
                             <span class="clear">
                                     <span class="block m-t-xs" align="center">
                                         <strong class="font-bold"> {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</strong>
                                     </span>
-                            <span class=" block m-t-xs" align="center">profile</span>
+                            <!--span class=" block m-t-xs" align="center">profile</span-->
                             </span>
                         </a>
-
+</a>
                     </div>
                     <div class="logo-element">
                         IN+
                     </div>
                 </li>
-
-
-
-
-                @permission('profile-view')
-                <li ng-class="{active: $state.includes('mailbox')}" class="treeview">
-                    <a href="{{ url('/profile/ ')}}{{Auth::user()->id}}"><i class="	glyphicon glyphicon-user"></i><span class="nav-label ng-binding">PROFILE</span></a>
-
-                </li>
-                @endpermission @permission('role-list')
-                <li ng-class="{active: $state.includes('mailbox')}">
-                    <a href="{{ url('/roles')}}"><i class="fa fa-cog"></i><span class="nav-label ng-binding">USER ROLES</span></a>
-
-                </li>
-                @endpermission @permission('users-list')
-                <li ng-class="{active: $state.includes('mailbox')}">
-                    <a href="{{ url('/users')}}"><i class="fa fa-database"></i><span class="nav-label ng-binding">USERS</span></a>
-
-                </li>
-                @endpermission
-
 
                 <li ng-class="{active: $state.includes('pages')}">
                     <a ui-sref="#"><i class="fa fa-th-large"></i> <span class="nav-label">STORE</span><span class="fa arrow"></span></a>
@@ -125,6 +111,27 @@
                 </li>
 
 
+                @permission('profile-view')
+                <!--li ng-class="{active: $state.includes('mailbox')}" class="treeview">
+                    <a href="{{ url('/profile/ ')}}{{Crypt::encrypt(Auth::user()->id)}}"><i class="	glyphicon glyphicon-user"></i><span class="nav-label ng-binding">PROFILE</span></a>
+
+                </li-->
+                @endpermission @permission('role-list')
+                <li ng-class="{active: $state.includes('mailbox')}">
+                    <a href="{{ url('/roles')}}"><i class="fa fa-cog"></i><span class="nav-label ng-binding">USER ROLES</span></a>
+
+                </li>
+                @endpermission @permission('users-list')
+                <li ng-class="{active: $state.includes('mailbox')}">
+                    <a href="{{ url('/users')}}"><i class="fa fa-database"></i><span class="nav-label ng-binding">USERS</span></a>
+
+                </li>
+                @endpermission
+
+
+                
+
+
         </div>
     </nav>
     @endif
@@ -135,6 +142,7 @@
         <div class="row border-bottom">
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                 <div class="navbar-header">
+					<a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
                     <li uib-dropdown>
@@ -241,7 +249,9 @@
     </div>
 
 
-     <script src="{!! asset('js/angular/angular.js') !!}"></script>
+  
+	 <script src="{!! asset('js/angular/angular.js') !!}"></script>
+	 
     <script src="{!! asset('js/dirPagination.js') !!}"></script>
    
 
@@ -253,7 +263,7 @@
     <script src="{!! asset('js/custom/service.js') !!}"></script>
     <script src="{!! asset('js/angular-translate/angular-translate.min.js') !!}"></script>
 
-
+<script src="{!! asset('js/plugins/clockpicker/clockpicker.js') !!}"></script>
     <!-- MetsiMenu -->
     <script src="{!! asset('js/plugins/metisMenu/jquery.metisMenu.js') !!}"></script>
 
@@ -280,7 +290,12 @@
     <script src="{!! asset('js/directives.js') !!}"></script>
     <script src="{!! asset('js/controllers.js') !!}"></script>
 	<script src="{!! asset('js/controllers.js') !!}"></script>
-
+<script>
+  $(document).ready(function(){
+	  
+	 $('.clockpicker').clockpicker();
+  });
+ </script>
 </body>
 
 </html>

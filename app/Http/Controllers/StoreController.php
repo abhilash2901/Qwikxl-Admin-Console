@@ -67,7 +67,7 @@ class StoreController extends Controller {
 
     public function storedetails(Request $request) {
         $input = $request->all();
-        $id = $input['id'];
+     
          $stores = DB::table('stores')
              ->leftJoin('countries','stores.country','=','countries.id')
              ->leftJoin('states','stores.state','=','states.id')
@@ -149,7 +149,9 @@ class StoreController extends Controller {
 		  $input['state']='';
 		  $input['country']='';$input['image']='';
         $input = $request->all();
-       
+        $res = Store::where("mail",$input['mail'])->get();
+        if(count($res)==0){
+			
        if(isset($input['mcity']))
        {
         $cityinsert=array(["name"=>$input['mcity'],"state_id"=>$input['state']]);
@@ -193,11 +195,14 @@ class StoreController extends Controller {
                 "website" => $input['website'],
 				"latitude" => $input['latitude'],
                 "longitude" => $input['longitude'],
+				"opening_time" => $input['opening_time'],
+                "closing_time" => $input['closing_time'],
 				   "logo"=>$input['image']
         ]);
 
 
         // move here
+		
         DB::table('stores')->insert($item);
 
         $store_id = DB::table('stores')->orderBy('id', 'desc')->first();
@@ -208,7 +213,12 @@ class StoreController extends Controller {
                 "type" => "1"
         ]);
         DB::table('departments')->insert($items);
-        print_r(json_encode(array('status' => 'success', 'msg' => 'Store Created Succesfully', 'id' => $store_id->id)));
+        print_r(json_encode(array('status' => 'success', 'class' => 'alert alert-success','msg' => 'Store Created Succesfully', 'id' => $store_id->id)));
+			
+		}else{
+			print_r(json_encode(array('status' => 'failed','class' => 'alert alert-danger', 'msg' => 'Email ID Exist')));
+		
+		}
     }
 
     public function storeedit(Request $request) {
@@ -220,77 +230,97 @@ class StoreController extends Controller {
 		$input = $request->all();
        //var_dump($input);
 	   //exit;
-      if(isset($input['mcity']))
-     {
-        $cityinsert=array(["name"=>$input['mcity'],"state_id"=>$input['state']]);
-        
-        $id2=DB::table('cities')->insert($cityinsert);
-        $store_id = DB::table('cities')->orderBy('id', 'desc')->first();
-        $input['city']=$store_id->id;
-//        $last = Timelog::orderBy('id', 'desc')->first();
-        
-       
-     }
-	 
-         if (Input::file()) {
+	   $id = $input['id'];
+	    $res = Store::where("mail",$input['mail'])->where('id', '!=',  $id)->get();
+		
+        if(count($res)==0){
+		  if(isset($input['mcity']))
+		 {
+			$cityinsert=array(["name"=>$input['mcity'],"state_id"=>$input['state']]);
+			
+			$id2=DB::table('cities')->insert($cityinsert);
+			$store_id = DB::table('cities')->orderBy('id', 'desc')->first();
+			$input['city']=$store_id->id;
+	//        $last = Timelog::orderBy('id', 'desc')->first();
+			
+		   
+		 }
+		 
+			 if (Input::file()) {
 
-            $image = Input::file('image');
-            $filename = time() . '.' . $image->getClientOriginalExtension();
-            $name = Input::file('image')->getClientOriginalName();
-            $extension = $image->getClientOriginalExtension();
-            // RENAME THE UPLOAD WITH RANDOM NUMBER 
-            $fileName = rand(11111, 99999) . '.' . $extension;
-            $path = public_path('logo');
-            $thumb_img = Image::make($image->getRealPath())->resize(200, 140);
-            $thumb_img->save($path.'/'.$fileName,80);
-            $input['image'] = 'logo/' . $fileName;
-        }
-		$id = $input['id'];
-        if($input['image'] ){
-			$input['image']=$input['image'];
+				$image = Input::file('image');
+				$filename = time() . '.' . $image->getClientOriginalExtension();
+				$name = Input::file('image')->getClientOriginalName();
+				$extension = $image->getClientOriginalExtension();
+				// RENAME THE UPLOAD WITH RANDOM NUMBER 
+				$fileName = rand(11111, 99999) . '.' . $extension;
+				$path = public_path('logo');
+				$thumb_img = Image::make($image->getRealPath())->resize(200, 140);
+				$thumb_img->save($path.'/'.$fileName,80);
+				$input['image'] = 'logo/' . $fileName;
+			}
+			$id = $input['id'];
+			if($input['image'] ){
+				$input['image']=$input['image'];
+			}else{
+				 $row =Store::where("id", $id)->get();
+				 $input['image']=$row[0]->logo;
+			}
+		   if(isset($input['city'])){
+			 $input['city']=$input['city'];
+		   }else{
+			   $input['city']='';
+		   }if(isset($input['state'])){
+			 $input['state']=$input['state'];
+		   }else{
+			   $input['state']='';
+		   }if(isset($input['country'])){
+			 $input['country']=$input['country'];
+		   }else{
+			   $input['country']='';
+		   }
+			
+			/*$item = array([
+					"unique_id" => $input['unique_id']+$id,
+					"name" => $input['name'],
+					"corporateidentifier" => $input['corporateidentifier'],
+					"address" => $input['address'],
+					"address2" => $input['address2'],
+					"city" => $input['city'],
+					"state" => $input['state'],
+					"country" => $input['country'],
+					"zip" => $input['zip'],
+					"phone" => $input['phone'],
+					"mail" => $input['mail'],
+
+					"website" => $input['website'],
+					"latitude" => $input['latitude'],
+					"longitude" => $input['longitude']
+			]);
+
+					"website" => $input['website']
+			]);*/
+
+
+			// move here
+			// DB::table('stores')->insert($item );
+			
+			
+
+				   DB::update('update stores set name = ? ,corporateidentifier = ? ,address = ? ,address2 = ? ,country = ?,city = ?,state = ? ,zip = ?,latitude=?,longitude=?,opening_time=?,closing_time=?,phone = ?,mail = ?,website = ?,logo = ? where id = ?', [$input['name'], $input['corporateidentifier'], $input['address'], $input['address2'], $input['country'],$input['city'], $input['state'], $input['zip'],$input['latitude'],$input['longitude'],$input['opening_time'],$input['closing_time'], $input['phone'], $input['mail'], $input['website'],$input['image'], $id]);
+	  
+			/* $id = $input['id'];
+			  $user = Store::find($id);
+
+					$user->update($input);*/
+					// $data = DB::table('stores')->where('id',$input['id'])->get();
+
+			print_r(json_encode(array('status' => 'success','class' => 'alert alert-success', 'msg' => 'Store Created Succesfully','image'=>$input['image'])));
 		}else{
-			 $row =Store::where("id", $id)->get();
-			 $input['image']=$row[0]->logo;
+			print_r(json_encode(array('status' => 'failed', 'class' => 'alert alert-danger','msg' => 'Email ID Exist')));
+		
 		}
-       
-		
-        /*$item = array([
-                "unique_id" => $input['unique_id']+$id,
-                "name" => $input['name'],
-                "corporateidentifier" => $input['corporateidentifier'],
-                "address" => $input['address'],
-                "address2" => $input['address2'],
-                "city" => $input['city'],
-                "state" => $input['state'],
-                "country" => $input['country'],
-                "zip" => $input['zip'],
-                "phone" => $input['phone'],
-                "mail" => $input['mail'],
-
-                "website" => $input['website'],
-				"latitude" => $input['latitude'],
-                "longitude" => $input['longitude']
-        ]);
-
-                "website" => $input['website']
-        ]);*/
-
-
-        // move here
-        // DB::table('stores')->insert($item );
-        
-		
-
-               DB::update('update stores set name = ? ,corporateidentifier = ? ,address = ? ,address2 = ? ,country = ?,city = ?,state = ? ,zip = ?,latitude=?,longitude=?,phone = ?,mail = ?,website = ?,logo = ? where id = ?', [$input['name'], $input['corporateidentifier'], $input['address'], $input['address2'], $input['country'],$input['city'], $input['state'], $input['zip'],$input['latitude'],$input['longitude'], $input['phone'], $input['mail'], $input['website'],$input['image'], $id]);
-  
-		/* $id = $input['id'];
-		  $user = Store::find($id);
-
-                $user->update($input);*/
-				 $data = DB::table('stores')->where('id',$input['id'])->get();
-
-        print_r(json_encode(array('status' => 'success', 'msg' => 'Store Created Succesfully','image'=>$data[0]->logo)));
-    }
+	}
 
     public function deleteusers(Request $request) {
         $input = $request->all();
@@ -358,6 +388,9 @@ class StoreController extends Controller {
         print_r(json_encode($result[0]));
     } public function adddepts(Request $request) {
         $input = $request->all();
+		$res = DB::table('departments')->where("name",$input['name'])->where("store_id",$input['store_id'])->get();
+		
+        if(count($res)==0){
             if (Input::file('image')) {
 
 				$image = Input::file('image');
@@ -368,19 +401,24 @@ class StoreController extends Controller {
 				$fileName = rand(11111, 99999) . '.' . $extension;
 				$destinationPath = public_path('upload/departments');
                 $thumb_img = Image::make($image->getRealPath())->resize(1000, 450);
-                $thumb_img->save($destinationPath.'/'.$fileName,80);
+                $thumb_img->save($destinationPath.'/'.$fileName);
 				//$image->move($path, $fileName);
 				$input['image'] = 'upload/departments/' . $fileName;
 			}
        
             
             DB::table('departments')->insert($input);
-       
-
-
-        print_r(json_encode(array('status' => 'success', 'msg' => 'Updated Succesfully','storeid'=>$input['store_id'])));
+           print_r(json_encode(array('status' => 'success','class' => 'alert alert-success', 'msg' => 'Updated Succesfully','storeid'=>$input['store_id'])));
+		}else{
+			print_r(json_encode(array('status' => 'failed','class' => 'alert alert-danger', 'msg' => 'Departments Exist')));
+		
+		}
     }public function dptsupdate(Request $request) {
         $input = $request->all();
+		
+		$res = DB::table('departments')->where("name",$input['name'])->where("store_id",$input['store_id'])->where('id','!=',$input['id'])->get();
+		
+        if(count($res)==0){
             if (Input::file('image')) {
 
 				$image = Input::file('image');
@@ -391,7 +429,7 @@ class StoreController extends Controller {
 				$fileName = rand(11111, 99999) . '.' . $extension;
 				$destinationPath = public_path('upload/departments');
                 $thumb_img = Image::make($image->getRealPath())->resize(1000, 450);
-                $thumb_img->save($destinationPath.'/'.$fileName,80);
+                $thumb_img->save($destinationPath.'/'.$fileName);
 				//$image->move($path, $fileName);
 				$input['image'] = 'upload/departments/' . $fileName;
 			}
@@ -404,11 +442,12 @@ class StoreController extends Controller {
             $res = DB::table('departments')->where('id',$input['id']);
             $res->update($input);
             //DB::table('departments')->insert($input);
-       
-
-
-        print_r(json_encode(array('status' => 'success', 'msg' => 'Updated Succesfully','image'=>$input['image'])));
-    }
+         print_r(json_encode(array('status' => 'success','class' => 'alert alert-success', 'msg' => 'Updated Succesfully','image'=>$input['image'])));
+        }else{
+			print_r(json_encode(array('status' => 'failed','class' => 'alert alert-danger', 'msg' => 'Departments Exist')));
+		
+		}
+	}
 
     public function editdept(Request $request) {
         $input = $request->all();

@@ -67,7 +67,8 @@
 						</select> <span
 							class="help-block m-b-none"></span>
 					</div>
-            </div><div class="form-group sdpt hide"><label class="col-lg-2 control-label">Category</label>
+            </div>
+			<div class="form-group sdpt hide"><label class="col-lg-2 control-label">Category</label>
 				
 					<div class="col-lg-8">  
 					<div class="tree sss">
@@ -106,7 +107,7 @@
 </div>		
 					
 					</div>
-            </div><input type="hidden" id="category" name="category_id" required>
+            </div>
 			<div class="form-group nodpt hide"><label class="col-lg-2 control-label">Category</label>
 				
 					<div class="col-lg-8">  
@@ -152,17 +153,19 @@
  ?>
 </div>			
 					</div>
-            </div>
+            </div><div class="form-group" style="text-align:center"><label class="col-lg-2 control-label" ></label><div class="col-lg-2"><input type="text" id="category" name="category_id" required style='display:none'></div></div>
                 <div class="form-group"><label class="col-lg-2 control-label" >Price</label>
 
                     <div class="col-lg-8">
-                        {!! Form::text('price', null, array('placeholder' => 'Price','class' => 'form-control','required' => '')) !!}
+					<!--"min"=>"00.54"-->
+                        {!! Form::text('price', null, array('placeholder' => '50.01','class' => 'form-control','required' => '' , 'data-parsley-type' => 'number','data-parsley-trigger' => 'keyup' ,'data-parsley-pattern'=>"^\d{0,6}(\.\d{1,2})?$")) !!}
 
                     </div>
                 </div> <div class="form-group"><label class="col-lg-2 control-label" >Quantity</label>
+  
 
                     <div class="col-lg-8">
-                        {!! Form::text('quantity', null, array('placeholder' => 'Quantity','class' => 'form-control','required' => '')) !!}
+                        {!! Form::text('quantity', null, array('placeholder' => 'Quantity','class' => 'form-control','required' => '','data-parsley-type' => 'digits','data-parsley-trigger' => 'keyup','maxlength'=>"11")) !!}
 
                     </div>
                 </div>
@@ -176,7 +179,7 @@
                 <div class="form-group"><label class="col-lg-2 control-label">Image</label>
 
                     <div class="col-lg-4">  
-                        <input type="file" name="image"><span
+                        <input type="file" name="image" accept="image/*"><span
                             class="help-block m-b-none"></span>
 
                     </div>

@@ -7,10 +7,12 @@ use App\Http\Controllers\Controller;
 use Response;
 use App\User;
 use App\Role;
+use App\Store;
 use App\Departments;
 use DB;
 use Session;
 use Hash;
+use \Crypt;
 
 class UserController extends Controller {
 
@@ -21,9 +23,30 @@ class UserController extends Controller {
      */
     public function index(Request $request) {
         $id = Session::get('id');
-        $data = User::where('id', '!=', $id)->orderBy('id', 'DESC')->paginate(5);
-        return view('users.index', compact('data'))
-                        ->with('i', ($request->input('page', 1) - 1) * 5);
+		
+       // $data = User::where('id', '!=', $id)->orderBy('id', 'DESC')->paginate(5);
+		$store = Store::get();
+		$role = Role::get();
+        return view('users.index', compact('store','role'));
+    }
+  public function listingusers(Request $request) {
+        $id = Session::get('id');
+        $data = User::leftJoin('role_user', 'role_user.user_id', '=', 'users.id')
+		->leftJoin('roles', 'roles.id', '=', 'role_user.role_id')
+		->select('users.*','roles.name as rolesname','roles.type as rolestype','roles.display_name as displayname')
+		->where('users.id', '!=', $id)->orderBy('users.id', 'DESC')->get();
+		
+		$i=0;
+		 foreach($data as $role){
+			 if($role->rolestype==1){
+				 $s ="Store";
+			 }else{
+				 $s ="System";
+			 }
+			 $data[$i]['rolestype']= $s;
+			 $i++;
+		 }
+        print_r(json_encode($data));
     }
 
     public function storess() {
@@ -80,28 +103,33 @@ class UserController extends Controller {
         return json_encode(array('roles' => $res, 'stores' => $stores));
     }
 
+    public function test(Request $request) {
+		 $input = $request->all();
+		 var_dump($input);
+	}
     public function store(Request $request) {
-        $this->validate($request, [
-
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|same:confirm-password',
-            'roles' => 'required',
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'type' => 'required'
-        ]);
+        
 
         $input = $request->all();
+		
+       $res = User::where("email",$input['email'])->get();
+		if($input['email']!='' && $input['password']!='' && $input['type']!=''  ){
+        if(count($res)==0){
+			$input['password'] = Hash::make($input['password']);
 
-        $input['password'] = Hash::make($input['password']);
+			$user = User::create($input);
 
-        $user = User::create($input);
-
-        $user->attachRole($request->input('roles'));
+			$user->attachRole($request->input('roles'));
 
 
-        return redirect()->route('users.index')
-                        ->with('success', 'User created successfully');
+            print_r(json_encode(array('status' => 'success','class' => 'alert alert-success', 'msg' => 'User Created Succesfully')));
+		}else{
+			 print_r(json_encode(array('status' => 'failed', 'class' => 'alert alert-danger','msg' => 'Email ID Exist')));
+		}
+		}else{
+			 print_r(json_encode(array('status' => 'failed', 'class' => 'alert alert-danger','msg' => 'Please Fill All Fields')));
+		
+		}
     }
 
     /**
@@ -116,6 +144,7 @@ class UserController extends Controller {
     }
 
     public function showprofile($id) {
+		$id =Crypt::decrypt($id);
         $user = User::find($id);
         return view('users.showprofile', compact('user'));
     }
@@ -126,7 +155,9 @@ class UserController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id) {
+    public function edit(Request $request) {
+		  $input = $request->all();
+		 $id=$input['id'];
         $user = User::find($id);
 		$users  = DB::table('users')
                 ->join('role_user', 'users.id', '=', 'role_user.user_id')
@@ -150,15 +181,14 @@ class UserController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) {
-        $this->validate($request, [
-            'firstname' => 'required',
-            'email' => 'required|email|unique:users,email,' . $id,
-            'password' => 'same:confirm-password',
-            'roles' => 'required'
-        ]);
-
-        $input = $request->all();
+    public function update(Request $request) {
+        
+		 $input = $request->all();
+		 $id=$input['id'];
+         $res = User::where("email",$input['email'])->where('id', '!=',  $input['id'])->get();
+		if($input['email']!=''&& $input['type']!=''  ){
+        if(count($res)==0){
+       
         if (!empty($input['password'])) {
             $input['password'] = Hash::make($input['password']);
         } else {
@@ -174,8 +204,15 @@ class UserController extends Controller {
         $user->attachRole($request->input('roles'));
 
 
-        return redirect()->route('users.index')
-                        ->with('success', 'User updated successfully');
+         print_r(json_encode(array('status' => 'success','class' => 'alert alert-success', 'msg' => 'Updated Succesfully')));
+		
+		}else{
+		   print_r(json_encode(array('status' => 'failed', 'class' => 'alert alert-danger','msg' => 'Email ID Exist')));
+		}
+		}else{
+			 print_r(json_encode(array('status' => 'failed', 'class' => 'alert alert-danger','msg' => 'Please Fill All Fields')));
+		
+		}
     }
 
     public function updateprofile(Request $request, $id) {
@@ -221,14 +258,14 @@ class UserController extends Controller {
         //$count = DB::table('users')->where('id',$id)->where('password',$password)->get();
         if (count($ress) == 1) {
             //Hash::check(Input::get('admin_password'), $validate_admin->password))
-            if (Hash::check($request->input('currentpass'), $ress->password)) {
+           // if (Hash::check($request->input('currentpass'), $ress->password)) {
                 $user = User::find($id);
 
                 $user->update($input);
                 print_r(json_encode(array('status' => 'success', 'msg' => 'Password Changed Succesfully')));
-            } else {
-                print_r(json_encode(array('status' => 'failed', 'msg' => 'Current Password is incorrect ')));
-            }
+           // } else {
+              //  print_r(json_encode(array('status' => 'failed', 'msg' => 'Current Password is incorrect ')));
+            //}
         }
     }
 

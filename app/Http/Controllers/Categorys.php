@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Input;
 use Image;
 use App\User;
 use App\Role;
+use App\Product;
+use App\Productinventory;
 use App\Store;
 use App\Category;
 use App\Departments;
@@ -173,8 +175,9 @@ class Categorys extends Controller {
         
     }
 
-    public function editcategory($id) {
-        //$input = $request->all();
+    public function editcategory(Request $request) {
+        $input = $request->all();
+		 $id=$input['id'];
         //var_dump($id);
         $ids = Session::get('store_userid');
 		$subcate=new SubCate;
@@ -200,6 +203,8 @@ class Categorys extends Controller {
         $input['store_id'] = Session::get('store_userid');
         $id = $input['id'];
 		$pic='';
+		$result =Category::where('categoryname',$input['categoryname'])->where('departments_id',$input['departments_id'])->where("id",'!=',$id)->get();
+		if(count($result)==0){
 		if (Input::file('image')) {
 
 				$image = Input::file('image');
@@ -217,14 +222,19 @@ class Categorys extends Controller {
 				$input['image'] = 'upload/categories/' . $fileName;
 				$pic=$input['image'];
 			}
-	 if($input['image']){
+
+	   if($input['image']){
 	    $input['image']=$input['image'];
 	   }else{
 	    $categy=Category::where("id", $id)->get();
 	    $input['image']=$categy[0]->image;
 	   }
+
         Category::where("id", $id)->update($input);
-        print_r(json_encode(array('status' => 'success', 'msg' => 'Store Updated Succesfully','pic'=>$pic)));
+        print_r(json_encode(array('status' => 'success', 'class' => 'alert alert-success','msg' => 'Store Updated Succesfully','pic'=>$pic)));
+		}else{
+			print_r(json_encode(array('status' => 'Failed', 'class' => 'alert alert-danger','msg' => 'Category Exist')));
+		}
     }
 
     public function deletecategory(Request $request) {
@@ -234,7 +244,19 @@ class Categorys extends Controller {
         if (count($categories) > 0) {
             print_r(json_encode(array('status' => 'Failed', 'msg' => 'Parent Exist Please Delete The parent')));
         } else {
-            Category::where('id', $input)->delete();
+			$product =Product::where('category_id',$input['id'])->get();
+			
+			if(count($product)>0){
+				foreach($product as $prdct){
+				
+					Productinventory::where('product_id',$prdct->id)->delete();
+				}
+				exit;
+				//Productinventory::where('product_id',$product[0]->id)->delete();
+			}
+			$product =Product::where('category_id',$input['id'])->delete();
+			
+            Category::where('id', $input['id'])->delete();
             print_r(json_encode(array('status' => 'success', 'msg' => 'Deleted Succesfully')));
         }
     }
@@ -243,6 +265,8 @@ class Categorys extends Controller {
         $input = $request->all();
 		$pic='';
         $id = Session::get('id');
+		$result =Category::where('categoryname',$input['categoryname'])->where('departments_id',$input['departments_id'])->get();
+		if(count($result)==0){
 		if (Input::file('image')) {
 
 				$image = Input::file('image');
@@ -262,12 +286,11 @@ class Categorys extends Controller {
 		
         $user = User::find($id);
         $input['store_id'] = $user->store_id;
-		  $result =Category::where('categoryname',$input['categoryname'])->get();
-		if(count($result)==0){
+		 
 			$create = Category::create($input);
-            print_r(json_encode(array('status' => 'success', 'msg' => 'Category Created Succesfully','pic'=>$pic)));
+            print_r(json_encode(array('status' => 'success', 'class' => 'alert alert-success','msg' => 'Category Created Succesfully','pic'=>$pic)));
 		}else{
-			print_r(json_encode(array('status' => 'Failed', 'msg' => 'Category Exist')));
+			print_r(json_encode(array('status' => 'Failed', 'class' => 'alert alert-danger','msg' => 'Category Exist')));
 		}
        
     }

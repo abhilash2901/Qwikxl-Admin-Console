@@ -30,17 +30,17 @@
 
             <div class="role_update" tabindex="1"></div>
 
-            {!! Form::model($role, ['method' => 'PATCH','class'=>'form-horizontal','id'=>'role_update','route' => ['roles.update', $role->id]]) !!}
+            {!! Form::model($role, ['method' => 'POST','class'=>'form-horizontal','id'=>'role_update','route' => ['roles.update', $role->id]]) !!}
             <div class="form-group"><label class="col-lg-2 control-label">Name</label>
                 <input type="hidden" name="id" value="<?php echo $role->id;?>">
-                <div class="col-lg-8">   {!! Form::text('display_name', null, array('placeholder' => 'Name','class' => 'form-control')) !!} <span
+                <div class="col-lg-8">   {!! Form::text('display_name', null, array('placeholder' => 'Name','class' => 'form-control','required'=>'','data-parsley-trigger'=>"keyup",'data-parsley-pattern'=>"^[a-zA-Z ]+$")) !!} <span
                         class="help-block m-b-none"></span>
                 </div>
             </div>
             <div class="form-group"><label class="col-lg-2 control-label">Type</label>
 
                 <div class="col-lg-8">  
-                    <input type="radio" value="0" name="type" onchange="Permissiontype(this)" <?php if ($role->type == '0') echo "checked='checked'"; ?>> System 
+                    <input type="radio" value="0" required name="type" onchange="Permissiontype(this)" <?php if ($role->type == '0') echo "checked='checked'"; ?>> System 
                     <input type="radio" value="1" name="type" onchange="Permissiontype(this)" <?php if ($role->type == '1') echo "checked='checked'"; ?>> Store
                     <span
                         class="help-block m-b-none"></span>
@@ -74,10 +74,10 @@
             <div class="form-group">
                 <div class="col-lg-offset-2 col-lg-8">
                     <?php
-                    if ($role->name != 'admin' && $role->display_name != 'Store Admin') {
+                    if ($role->name != 'admin' && $role->display_name != 'Store Admin'&& $role->display_name != 'Store User') {
                         ?>
-                        <button type="submit" class="btn btn-primary" >Submit</button> 
-						<button type="button" class="btn btn-primary" onClick="Roleupdate()" style="display:none">Submit</button>
+                        <button type="submit" class="btn btn-primary" style="display:none">Submit</button> 
+						<button type="button" class="btn btn-primary" onClick="Roleupdate()" >Submit</button>
 						
                         <?php
                     }

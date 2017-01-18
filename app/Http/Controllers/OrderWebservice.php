@@ -42,6 +42,7 @@ class OrderWebservice extends Controller {
 			$pick_type = htmlspecialchars($input->pick_type);
 			$delivery_phone = htmlspecialchars($input->phone);
 			$total = htmlspecialchars($input->total);
+			
 			//$rewardPoint = htmlspecialchars($input['rewardPoint']);
 			//$rewardPoint = (double)$rewardPoint;
 			$grand_total = htmlspecialchars($input->grand_total);
@@ -49,7 +50,21 @@ class OrderWebservice extends Controller {
 			$status_init = "processing";
 			
 			$createddate = date("d-M-Y H:i a");
-			\Stripe\Stripe::setApiKey("sk_test_WemfYo9pOD8TjkwerI1XNhxo");
+			
+			$array = json_decode(json_encode($input->cart), true);
+			
+			if (in_array('', array_column($array, 'item_id')) || in_array('NULL', array_column($array, 'item_id'))) {
+				// There are null values.
+				$data = array("Status"=>"Ordering Failed","Orderid"=>null,"unique_id"=>null, "transaction_id"=>null,'message'=>'Item is NULL'); 
+					print_r(json_encode($data));
+			}else{
+			
+			if(0.54 > $total){
+	            $data = array("Status"=>"Transaction Failed. The Amount must be Minimum $0.54","Orderid"=>"null"); 
+				print_r(json_encode($data));
+		            exit;
+            }else{
+			\Stripe\Stripe::setApiKey("sk_test_OdihBeOQOiWLAtT5AfxaedN2");
 			
 				
 			try {
@@ -58,44 +73,56 @@ class OrderWebservice extends Controller {
 "number" => "4242424242424242",
 "exp_month" => 11,
 "exp_year" => 2016,
-"cvc" => "314"  )));
-var_dump($t->id);
-exit;*/
-$customer = \Stripe\Customer::create(array(
+"cvc" => "314"  )));*/
+
+if($stripe_token!='0'){
+	
+	$customer = \Stripe\Customer::create(array(
   "description" => $username,
   "source" => $stripe_token));
+  $customerid =$customer->id;
+}else{
+	$customerid=htmlspecialchars($input->stripe_customer_id);
+}
+
 
 			
 			$charge = \Stripe\Charge::create(array(
-				'customer' => $customer->id,
-				'amount'   => intval($total),
+				'customer' => $customerid,
+				'amount'   => $total*100,
 				'currency' => 'usd'
 			));
 			
 			
 			$status = json_encode($charge ->status);
+			
 			if($status != '"succeeded"') {
+				$order =$this->failedorderplacing(0,json_encode($charge) ,json_encode($charge->id),$input);
 				//echo '{"status":"Transaction Failed","Orderid":"null"}';
 				//exit;
-				$data = array("Status"=>"Transaction Failed","Orderid"=>"null"); 
-				print_r(json_encode($data));
-		            exit;
+				
+				//$data = array("Status"=>"Transaction Failed","Orderid"=>"null"); 
+				//print_r(json_encode($data));
+		         //   exit;
 			}else {
 				 $emails =Customer::where('email', '=', $username)->get();
 				 
-				$transaction_id = json_encode($charge ->created);
+				$transaction_id = json_encode($charge ->id);
 				$inputs=array(
 				'username'=>$username,
 				'customer_id'=>$emails[0]->id,
 				'pick_type'=>$pick_type,
 				'delivery_phone'=>$delivery_phone,
 				'total'=>$total,
+				
 				'status'=>trim($status,'"'),
 				'createddate'=>$createddate,
 				
 				'grand_total'=>$grand_total,
 				'stripe_token'=>$stripe_token,
 				'transaction_id'=>$transaction_id,
+				'transaction_response'=>$charge,
+				
 				'unique_id'=>mt_rand(100000,999999)
 				);
 				$order = Order::insert($inputs);
@@ -114,7 +141,7 @@ $customer = \Stripe\Customer::create(array(
 				$inputss=array(
 					  'order_id'=>$order_id,
 					  
-					  'status_id'=>3,
+					  'status_id'=>1,
 					  'current_status_flag'=>1
 					 );
 				foreach ($input->cart as $item)
@@ -178,18 +205,131 @@ $customer = \Stripe\Customer::create(array(
 				}
 			}
 			
-		}catch (Exception $e) {
-		// echo '{"status":"Ordering Successful","Orderid":"null", "transaction_id":"null"}';
-		//echo '{"status":"'.$e->getMessage().'","Orderid":"null"}';
-		$data = array("Status"=>$e->getMessage(),"Orderid"=>null); 
-		print_r(json_encode($data));
-		exit;
-	}
+		} catch (\Stripe\Error\RateLimit $e) {
+		 $body = $e->getJsonBody();
+  $err  = $body['error'];
+
+$order =$this->failedorderplacing(1,json_encode($err) ,trim($err['charge'],'"'),$input);
+} catch (\Stripe\Error\InvalidRequest $e) {
+	 $body = $e->getJsonBody();
+  $err  = $body['error'];
+  
+$data = array("Status"=>$err['message']);
+ print_r(json_encode($data));
+				 exit;	             
+
+} catch (\Stripe\Error\Authentication $e) {
+  $body = $e->getJsonBody();
+  $err  = $body['error'];
+
+$order =$this->failedorderplacing(1,json_encode($err) ,trim($err['charge'],'"'),$input);
+  // (maybe you changed API keys recently)
+} catch (\Stripe\Error\ApiConnection $e) {
+	 $body = $e->getJsonBody();
+  $err  = $body['error'];
+
+$order =$this->failedorderplacing(1,json_encode($err) ,trim($err['charge'],'"'),$input);
+} catch (\Stripe\Error\Base $e) {
+	 $body = $e->getJsonBody();
+  $err  = $body['error'];
+  $data = array("Status"=>$err['message']);
+  //print_r(json_encode($data));
+ //var_dump(json_encode($err['message']));
+ //exit;
+$order =$this->failedorderplacing(1,json_encode($err) ,0,$input);
+  // yourself an email
+} catch (Exception $e) {
+	 $body = $e->getJsonBody();
+  $err  = $body['error'];
+
+$order =$this->failedorderplacing(1,json_encode($err) ,trim($err['charge'],'"'),$input);
 	
+  
+}
+	}
+			}
 	 }
+	  
+public function failedorderplacing($type,$e ,$transactionid,$input) {
+	       $username = htmlspecialchars($input->username);
+			$pick_type = htmlspecialchars($input->pick_type);
+			$delivery_phone = htmlspecialchars($input->phone);
+			$total = htmlspecialchars($input->total);
+			
+			//$rewardPoint = htmlspecialchars($input['rewardPoint']);
+			//$rewardPoint = (double)$rewardPoint;
+			$grand_total = htmlspecialchars($input->grand_total);
+			 $stripe_token = htmlspecialchars($input->Stripe_token);
+			$status_init = "processing";
+			
+			$createddate = date("d-M-Y H:i a");
+			$emails =Customer::where('email', '=', $username)->get();
+				 
+				$transaction_id = $transactionid;
+				$inputs=array(
+				'username'=>$username,
+				'customer_id'=>$emails[0]->id,
+				'pick_type'=>$pick_type,
+				'delivery_phone'=>$delivery_phone,
+				'total'=>$total,
+				
+				'status'=>'Failed',
+				'createddate'=>$createddate,
+				
+				'grand_total'=>$grand_total,
+				'stripe_token'=>$stripe_token,
+				'transaction_id'=>$transaction_id,
+				'transaction_response'=>$e,
+				
+				'unique_id'=>mt_rand(100000,999999)
+				);
+				$order = Order::insert($inputs);
+				 $data = Order::orderBy('id', 'desc')->first();
+
+				$order_id = $data->id;
+				$unique_id = $data->unique_id;
+				$inputss=array(
+					  'order_id'=>$order_id,
+					  
+					  'status_id'=>5,
+					  'current_status_flag'=>1
+					 );
+			    foreach ($input->cart as $item)
+				{
+				    $inputdetails=array(
+						'orderid'=>$order_id,
+						'itemid'=>$item->item_id,
+						'quantity'=>$item->quantity,
+						'price'=>$item->price,
+						
+						'createddate'=>$createddate,
+						
+					);
+					
+				    $orderdetails = Orderdetail::insert($inputdetails);
+					$res =Orderstatus::insert($inputss);
+				}
+				
+				$e =json_decode($e);
+	             if($type=='1'){
+					  $data = array("Status"=>$e->message,"Orderid"=>$order_id,"unique_id"=>$unique_id, "transaction_id"=>$transaction_id);
+	             
+				 }else{
+					 $data = array("Status"=>'Transaction Failed',"Orderid"=>$order_id,"unique_id"=>$unique_id, "transaction_id"=>$transaction_id);
+	             
+				 }
+	             print_r(json_encode($data));
+				 exit;
+	  }
 	  public function orderDetails(Request $request) {
 		  $inputs = $request->all();
-		 $num = Order::select('id', 'createddate','unique_id')->where('username',$inputs['userid'])->orderBy('id','DESC')->get();
+		 $num = Order::
+		 join('order_status_histories', 'order_status_histories.order_id', '=', 'orders.id')
+		 ->select('orders.id', 'orders.createddate','orders.unique_id')
+		 ->where('orders.username',$inputs['userid'])
+		 ->where('order_status_histories.status_id','!=','5')
+		 ->groupby('orders.id')
+		 ->orderBy('orders.id','DESC')->get();
 		  //print_r($num);
 		 // echo count($num);
            if(count($num)>0){
@@ -215,16 +355,16 @@ $customer = \Stripe\Customer::create(array(
 			join('order_status_histories', 'order_status_histories.order_id', '=', 'orders.id')
 			->join('order_status', 'order_status.id', '=', 'order_status_histories.status_id')
 			
-			->select('order_status.status as orderstatus')
+			->select('order_status.status as orderstatus','orders.createddate')
 			->where('orders.id', $inputs['orderid'])
 			->where('order_status_histories.current_status_flag', 1)
 			
 			->get();
-			$nums = Orderdetail::selectRaw('sum(quantity*price)as total')->where('orderid', $inputs['orderid'])->get();
+			$nums = Orderdetail::selectRaw('sum(price)as total')->where('orderid', $inputs['orderid'])->get();
 		 // print_r($nums);
 		 // echo count($nums);
            if(count($num)>0){
-			   $data =array('orderDetails'=>$num ,'Status'=>'Success','Total'=>$nums[0]->total,'orderstatus'=>$status[0]->orderstatus);
+			   $data =array('orderDetails'=>$num ,'Status'=>'Success','Total'=>$nums[0]->total,'orderDate'=>$status[0]->createddate,'orderstatus'=>$status[0]->orderstatus);
 		   }else{
 			   $data =array('Status'=>'No Record found !' );
 			   

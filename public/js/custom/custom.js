@@ -11,6 +11,7 @@ var App = angular.module('app', ['angularUtils.directives.dirPagination']);
 			var promise = WebService.send_data( link,post_data);
 			promise.then(function(response){  
 			    $scope.liststores = response;
+				
 				console.log( $scope.liststores);
 			});	
 		 
@@ -56,9 +57,10 @@ var App = angular.module('app', ['angularUtils.directives.dirPagination']);
 		 $scope.AddBanner= function(){
 			
 			 if ($('#addbanner').parsley().validate()) {
-		 
+		  $scope.isDisabled=true;
 
          $('#addbanner').ajaxForm(function(options) {
+			 $scope.isDisabled=false;
              var items = JSON.parse(options);
 			 ids=items.id;
 			
@@ -94,16 +96,17 @@ var App = angular.module('app', ['angularUtils.directives.dirPagination']);
 
          $('#adddpts').ajaxForm(function(options) {
              var items = JSON.parse(options);
-			 ids=items.storeid;
+			
 			
               var s = items.msg;
              $('html, body').animate({
                  scrollTop: $(".adddpts").offset().top - 100
              }, 'fast');
              $(".adddpts").show();
-             $(".adddpts").html('<p class="alert alert-success">' + s + '</p>');
+             $(".adddpts").html('<p class="' +items.class + '">' + s + '</p>');
 			 
-             
+             if(items.status=='success'){
+				  ids=items.storeid;
              setTimeout(function() {
                  $(".adddpts").hide(); $('#addbanner')[0].reset();
              }, 2000);
@@ -115,6 +118,7 @@ var App = angular.module('app', ['angularUtils.directives.dirPagination']);
 			promise.then(function(response){  
 			    $scope.listdepartments=response;
 			});
+			 }
          });
 		  
      }
@@ -128,6 +132,28 @@ var App = angular.module('app', ['angularUtils.directives.dirPagination']);
 			var promise = WebService.send_data( link,post_data);
 			promise.then(function(response){  
 			    $scope.listdepartments=response;
+			});
+		 };
+		 $scope.listUsers= function(){
+			   
+			 post_data  ={};
+		    link="/listingusersadmin";
+		
+	
+			var promise = WebService.send_data( link,post_data);
+			promise.then(function(response){  
+			    $scope.listingusers=response;
+			});
+		 };
+		 $scope.listRoles= function(){
+			   
+			 post_data  ={};
+		    link="/listingroles";
+		
+	
+			var promise = WebService.send_data( link,post_data);
+			promise.then(function(response){  
+			    $scope.listingroles=response;
 			});
 		 };
   $scope.bannerCreated= function(){

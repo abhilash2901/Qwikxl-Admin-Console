@@ -19,16 +19,16 @@
                 <div class="ibox-content">
                     <div class="row">
                         <div class="col-sm-6 b-r"><h3 class="m-t-none m-b">Store Search </h3>
-                            <div class="input-group">
-                                <input placeholder="Search" type="text"  class="form-control" id="search-input" ng-model="serach_term" autocomplete="off"/> 						   <span
+                            <div class="input-group col-md-12 ">
+                                <input placeholder="Search" type="text"  class="form-control" id="search-inputs" ng-model="serach_term" autocomplete="off"/> <span
+                                    class="input-group-btn" style="display:none"> <a ui-sref="search.results"><button type="button" class="btn btn-primary" >Go
+                                        </button ></a> </span>
+                            </div>
+                            <!--h4 class="text-center">Or</h4>
+                            <div class="input-group"><input type="text"  ng-model="serach_term1" placeholder="Store ID Number" id="search-input2" autocomplete="off" class="form-control"><span
                                     class="input-group-btn"> <a ui-sref="search.results"><button type="button" class="btn btn-primary">Go
                                         </button></a> </span>
-                            </div>
-                            <h4 class="text-center">Or</h4>
-                            <div class="input-group"><input type="text"  ng-model="serach_term1" placeholder="Store ID Number" id="search-input2" autocomplete="off" class="form-control"> <span
-                                    class="input-group-btn"> <a ui-sref="search.results"><button type="button" class="btn btn-primary">Go
-                                        </button></a> </span>
-                            </div>
+                            </div-->
 
 
 
@@ -36,9 +36,9 @@
 
                         </div>
                         <div class="col-sm-6"><h4>Select Store</h4>
-                            <div class="input-group">
+                            <div class="input-group col-md-12 ">
                                 <input placeholder="Search" type="text"  class="form-control" id="search-input" ng-model="serach_terms" /> 						   <span
-                                    class="input-group-btn"> <a ui-sref="search.results"><button type="button" class="btn btn-primary">Go
+                                    class="input-group-btn" style="display:none"> <a ui-sref="search.results"><button type="button" class="btn btn-primary">Go
                                         </button></a> </span>
                             </div>
 
@@ -60,12 +60,12 @@
 
 
                         <h2 class="ng-cloak">
-                            @{{liststores.length}} results found for: <span class="text-navy ng-cloak">“@{{serach_term}} @{{serach_term1}} @{{serach_terms}}”</span>
+                            @{{(liststores | filter: serach_term | filter: serach_term1 | filter:serach_terms ).length}} results found for: <span class="text-navy ng-cloak">“@{{serach_term}} @{{serach_term1}} @{{serach_terms}} ”</span>
                         </h2>
-                        <small>Request time (0.23 seconds)</small>
+                        <!--small>Request time (0.23 seconds)</small-->
 
                         <div ng-show="liststores.length == 0"> No Stores</div>
-                        <div ng-repeat="list in liststores| filter: serach_term | filter: serach_term1 | filter:serach_terms ">
+                        <div ng-repeat="list in liststores | filter: serach_term | filter: serach_term1 | filter:serach_terms ">
                             <div class="hr-line-dashed"></div>
                             <div class="search-result">
                                 <h3><a ng-click="Selectestore(list.id)" class="ng-cloak">@{{list.name}} | Store ID : @{{list.unique_id}} </a></h3>

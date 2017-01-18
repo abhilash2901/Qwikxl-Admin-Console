@@ -30,65 +30,62 @@
                     <h5>Edit users</h5>    
                 </div>
                 <div class="ibox-content">
-                   @if (count($errors) > 0)
-		<div class="alert alert-danger">
-			<strong>Whoops!</strong> There were some problems with your input.<br><br>
-			<ul>
-				@foreach ($errors->all() as $error)
-					<li>{{ $error }}</li>
-				@endforeach
-			</ul>
+                             
+		<div class="usersucess">
+			
 		</div>
-	@endif
 	
-	{!! Form::model($user, ['method' => 'PATCH','class'=>'form-horizontal','route' => ['users.update', $user->id]]) !!}
+	{!! Form::model($user, ['method' => 'PATCH','class'=>'form-horizontal create_user','route' => ['users.update', $user->id]]) !!}
 	
                       
-                        <div class="form-group"><label class="col-lg-2 control-label">Firstname</label>
+                        <div class="form-group"><label class="col-lg-2 control-label">First Name</label>
 
-                            <div class="col-lg-8">   {!! Form::text('firstname', null, array('placeholder' => 'firstname','class' => 'form-control')) !!} <span
+                            <div class="col-lg-8">   {!! Form::text('firstname', null, array('placeholder' => 'First Name','class' => 'form-control','required'=>'','data-parsley-trigger'=>"keyup",'data-parsley-pattern'=>"^[a-zA-Z ]+$")) !!} <span
                                     class="help-block m-b-none"></span>
                             </div>
                         </div>
-						<div class="form-group"><label class="col-lg-2 control-label">Lastname</label>
+						<div class="form-group"><label class="col-lg-2 control-label">Last Name</label>
 
-                            <div class="col-lg-8">   {!! Form::text('lastname', null, array('placeholder' => 'lastname','class' => 'form-control')) !!} <span
-                                    class="help-block m-b-none"></span>
+                            <div class="col-lg-8">   {!! Form::text('lastname', null, array('placeholder' => '(123) 123-1234','class' => 'form-control','required'=>'','data-parsley-trigger'=>"keyup",'data-parsley-pattern'=>"^[a-zA-Z ]+$")) !!} 
+							<span class="help-block">(999) 999-9999</span>
+                                   
                             </div>
                         </div>
 						
-						<div class="form-group"><label class="col-lg-2 control-label">Contactnumber</label>
+						<div class="form-group"><label class="col-lg-2 control-label">Contact Number</label>
 
-                            <div class="col-lg-8">   {!! Form::text('contactnumber', null, array('placeholder' => 'contactnumber','class' => 'form-control')) !!} <span
+                            <div class="col-lg-8">   {!! Form::text('contactnumber', null, array('placeholder' => 'Contact Number','class' => 'form-control',"data-parsley-validation-threshold"=>"1" ,"data-parsley-trigger"=>"keyup" ,
+    'data-parsley-pattern'=>'^(\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$')) !!} <span
                                     class="help-block m-b-none"></span>
                             </div>
                         </div>
 						
                         <div class="form-group"><label class="col-lg-2 control-label">Email</label>
 
-                            <div class="col-lg-8">{!! Form::text('email', null, array('placeholder' => 'Email','class' => 'form-control')) !!}
-                            </div>
+                            <div class="col-lg-8">
+							 <input type="email" class="form-control" name="email" placeholder= 'Email' value="<?php echo $user->email;?>" required>
+							</div>
                         </div>
                          <div class="form-group"><label class="col-lg-2 control-label" >Password</label>
 
                             <div class="col-lg-8">
-                	{!! Form::password('password', array('placeholder' => 'Password','class' => 'form-control')) !!}
+                	{!! Form::password('password', array('placeholder' => 'Password','class' => 'form-control','id' => 'cpassed',"data-parsley-validation-threshold"=>"1",'data-parsley-minlength'=>"1" , 'data-parsley-required-message'=>"Please enter your new password.", 'data-parsley-pattern'=>"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$" ,'data-parsley-pattern-message'=>"Your password must contain Minimum 8 characters at least  (1) lowercase letter (1) uppercase letter 1 Number and 1 Special Character:." )) !!}
                 	
                             </div>
                         </div> <div class="form-group"><label class="col-lg-2 control-label" >Confirm Password</label>
 
                             <div class="col-lg-8">
-                	 {!! Form::password('confirm-password', array('placeholder' => 'Confirm Password','class' => 'form-control')) !!}
+                	 {!! Form::password('confirm-password', array('placeholder' => 'Confirm Password','class' => 'form-control','data-parsley-equalto'=>"#cpassed", "data-parsley-equalto-message"=>"The two password fields didn't match." )) !!}
                 	
                             </div>
                         </div>
 						<div class="form-group"><label class="col-lg-2 control-label">Type</label>
 
-                            <div class="col-lg-8">  <!--select class="form-control m-b type" name="type" onchange="gettype(this);"><option <?php if ($user->type=='')echo"selected";?>></option>
+                            <div class="col-lg-2">  <!--select class="form-control m-b type" name="type" onchange="gettype(this);"><option <?php if ($user->type=='')echo"selected";?>></option>
                                     <option value="0"  <?php if ($user->type=='0')echo"selected";?>>System</option>
                                     <option value="1" <?php if ($user->type=='1')echo"selected";?>>Store</option>
                                 </select--> 
-								<input type="radio" value="0" name="type"  <?php if($user->type=='0') echo "checked='checked'"; ?> onchange="gettype(this);"> System 
+								<input type="radio" value="0" required name="type"  <?php if($user->type=='0') echo "checked='checked'"; ?> onchange="gettype(this);"> System 
 				            <input type="radio" value="1" name="type" <?php if($user->type=='1') echo "checked='checked'"; ?> onchange="gettype(this);"> Store<span
                                     class="help-block m-b-none"></span>
                             </div>
@@ -119,8 +116,9 @@
                         </div>
                                           
                         <div class="form-group">
+						<input type="hidden" value="{{$user->id}}" name='id'>
                             <div class="col-lg-offset-2 col-lg-8">
-							<button type="btn btn-md btn-primary" class="btn btn-primary">Submit</button>
+							<button type="button" class="btn btn-primary" onClick="EditUserDetail()">Submit</button>
                              
                             </div>
                         </div>

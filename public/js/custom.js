@@ -86,6 +86,8 @@ $(document).ready(function() {
                 var website = res[0].website;
                 var latitude = res[0].latitude;
                 var longitude = res[0].longitude;
+				var opened = res[0].opening_time;
+				var closedd = res[0].closing_time;
                 $('#latitude').val(latitude);
                 $('#longitude').val(longitude);
                 $('#store_id').val(res[0].id);
@@ -96,6 +98,8 @@ $(document).ready(function() {
                 $('#saddress').val(saddress);
                 $('#snumber').val(snumber);
                 $('#saddress2').val(saddress2);
+				$('#opening_time').val(opened);
+                $('#closing_time').val(closedd);
                 //$("#role_id").val(role_id);
 				if(res[0].logo){
 					$(".imageshow").html('<img src=' + base_url + '/' + res[0].logo + ' width="50%" height="50px">');
@@ -266,6 +270,63 @@ function Savedetails() {
             }
         });
     }
+}function SaveUserDetail() {
+    if ($('.create_user').parsley().validate()) {
+        var form = $('.create_user').serializeArray();
+        jQuery.ajax({
+            type: 'POST',
+            url: base_url + '/userscreate',
+
+            dataType: 'json',
+            data: form,
+            success: function(res) {
+                 $(".usersucess").show();
+				 $('html, body').animate({
+                        scrollTop: $(".usersucess").offset().top - 100
+                    }, 'fast');
+                 $(".usersucess").html('<p class="' + res.class + '">' + res.msg + '</p>');
+                if (res.status == 'success') {
+					$('.create_user')[0].reset();
+					setTimeout(function() {
+                         $(".usersucess").hide();
+                    }, 1500);
+                   
+                    //location.reload();
+
+                }
+
+            }
+        });
+    }
+}
+function EditUserDetail() {
+    if ($('.create_user').parsley().validate()) {
+        var form = $('.create_user').serializeArray();
+        jQuery.ajax({
+            type: 'POST',
+            url: base_url + '/usersupdate',
+
+            dataType: 'json',
+            data: form,
+            success: function(res) {
+                 $(".usersucess").show();
+				 $('html, body').animate({
+                        scrollTop: $(".usersucess").offset().top - 100
+                    }, 'fast');
+                 $(".usersucess").html('<p class="' + res.class + '">' + res.msg + '</p>');
+                if (res.status == 'success') {
+					//$('.create_user')[0].reset();
+					setTimeout(function() {
+                         $(".usersucess").hide();
+                    }, 1500);
+                   
+                    //location.reload();
+
+                }
+
+            }
+        });
+    }
 }
 
 function Create() {
@@ -278,9 +339,13 @@ function Create() {
             dataType: 'json',
             data: form,
             success: function(res) {
+				$(".usersucess").show();
+				$('html, body').animate({
+                        scrollTop: $(".usersucess").offset().top - 100
+                    }, 'fast');
                 $(".usersucess").html('<p class="alert alert-success">' + res.msg + '</p>');
                 if (res.status == 'success') {
-                    $('.create_user')[0].reset();
+                    $('.create_user')[0].reset();$(".usersucess").hide();
                     location.reload();
 
                 }
@@ -469,13 +534,14 @@ function Changepass() {
                  scrollTop: $(".updatemessage").offset().top - 100
              }, 'fast');
              $(".updatemessage").show();
-             $(".updatemessage").html('<p class="alert alert-success">' + s + '</p>');
+             $(".updatemessage").html('<p class="' +items.class + '">' + s + '</p>');
     
-
-              setTimeout(function() {
-                        $(".updatemessage").hide();
-                        window.location.replace(base_url + "/editstore");
-                    }, 1500);
+               if(items.status=='success'){
+				  setTimeout(function() {
+							$(".updatemessage").hide();
+							window.location.replace(base_url + "/editstore");
+						}, 1500);
+			   }
 
          });
      }
@@ -490,16 +556,17 @@ function Changepass() {
                  scrollTop: $(".changepasres").offset().top - 100
              }, 'fast');
              $(".changepasres").show();
-             $(".changepasres").html('<p class="alert alert-success">' + s + '</p>');
-			 if(items.image){
+             $(".changepasres").html('<p class="' +items.class + '">' + s + '</p>');
+			
+              if(items.status=='success'){
+                 if(items.image){
 				 $(".imageshow").html('<img src=' + base_url + '/' + items.image + ' width="50%" height="100px">');
-			 }
-              
-
+			     }
               setTimeout(function() {
                         $(".changepasres").hide();
                         window.location.replace(base_url + "/editstore");
                     }, 1500);
+			  }
 
          });
      }
@@ -573,16 +640,21 @@ function dptCreated() {
          $('#editdpts').ajaxForm(function(options) {
              var items = JSON.parse(options);
               var s = items.msg;
-			   imagess=items.img;
+			   
              $('html, body').animate({
                  scrollTop: $(".uploaddpt").offset().top - 100
              }, 'fast');
              $(".uploaddpt").show();
-             $(".uploaddpt").html('<p class="alert alert-success">' + s + '</p>');
-             $(".imageshowdptss").html('<img src=' + base_url + '/' + imagess + ' width="50" height="50px">');
-             setTimeout(function() {
-                 $(".uploaddpt").hide();location.reload();
-             }, 2000);
+             $(".uploaddpt").html('<p class="' +items.class + '">' + s + '</p>');
+			if(items.status=='success'){
+				imagess=items.img;
+				 if(imagess){
+				 $(".imageshowdptss").html('<img src=' + base_url + '/' + imagess + ' width="50" height="50px">');
+				}
+				 setTimeout(function() {
+					 $(".uploaddpt").hide();location.reload();
+				 }, 2000);
+		   }
 
          });
 	}
@@ -626,14 +698,14 @@ function profile() {
 
             success: function(res) {
                 $(".profilesucess").show();
-                if (res.status == 'success') {
+               
                     // $('#dept')[0].reset();
                     //location.reload(); 
-                    $(".profilesucess").html('<p class="alert alert-success">' + res.msg + '</p>');
+                    $(".profilesucess").html('<p class="' + res.class + '">' + res.msg + '</p>');
                     setTimeout(function() {
                         $(".profilesucess").hide();
                     }, 1000);
-                }
+                
 
             }
         });
@@ -651,6 +723,7 @@ function remove(sel) {
 	  
 	    $("#system").addClass('hide');
 		 $("#storess").removeClass('hide');
+		 
    }else{
 	  
 	   $("#storess").addClass('hide');
@@ -749,6 +822,33 @@ function Deletedpt() {
                     $(".role_update").html('<p class="' + res.class + '">' + res.msg + '</p>');
 					setTimeout(function() {
                      $(".role_update").hide();
+                    // location.reload();
+                 }, 2000);
+
+                
+
+            }
+        });
+    }
+}function AddRoles() {
+    if ($('#role_update').parsley().validate()) {
+        var form = $('#role_update').serializeArray();
+        jQuery.ajax({
+            type: 'POST',
+            url: base_url + '/rolescreate',
+
+            dataType: 'json',
+            data: form,
+            success: function(res) {
+                $(".role_update").show();
+               
+               
+                    $('html, body').animate({
+                        scrollTop: $(".role_update").offset().top - 100
+                    }, 'fast');
+                    $(".role_update").html('<p class="' + res.class + '">' + res.msg + '</p>');
+					setTimeout(function() {
+                     $(".role_update").hide(); $('#role_update')[0].reset();
                     // location.reload();
                  }, 2000);
 

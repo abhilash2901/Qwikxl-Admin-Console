@@ -36,7 +36,7 @@
                         <form class="form-horizontal" id="store"  method="POST" action="{{ url('editstoredata')}}">
                         <div class="form-group"><label class="col-sm-2 control-label">Store ID</label>
 
-                            <div class="col-sm-8"><input  type="text"   id="uneaque_id"  placeholder="002456"  readonly="" class="form-control" value="@{{detailsstores.uneaque_id}}"> <span
+                            <div class="col-sm-8"><input  type="text"   id="uneaque_id"  placeholder="002456"  readonly="" class="form-control" value="@{{detailsstores.unique_id}}"> <span
                                     class="help-block m-b-none">Generated automatically</span>
                             </div>
                         </div>
@@ -387,7 +387,7 @@
 								<div class="">
 									<form role="form" class="form-horizontal ng-pristine ng-valid" id="addbanner" method="POST" action="{{ url('savebanner')}}">
 										<div class="form-group">
-											<label class="col-sm-2 control-label">Add Name</label>
+											<label class="col-sm-2 control-label">Ad Name</label>
 											<div class="col-sm-6">
 												<input class="form-control" type="text" required name="title">
 												<input class="form-control stores_id" type="hidden"  name="store_id" value="<?php echo Session::get('store_userid')?>">

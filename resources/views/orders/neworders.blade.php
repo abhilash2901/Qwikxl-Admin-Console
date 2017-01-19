@@ -78,8 +78,9 @@
                         </tr>
                         </thead>
                         <tbody>
+						
 						<tr ng-show="getnewOrders.length==0"><td colspan="5">No Orders</td></tr>
-                        <tr dir-paginate=" new in getnewOrders | filter:orderid | filter:customerphone | itemsPerPage:10">
+                        <tr dir-paginate="new in getnewOrders | filter:orderid | filter:customerphone | itemsPerPage:9">
                             <td>
                                 @{{new.unique_id}}
                             </td>
@@ -100,7 +101,7 @@
                             </td>
                             <td class="text-right">
                                 <div class="btn-group">
-								   {{ Form::open(array('url' => 'viewneworder','class' => 'pull-left')) }}<input type="hidden" name="id" value="@{{new.order_id}}"> <input type="submit" class="btn btn-primary btn-sm" value="View Order"></form>
+								   {{ Form::open(array('url' => 'viewneworder','class' => 'pull-left')) }}<input type="hidden" name="id"  value="@{{new.order_id}}"> <input type="submit" class="btn btn-primary btn-sm" value="View Order"></form>
 								
                                    <!--a href="{{ url('/viewneworder/ ')}}@{{new.order_id}}"> <button class="btn-white btn btn-sm">View Order</button></a-->
                                     
@@ -109,13 +110,7 @@
                         </tr>
                        
                         </tbody>
-                        <tfoot>
-                        <tr>
-                            <td colspan="7">
-                                <ul class="pagination pull-right"></ul>
-                            </td>
-                        </tr>
-                        </tfoot>
+                        
                     </table>
                     <dir-pagination-controls 
 			boundary-links="true" 

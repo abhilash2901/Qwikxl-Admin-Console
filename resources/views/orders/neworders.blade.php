@@ -10,7 +10,7 @@
         <h2>Orders</h2>
         <ol class="breadcrumb">
             <li>
-                <a href="index.html">Homecxcxcxc</a>
+                <a href="index.html">Home</a>
             </li>
             
             <li class="#">

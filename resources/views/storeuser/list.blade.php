@@ -36,7 +36,7 @@
                         <form class="form-horizontal" id="store"  method="POST" action="{{ url('editstoredata')}}">
                         <div class="form-group"><label class="col-sm-2 control-label">Store ID</label>
 
-                            <div class="col-sm-8"><input  type="text"   id="uneaque_id"  placeholder="002456"  readonly="" class="form-control" value="@{{detailsstores.uneaque_id}}"> <span
+                            <div class="col-sm-8"><input  type="text"   id="uneaque_id"  placeholder="002456"  readonly="" class="form-control" value="@{{detailsstores.unique_id}}"> <span
                                     class="help-block m-b-none">Generated automatically</span>
                             </div>
                         </div>

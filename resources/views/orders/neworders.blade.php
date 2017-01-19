@@ -10,7 +10,7 @@
         <h2>Orders</h2>
         <ol class="breadcrumb">
             <li>
-                <a href="index.html">Home</a>
+                <a href="index.html">Homecxcxcxc</a>
             </li>
             
             <li class="#">
@@ -78,8 +78,9 @@
                         </tr>
                         </thead>
                         <tbody>
+						
 						<tr ng-show="getnewOrders.length==0"><td colspan="5">No Orders</td></tr>
-                        <tr dir-paginate=" new in getnewOrders | filter:orderid | filter:customerphone | itemsPerPage:10">
+                        <tr dir-paginate="new in getnewOrders | filter:orderid | filter:customerphone | itemsPerPage:9">
                             <td>
                                 @{{new.unique_id}}
                             </td>
@@ -100,7 +101,7 @@
                             </td>
                             <td class="text-right">
                                 <div class="btn-group">
-								   {{ Form::open(array('url' => 'viewneworder','class' => 'pull-left')) }}<input type="hidden" name="id" ng-model="id@{{new.order_id}}" value="@{{new.order_id}}"> <input type="submit" class="btn btn-primary btn-sm" value="View Order"></form>
+								   {{ Form::open(array('url' => 'viewneworder','class' => 'pull-left')) }}<input type="hidden" name="id"  value="@{{new.order_id}}"> <input type="submit" class="btn btn-primary btn-sm" value="View Order"></form>
 								
                                    <!--a href="{{ url('/viewneworder/ ')}}@{{new.order_id}}"> <button class="btn-white btn btn-sm">View Order</button></a-->
                                     

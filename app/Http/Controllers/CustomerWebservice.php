@@ -80,9 +80,7 @@ class CustomerWebservice extends Controller {
 	 public function customerDetails(Request $request) {
 		 $input = $request->all();
 		
-		 $customer=Customer::leftJoin('customer_shipping_address', 'customer_shipping_address.customer_id', '=', 'customers.id')
-		        ->select('customers.*','customer_shipping_address.shipping_name','customer_shipping_address.shipping_address','customer_shipping_address.shipping_mobile')
-			   ->where('customers.email', '=', $input['email'])->get();
+		 $customer=Customer::where('email', '=', $input['email'])->get();
 		
 		 $data = array("customerDetails"=>$customer);
 		 print_r(json_encode($data));

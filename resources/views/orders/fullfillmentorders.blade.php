@@ -102,6 +102,10 @@
                            
                             </tbody>
                         </table>
+						<dir-pagination-controls 
+			boundary-links="true" 
+			direction-links="true" >
+			</dir-pagination-controls>
                     </div>
                 </div>
 

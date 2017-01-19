@@ -109,13 +109,7 @@
                         </tr>
                        
                         </tbody>
-                        <tfoot>
-                        <tr>
-                            <td colspan="7">
-                                <ul class="pagination pull-right"></ul>
-                            </td>
-                        </tr>
-                        </tfoot>
+                       
                     </table>
                     <dir-pagination-controls 
 			boundary-links="true" 

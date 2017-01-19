@@ -234,8 +234,14 @@ App.filter('selectedTags', function() {
 				 
 			   }
 			
-		 };
-		 $scope.Getsingleorder= function(id){
+		   };
+		    $scope.getsingleorder='';
+		    $scope.getsingleorder='';
+			$scope.getitemlist='';
+			$scope.statuss='';
+			$scope.total='';
+			$scope.baseurl='';
+		    $scope.Getsingleorder= function(id){
 			 
 			 post_data  ={'id':id};
 		    link="/getsingleorder";

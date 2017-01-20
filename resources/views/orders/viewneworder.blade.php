@@ -91,7 +91,7 @@
                 <div class="ibox-content">
 
                    
-                    <a  onclick="history.go(-1);"><button class="btn btn-white"><i class="fa fa-arrow-left"></i> Back to Orders</button></a>
+                    <a href="{{ url('neworders')}}"><button class="btn btn-white"><i class="fa fa-arrow-left"></i> Back to Orders</button></a>
 
                 </div>
             </div>

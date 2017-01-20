@@ -74,7 +74,8 @@
                     </tbody>
                 </table>
                     </div>
-              <a  onclick="history.go(-1);"><button class="btn btn-white"><i class="fa fa-arrow-left"></i> Back to Orders</button></a>
+					
+              <a href="{{ url('fullfillmentorders')}}" class="btn btn-white"><i class="fa fa-arrow-left"></i> Back to Orders</a>
                 </div>
                
                 

@@ -91,9 +91,13 @@
                
                 <div class="ibox-content">
 
-                   
-                    <a  onclick="history.go(-1);"><button class="btn btn-white"><i class="fa fa-arrow-left"></i> Back to Orders</button></a>
+                      <?php if($linkstatus=='assaigned'){?>
+						  <a href="{{ url('assignedorders')}}" class="btn btn-white"><i class="fa fa-arrow-left"></i> Back to Orders</a>
 
+					  <?php }else{?>
+					  <a href="{{ url('completeorders')}}" class="btn btn-white"><i class="fa fa-arrow-left"></i> Back to Orders</a>
+                      <?php }?>
+                      
                 </div>
             </div>
 

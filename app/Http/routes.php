@@ -10,7 +10,12 @@
   | and give it the controller to call when that URI is requested.
   |
  */
- 
+$middleware = [];
+if(Config::get('app.debug'))
+{
+	array_push($middleware, ['middleware' => 'clearcache']);
+}
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -19,7 +24,7 @@ Route::auth();
 Route::get('/login', function () {
     return view('welcome');
 });
-Route::group(['middleware' => ['auth']], function() {
+Route::group(['middleware' => ['auth','clearcache']], function() {
 Route::get('/home', 'HomeController@index');
 //Route::resource('users','UserController');
 Route::get('users',['as'=>'users.index','uses'=>'UserController@index','middleware' => ['permission:users-list']]);

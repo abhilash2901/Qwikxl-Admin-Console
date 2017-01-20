@@ -100,7 +100,7 @@
                            
                             <td class="text-right">
                                 <div class="btn-group">
-								   {{ Form::open(array('url' => 'viewassignedorder','class' => 'pull-left')) }}<input type="hidden" name="id" value="@{{new.order_id}}"> <input type="submit" class="btn btn-primary btn-sm" value="View Order"></form>
+								   {{ Form::open(array('url' => 'viewassignedorder','class' => 'pull-left')) }}<input type="hidden" name="id" value="@{{new.order_id}}"><input type="hidden" name="status" value="complete"> <input type="submit" class="btn btn-primary btn-sm" value="View Order"></form>
 								
                                    <!--a href="{{ url('/viewassignedorder/ ')}}@{{new.order_id}}" > <button class="btn-white btn btn-sm">View Order</button></a-->
                                     

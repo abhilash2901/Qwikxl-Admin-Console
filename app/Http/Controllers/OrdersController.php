@@ -283,6 +283,7 @@ public function getassignedOrders(Request $request) {
 		public function viewassignedorder(Request $request) {
 			$input = $request->all();
 			$id = $input['id'];
+			$linkstatus = $input['status'];
 			$status =Status::where('id','!=','1')->where('id','!=','5')->get();
 			$storeuser =User::join('role_user', 'role_user.user_id', '=', 'users.id')
 			             ->join('roles', 'role_user.role_id', '=', 'roles.id')
@@ -297,7 +298,7 @@ public function getassignedOrders(Request $request) {
 			 ->where('order_status_histories.order_id',$id)
 			->orderBy('order_status_histories.id', 'desc')->get();
 						
-			return view('orders.viewassignedorder',['id' => $id,'status' => $status,'assigned_to' => $currentstatus[0]->userid,'currentstatus' => $currentstatus[0]->id,'storeuser' => $storeuser]);
+			return view('orders.viewassignedorder',['id' => $id,'linkstatus' => $linkstatus,'status' => $status,'status' => $status,'assigned_to' => $currentstatus[0]->userid,'currentstatus' => $currentstatus[0]->id,'storeuser' => $storeuser]);
 		}
 	    public function deleteOrder(Request $request) {
 		 $input = $request->all();

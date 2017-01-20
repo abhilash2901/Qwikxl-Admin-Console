@@ -91,7 +91,7 @@
                 <div class="ibox-content">
 
                    
-                    <a href="{{ url('neworders')}}"><button class="btn btn-white"><i class="fa fa-arrow-left"></i> Back to Orders</button></a>
+                    <a href="{{ url('neworders')}}" class="btn btn-white"><i class="fa fa-arrow-left"></i> Back to Orders</a>
 
                 </div>
             </div>

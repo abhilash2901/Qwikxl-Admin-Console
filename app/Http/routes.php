@@ -20,10 +20,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::controllers([
-    'auth' => 'Auth\AuthController',
-    'password' => 'Auth\PasswordController',
-]);
+Route::auth();
 Route::get('/login', function () {
     return view('welcome');
 });

@@ -429,7 +429,7 @@
 										
 										<div class="form-group">
 											<div class="col-sm-8">
-											   <button type="submit" class="btn btn-primary pull-right disables"  ng-click="AddBanner()">Add New Banner</button>
+											   <button type="submit" class="btn btn-primary pull-right " ng-hide="isDisabled==true" ng-click="AddBanner()">Add New Banner</button>
 												
 											</div>
 										</div>

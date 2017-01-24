@@ -58,12 +58,12 @@ var App = angular.module('app', ['angularUtils.directives.dirPagination']);
 			
 			 if ($('#addbanner').parsley().validate()) {
 		  $scope.isDisabled=true;
-
+           $(".disables").attr("disabled","disabled");
          $('#addbanner').ajaxForm(function(options) {
 			 $scope.isDisabled=false;
              var items = JSON.parse(options);
 			 ids=items.id;
-			
+			  $(".disables").prop("disabled", false);
               var s = items.msg;
              $('html, body').animate({
                  scrollTop: $(".uploadsucess").offset().top - 100

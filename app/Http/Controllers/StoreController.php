@@ -12,6 +12,7 @@ use App\Store;
 use App\Departments;
 use DB;
 use Session;
+use Mail;
 use Image;
 use Hash;
 
@@ -80,13 +81,15 @@ class StoreController extends Controller {
 
     public function createuserstore(Request $request) {
         $input = $request->all();
-
+        $password =mt_rand(100000,999999);
+		$input['password'] = Hash::make($password);
         $count = $this->exist_user($input['email']);
         if ($count == 0) {
             $item = array([
                     "unique_id" => $input['unique_id'],
                     "firstname" => $input['firstname'],
                     "lastname" => $input['lastname'],
+					"password" => $input['password'],
                     "type" => $input['type'],
                     "email" => $input['email'],
                     "store_id" => $input['store_id']
@@ -101,12 +104,23 @@ class StoreController extends Controller {
             ]);
 
             $user = DB::table('role_user')->insert($item2);
+			$this->send_mail($input,$password);
 
             print_r(json_encode(array('status' => 'success', 'msg' => 'User Created Succesfully')));
         } else {
 
             print_r(json_encode(array('status' => 'failed', 'msg' => 'User Already Exist')));
         }
+    }
+	public function send_mail($input,$password) {
+		$emails =$input['email'];
+        Mail::send('email.usercreate', ['custname' => $input['firstname'], 'password' => $password], function ($message) use($emails){
+						$message->from('us@example.com', 'QwikXL');
+
+						$message->to($emails);
+						$message->subject("Your QwikXL Password Information");
+
+			        });
     }
 
     public function exist_user($email) {

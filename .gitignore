@@ -5,3 +5,6 @@ Homestead.yaml
 Homestead.json
 .env
 /nbproject/private/
+public/upload/*
+public/banner/*
+public/uploadapp/*

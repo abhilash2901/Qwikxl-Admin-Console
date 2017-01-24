@@ -336,10 +336,11 @@ App.filter('selectedTags', function() {
 			 if ($('#addbanner').parsley().validate()) {
 		 
              $scope.isDisabled=true;
+			 $(".disables").attr("disabled","disabled");
          $('#addbanner').ajaxForm(function(options) {
 			  $scope.isDisabled=false;
              var items = JSON.parse(options);
-			 
+			 $(".disables").prop("disabled", false);
 			
               var s = items.msg;
              $('html, body').animate({

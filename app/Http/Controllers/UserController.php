@@ -11,6 +11,7 @@ use App\Store;
 use App\Departments;
 use DB;
 use Session;
+use Mail;
 use Hash;
 use \Crypt;
 
@@ -111,6 +112,7 @@ class UserController extends Controller {
         
 
         $input = $request->all();
+		$password =$input['password'];
 		
        $res = User::where("email",$input['email'])->get();
 		if($input['email']!='' && $input['password']!='' && $input['type']!=''  ){
@@ -120,7 +122,7 @@ class UserController extends Controller {
 			$user = User::create($input);
 
 			$user->attachRole($request->input('roles'));
-
+            $this->send_mail($input,$password);
 
             print_r(json_encode(array('status' => 'success','class' => 'alert alert-success', 'msg' => 'User Created Succesfully')));
 		}else{
@@ -130,6 +132,16 @@ class UserController extends Controller {
 			 print_r(json_encode(array('status' => 'failed', 'class' => 'alert alert-danger','msg' => 'Please Fill All Fields')));
 		
 		}
+    }
+	public function send_mail($input,$password) {
+		$emails =$input['email'];
+        Mail::send('email.usercreate', ['custname' => $input['firstname'], 'password' => $password], function ($message) use($emails){
+						$message->from('us@example.com', 'QwikXL');
+
+						$message->to($emails);
+						$message->subject("Your QwikXL Password Information");
+
+			        });
     }
 
     /**

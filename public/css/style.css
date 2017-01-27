@@ -8347,10 +8347,10 @@ a{
     top: 12px;
     width: 15px;
 }
-#wrapper {
+/*#wrapper {
     margin: 0 auto;
     width: 300px;
-}.red{
+}*/.red{
 	background-color:#18a689 !important;
 	color: #fff !important
 }

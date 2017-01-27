@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html>
    <head>
@@ -59,7 +57,7 @@
       if (Auth::guest())
           echo " pace-done gray-black scroller ";
       else
-          echo "pace-done skin-1";
+          echo "pace-done ";
       
       ?>">
       @if (Auth::guest())
